@@ -1,0 +1,10 @@
+<div
+  #svgSelector
+  [id]="'SVGSelector-' + item.pageId + '-' + item.itemId"
+  class="target"
+  [ngStyle]="styleItemPosition(item)"
+  [attr.pageId]="item.pageId"
+  [attr.itemId]="item.itemId"
+  [attr.itemType]="item.type"
+  (dblclick)="ds.startElementCrop()"
+></div>

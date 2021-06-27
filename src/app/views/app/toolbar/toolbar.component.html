@@ -1,0 +1,254 @@
+<ng-container *ngIf="!ds.isStatus(ItemStatus.none); else defaultToolbar">
+  <ng-container *ngIf="ds.isStatus(ItemStatus.image_selected)">
+    <app-image-toolbar class="center"></app-image-toolbar>
+  </ng-container>
+  <ng-container
+    *ngIf="
+      ds.isStatus(ItemStatus.text_selected) ||
+      ds.isStatus(ItemStatus.text_font_list) ||
+      ds.isStatus(ItemStatus.text_effect)
+    "
+  >
+    <app-text-toolbar
+      class="center"
+      style="padding-top: 10px"
+    ></app-text-toolbar>
+  </ng-container>
+  <ng-container
+    *ngIf="ds.isStatus(ItemStatus.element_selected)"
+    style="display: flex; align-items: center"
+  >
+    <app-element-toolbar class="center"></app-element-toolbar>
+  </ng-container>
+  <ng-container *ngIf="ds.isStatus(ItemStatus.music_selected)">
+    <app-music-toolbar
+      style="width: 100%; height: 100%"
+      class="center"
+    ></app-music-toolbar>
+  </ng-container>
+  <ng-container *ngIf="ds.isStatus(ItemStatus.video_selected)">
+    <app-video-toolbar class="center"></app-video-toolbar>
+  </ng-container>
+
+  <ng-container *ngIf="!ds.isStatus(ItemStatus.music_selected)">
+    <button
+      style="position: absolute; right: 0px"
+      mat-button
+      (click)="showPositionContent()"
+    >
+      Position
+    </button>
+    <div
+      id="dimensionContent"
+      [ngStyle]="{
+        display: this.moveableService.isPosition ? 'block' : 'none'
+      }"
+    >
+      <div style="display: flex; justify-content: space-between; width: 365px">
+        <div
+          id="forward"
+          [ngStyle]="{ cursor: this.overItem == -1 ? 'default' : 'pointer' }"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 175px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: default;
+            /* background-color: rgba(64, 87, 109, 0.07); */
+          "
+          (click)="forwardItem()"
+        >
+          <div style="display: flex; align-items: center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M12.75 5.82v8.43a.75.75 0 1 1-1.5 0V5.81L8.99 8.07A.75.75 0 1 1 7.93 7l2.83-2.83a1.75 1.75 0 0 1 2.47 0L16.06 7A.75.75 0 0 1 15 8.07l-2.25-2.25zM15 10.48l6.18 3.04a1 1 0 0 1 0 1.79l-7.86 3.86a3 3 0 0 1-2.64 0l-7.86-3.86a1 1 0 0 1 0-1.8L9 10.49v1.67L4.4 14.4l6.94 3.42c.42.2.9.2 1.32 0l6.94-3.42-4.6-2.26v-1.67z"
+              ></path>
+            </svg>
+            <span
+              [ngStyle]="{
+                color: this.overItem == -1 ? 'rgba(47, 64, 80, 0.25)' : 'black'
+              }"
+              style="margin-left: 10px"
+              >Forward</span
+            >
+          </div>
+          <span
+            [ngStyle]="{
+              color: this.overItem == -1 ? 'rgba(47, 64, 80, 0.25)' : 'black'
+            }"
+            style="color: rgba(47, 64, 80, 0.25)"
+            >Ctrl+]</span
+          >
+        </div>
+        <div
+          id="backward"
+          [ngStyle]="{ cursor: this.underItem == -1 ? 'default' : 'pointer' }"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 175px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: default;
+            /* background-color: rgba(64, 87, 109, 0.07); */
+          "
+          (click)="backwardItem()"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: 150px;
+            "
+          >
+            <div style="display: flex; align-items: center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12.75 18.12V9.75a.75.75 0 1 0-1.5 0v8.37l-2.26-2.25a.75.75 0 0 0-1.06 1.06l2.83 2.82c.68.69 1.79.69 2.47 0l2.83-2.82A.75.75 0 0 0 15 15.87l-2.25 2.25zM15 11.85v1.67l6.18-3.04a1 1 0 0 0 0-1.79l-7.86-3.86a3 3 0 0 0-2.64 0L2.82 8.69a1 1 0 0 0 0 1.8L9 13.51v-1.67L4.4 9.6l6.94-3.42c.42-.2.9-.2 1.32 0L19.6 9.6 15 11.85z"
+                ></path>
+              </svg>
+              <span
+                [ngStyle]="{
+                  color:
+                    this.underItem == -1 ? 'rgba(47, 64, 80, 0.25)' : 'black'
+                }"
+                style="margin-left: 10px"
+                >Backward</span
+              >
+            </div>
+            <span
+              [ngStyle]="{
+                color: this.underItem == -1 ? 'rgba(47, 64, 80, 0.25)' : 'black'
+              }"
+              style="color: rgba(47, 64, 80, 0.25)"
+              >Ctrl+[</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+<ng-template #defaultToolbar>
+  <div
+    style="
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    "
+  >
+    <div class="w-100 d-flex justify-content-between">
+      <div
+        dropdown
+        [dropright]="isDropright"
+        class="position-relative dropDown"
+      >
+        <button
+          dropdownToggle
+          class="fixedButton"
+          type="button"
+          id="zoomButton"
+        >
+          <i class="bi bi-caret-down-fill position-absolute"></i>
+          {{ ds.zoomValue + "%" }}
+        </button>
+        <ul
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          style="height: 430px"
+        >
+          <li
+            role="menuitem"
+            *ngFor="let option of zoomOptions"
+            (click)="onSelectZoomOption('custom', option.value)"
+            style="text-align: center"
+          >
+            <a class="dropdown-item" href="javascript:;">{{ option.label }} </a>
+          </li>
+          <li class="divider dropdown-divider"></li>
+          <li
+            role="menuitem"
+            (click)="onSelectZoomOption('fit')"
+            style="text-align: center"
+          >
+            <a class="dropdown-item" href="javascript:;">Fit</a>
+          </li>
+          <li
+            role="menuitem"
+            (click)="onSelectZoomOption('fill')"
+            style="text-align: center"
+          >
+            <a class="dropdown-item" href="javascript:;">Fill</a>
+          </li>
+        </ul>
+      </div>
+      <div style="display: flex; height: 30px">
+        <div class="placeholder" data-placeholder="W" style="width: 80px">
+          <input
+            type="number"
+            [(ngModel)]="roundedWidth"
+            (keyup)="setDesign($event)"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          />
+        </div>
+        <div
+          class="placeholder"
+          data-placeholder="H"
+          style="width: 80px; margin-left: 10px"
+        >
+          <input
+            type="number"
+            [(ngModel)]="roundedHeight"
+            (keyup)="setDesign($event)"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          />
+        </div>
+
+        <div style="width: 65px; margin: 0px 10px; font-weight: 600">
+          <ng-select
+            id="dimension"
+            appearance="outline"
+            [items]="tags"
+            dropdownPosition="below"
+            [searchable]="false"
+            [clearable]="false"
+            (change)="changeValueType($event)"
+            [(ngModel)]="this.ds.selectedDimensionType"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <!-- <button mat-button (click)="showDimensionContent()">Dimension</button>
+    <div id="dimensionContent" [ngStyle]="{ display: this.moveableService.isDimension ? 'block' : 'none' }">
+      <div style="display: flex; flex-direction: column">
+        <label style="font-size: 12px; font-weight: 500">Dimension</label>
+        <button class="btn btn-secondary" style="width: 100%; border-radius: 4px; font-weight: 500; margin-top: 15px" (click)="setDesign()">
+          Resize design
+        </button>
+      </div>
+    </div> -->
+  </div>
+</ng-template>

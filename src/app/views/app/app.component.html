@@ -1,0 +1,14 @@
+<div
+  id="app-container"
+  [className]="sidebar.containerClassnames"
+  style="overflow-y: auto"
+>
+  <app-topnav></app-topnav>
+
+  <main>
+    <app-sidebar></app-sidebar>
+    <app-design-panel style="width: calc(100% - 455px)"></app-design-panel>
+  </main>
+  <!-- <app-footer-panel></app-footer-panel> -->
+  <app-modal-box></app-modal-box>
+</div>

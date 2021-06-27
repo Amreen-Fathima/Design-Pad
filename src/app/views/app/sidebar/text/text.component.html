@@ -1,0 +1,37 @@
+<ng-select
+  id="searchElementInput"
+  style="padding: 10px 20px"
+  bindLabel="name"
+  [placeholder]="'Search'"
+  [isOpen]="false"
+  (focus)="this.ds.isOnInput = true"
+  (blur)="this.ds.isOnInput = false"
+>
+</ng-select>
+
+<perfect-scrollbar
+  style="height: calc(100% - 50px); padding: 0px 20px"
+  [config]="{ suppressScrollX: true, wheelPropagation: false }"
+>
+  <span style="font-size: 14px; font-weight: 600; cursor: default">
+    Click text to add to page
+  </span>
+  <div class="textStyle" (click)="onClickAddText('Add a heading')">
+    <span style="font-size: 28px; font-weight: 1000; font-family: 'Alata'"
+      >Add a heading</span
+    >
+  </div>
+  <div class="textStyle" (click)="onClickAddText('Add a subheading')">
+    <span style="font-size: 19px; font-weight: 500; font-family: 'Alata'"
+      >Add a subheading</span
+    >
+  </div>
+  <div
+    class="textStyle"
+    (click)="onClickAddText('Add a little bit of body text')"
+  >
+    <span style="font-size: 12px; font-family: 'Alata'"
+      >Add a little bit of body text</span
+    >
+  </div>
+</perfect-scrollbar>

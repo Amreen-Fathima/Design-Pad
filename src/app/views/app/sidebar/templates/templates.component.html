@@ -1,0 +1,298 @@
+<div *ngIf="!ds.selectedTemplate; else showTemplate" style="height: 100%">
+  <div class="select-search">
+    <input
+      type="text"
+      id="searchAdminTemplate"
+      placeholder="Search templates"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+      (keyup)="searchAdminTemplate($event)"
+      (input)="getKeyword($event)"
+      [(ngModel)]="ds.keyword"
+    />
+    <i class="bi bi-search"></i>
+    <div class="icon-group">
+      <i class="bi bi-x" *ngIf="ds.keyword" (click)="clearKeyword()"></i>
+      <div *ngIf="false" class="filter-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M6.1 17.25a3 3 0 0 1 5.8 0h8.85a.75.75 0 1 1 0 1.5h-8.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 1 1 0-1.5h2.84zm6-6a3 3 0 0 1 5.8 0h2.85a.75.75 0 1 1 0 1.5h-2.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 1 1 0-1.5h8.84zm-6-6a3 3 0 0 1 5.8 0h8.85a.75.75 0 1 1 0 1.5h-8.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 0 1 0-1.5h2.84zM9 7.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm6 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-6 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <perfect-scrollbar
+    style="height: calc(100% - 46px); padding: 10px 20px 10px 20px"
+    [config]="{ suppressScrollX: true, wheelPropagation: false }"
+  >
+    <div
+      class="grid-container"
+      *ngIf="!ds.filteredTemplate; else showTemplateList"
+    >
+      <ng-container *ngFor="let template of ds.adminTemplates; let i = index">
+        <div class="w-100">
+          <div
+            class="d-flex justify-content-between"
+            style="padding: 15px 10px 10px 10px"
+          >
+            <div style="font-size: 16px; font-weight: bold">
+              {{ template.docId }}
+            </div>
+            <div
+              style="cursor: pointer; font-size: 14px"
+              (click)="putCategory(i)"
+            >
+              See all
+            </div>
+          </div>
+          <div class="w-100 d-flex position-relative" style="height: 100px">
+            <div class="w-100">
+              <div class="category" [id]="'category-' + i" style="left: 0%">
+                <ng-container
+                  *ngFor="let item of template.templates; let j = index"
+                >
+                  <div
+                    *ngIf="j < 5"
+                    [id]="'template-' + i + '-' + j"
+                    class="category-item"
+                    (click)="clickCategory(item, j)"
+                    (mouseenter)="thumbnailAnimation(i, j)"
+                    (mouseleave)="initAnimation(i, j)"
+                  >
+                    <ng-container
+                      *ngFor="let page of item.design.pages; let k = index"
+                    >
+                      <div
+                        class="w-100 h-100 position-absolute"
+                        [ngStyle]="{ marginLeft: !k ? '0' : '100%' }"
+                      >
+                        <img
+                          [lazyLoad]="page.thumbnail"
+                          (click)="clickCategory(item, j)"
+                        />
+                      </div>
+                    </ng-container>
+                    <div class="position-absolute thumbnailCounter">
+                      {{ this.thumbnailIndex + 1 }} OF
+                      {{ item.design.pages.length }}
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+              <div
+                class="scroll-button"
+                style="
+                  background: linear-gradient(
+                    90deg,
+                    #ffffffd1 0%,
+                    #ffffff00 100%
+                  );
+                  left: 0;
+                "
+                (click)="scrollBefore(i)"
+              >
+                <svg
+                  _ngcontent-lid-c126=""
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  height="18px"
+                  width="18px"
+                  fill="black"
+                  style="transform: translate(-50%, -50%)"
+                >
+                  <path
+                    _ngcontent-lid-c126=""
+                    d="M0 0h24v24H0V0z"
+                    fill="none"
+                  ></path>
+                  <path
+                    _ngcontent-lid-c126=""
+                    d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                  ></path>
+                </svg>
+              </div>
+              <div
+                class="scroll-button"
+                style="
+                  right: 0;
+                  background: linear-gradient(
+                    90deg,
+                    #ffffff00 0%,
+                    #ffffffd1 100%
+                  );
+                "
+                (click)="scrollNext(i)"
+              >
+                <svg
+                  _ngcontent-lid-c126=""
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  height="18px"
+                  width="18px"
+                  fill="black"
+                  style="transform: translate(-50%, -50%) rotate(180deg)"
+                >
+                  <path
+                    _ngcontent-lid-c126=""
+                    d="M0 0h24v24H0V0z"
+                    fill="none"
+                  ></path>
+                  <path
+                    _ngcontent-lid-c126=""
+                    d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <ng-template #showTemplateList>
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-auto-rows: 100px;
+          gap: 2%;
+          box-sizing: border-box;
+          font-size: 14px;
+        "
+      >
+        <ng-container *ngFor="let item of ds.filteredTemplate; let j = index">
+          <div
+            *ngIf="true"
+            class="w-100 h-100"
+            class="template-item"
+            [id]="'template-' + ds.selectedCategoryIndex + '-' + j"
+            (click)="clickCategory(item, j)"
+            (mouseenter)="thumbnailAnimation(ds.selectedCategoryIndex, j)"
+            (mouseleave)="initAnimation(ds.selectedCategoryIndex, j)"
+          >
+            <ng-container *ngFor="let page of item.design.pages; let k = index">
+              <div
+                class="w-100 h-100 position-absolute"
+                [ngStyle]="{ marginLeft: !k ? '0' : '100%' }"
+              >
+                <img
+                  [lazyLoad]="page.thumbnail"
+                  (click)="clickCategory(item, j)"
+                />
+              </div>
+            </ng-container>
+            <div class="position-absolute thumbnailCounter">
+              {{ this.thumbnailIndex + 1 }} OF
+              {{ item.design.pages.length }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-template>
+  </perfect-scrollbar>
+</div>
+
+<ng-template #showTemplate>
+  <div class="h-100 d-flex flex-column">
+    <div class="template-header">
+      <div class="w-100 d-flex align-items-center">
+        <div class="back-icon" (click)="backToCategory()">
+          <svg
+            _ngcontent-dnt-c126=""
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 0 24 24"
+            width="24px"
+            fill="black"
+            style="cursor: default; pointer-events: none; left: -5px"
+          >
+            <path _ngcontent-dnt-c126="" d="M0 0h24v24H0V0z" fill="none"></path>
+            <path
+              _ngcontent-dnt-c126=""
+              d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+            ></path>
+          </svg>
+        </div>
+        <div class="category-title">
+          <div class="category-name" style="padding-bottom: 6px">
+            {{ ds.selectedTemplate?.design.category.categoryType.title }}
+          </div>
+          <div class="template-name">
+            {{ ds.selectedTemplate?.design.category.title }}
+          </div>
+        </div>
+        <div class="template-delete" (click)="deleteAlert()">
+          <svg
+            _ngcontent-ffv-c113=""
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              _ngcontent-ffv-c113=""
+              fill="black"
+              d="M8 5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3h4.25a.75.75 0 1 1 0 1.5H19V18a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6.5H3.75a.75.75 0 0 1 0-1.5H8zM6.5 6.5V18c0 .83.67 1.5 1.5 1.5h8c.83 0 1.5-.67 1.5-1.5V6.5h-11zm3-1.5h5c0-.83-.67-1.5-1.5-1.5h-2c-.83 0-1.5.67-1.5 1.5zm-.25 4h1.5v8h-1.5V9zm4 0h1.5v8h-1.5V9z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <button
+        *ngIf="authService?.user?.role == role.Admin; else user"
+        mat-button
+        class="button-style"
+        style="margin: 10px 0"
+        (click)="putAllPages()"
+      >
+        {{ "Edit all " + ds.selectedTemplate?.design.pages.length + " pages" }}
+      </button>
+      <ng-template #user>
+        <button
+          mat-button
+          class="button-style"
+          style="margin: 10px 0"
+          (click)="putAllPages()"
+        >
+          {{
+            "Apply all " + ds.selectedTemplate?.design.pages.length + " pages"
+          }}
+        </button>
+      </ng-template>
+    </div>
+    <perfect-scrollbar
+      style="flex: 1; padding: 10px 20px 0px 20px"
+      [config]="{ suppressScrollX: true, wheelPropagation: false }"
+    >
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-auto-rows: 100px;
+          gap: 2%;
+          box-sizing: border-box;
+          font-size: 14px;
+        "
+      >
+        <ng-container
+          *ngFor="let page of ds.selectedTemplate?.design.pages; let i = index"
+        >
+          <div
+            class="w-100 h-100"
+            class="template-item"
+            [id]="'template-' + i"
+            (click)="putPage(i)"
+          >
+            <img [lazyLoad]="page.thumbnail" />
+          </div>
+        </ng-container>
+      </div>
+    </perfect-scrollbar>
+  </div>
+</ng-template>

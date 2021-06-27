@@ -1,0 +1,13 @@
+<div
+  #textSelector
+  class="target"
+  style="display: flex; justify-content: center; align-items: center"
+  [id]="'textSelector-' + pageId + '-' + itemId"
+  [ngStyle]="styleItemPosition(item)"
+  [attr.pageId]="pageId"
+  [attr.itemId]="itemId"
+  [attr.itemType]="item.type"
+  (mousedown)="onMouseDown()"
+  (mousemove)="onMouseMoveItem($event, item)"
+  (mouseup)="enableTextEdit($event)"
+></div>

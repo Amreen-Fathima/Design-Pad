@@ -1,0 +1,43 @@
+<div id="home">
+  <app-topnav></app-topnav>
+  <router-outlet></router-outlet>
+  <div id="footer" class="d-flex justify-content-between align-items-center">
+    <div class="logo-icon">
+      <img src="../../../assets/img/items/Designpad logo.svg" alt="" />
+    </div>
+    <div
+      style="
+        display: flex;
+        width: 50%;
+        justify-content: space-between;
+        font-size: 14px;
+      "
+    >
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/about-us'"
+      >
+        Contact Us
+      </div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/contact-us'"
+      >
+        About Us
+      </div>
+      <div>© 2021 TheDesignPad</div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/privacy-policy'"
+      >
+        Privacy Policy
+      </div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/terms-conditions'"
+      >
+        Terms and Condition
+      </div>
+    </div>
+  </div>
+</div>

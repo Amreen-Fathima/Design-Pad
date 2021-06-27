@@ -1,0 +1,161 @@
+#home {
+  background-color: white;
+}
+.image-container {
+  position: relative;
+  background-image: url("../../../assets/img/items/background.jpg");
+  background-size: 100% 100%;
+  width: 100%;
+  padding-top: 38%;
+}
+
+#home-container {
+  font-size: 2vw;
+}
+
+.text-container {
+  position: absolute;
+  top: 0;
+  margin: 10% 0 0 10%;
+  width: 32em;
+  font-size: 0.48em;
+}
+
+.header-title {
+  font-size: 4.2em;
+  line-height: 1.2em;
+  margin-bottom: 0.2em;
+  font-weight: bold;
+}
+
+.sub-title {
+  margin-bottom: 2em;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 1em;
+  line-height: 1.5em;
+  margin-bottom: 2.3em;
+}
+
+.start-button {
+  font-size: 1.1em;
+  padding: 0.3em 1.6em;
+  border: none;
+  border-radius: 0.4em;
+}
+
+.sign-btn {
+  font-size: 1.1em;
+  font-weight: 500;
+  border: 0;
+  background-color: white;
+}
+
+.container-style {
+  padding: 1.5em 10% 6em 10%;
+}
+
+.container-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1.7em;
+  line-height: 32px;
+  cursor: default;
+  font-size: 24px;
+}
+
+.grid-container {
+  display: grid;
+  height: 30vw;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 5% 2%;
+  font-size: 0.9em;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #8080806b;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.grid-item p {
+  color: #58575c;
+}
+
+.price {
+  display: flex;
+  font-size: 0.9em;
+}
+
+.price-type {
+  position: relative;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  border-radius: 5px;
+  padding: 3em 0;
+  box-shadow: 0 4px 50px 0 #cfd7f0ad, 0 4px 20px 0 #cfd7f0ad;
+  cursor: default;
+}
+
+.main-price {
+  border-top: 5px solid red;
+  z-index: 10;
+}
+
+.price-user {
+  font-size: 14px;
+  color: grey;
+  font-weight: 500;
+  margin: 1em 0;
+}
+
+.price-description {
+  font-size: 16px;
+  margin: 0.8em 0;
+  font-weight: 500;
+}
+
+.price-type button {
+  position: absolute;
+  bottom: -22px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0.5em 2.4em;
+  border-radius: 0.4em;
+}
+
+.feature-comparison-item {
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
+  font-size: 14px;
+  color: grey;
+  font-weight: 500;
+}
+
+.feature-item {
+  color: black !important;
+  padding: 1.3em 0;
+  background-color: white;
+  border-radius: 0.3em;
+  box-shadow: 0 4px 10px 0 rgb(207 215 240 / 20%),
+    0 4px 20px 0 rgb(207 215 240 / 20%);
+}
+
+#footer {
+  height: 150px;
+  background-color: black;
+  color: white;
+  padding: 0 8%;
+  box-sizing: border-box;
+  font-size: 15px;
+}

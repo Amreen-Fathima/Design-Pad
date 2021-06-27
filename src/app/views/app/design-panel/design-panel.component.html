@@ -1,0 +1,274 @@
+<div
+  id="designPanel"
+  class="container-fluid position-relative"
+  style="height: 100%"
+  #host
+>
+  <div
+    [style]="{
+      position: 'relative',
+      height: '50px',
+      borderBottom: '1px solid ' + foreColor,
+      display: 'flex',
+      alignItems: 'center',
+      backgroundColor: 'white'
+    }"
+  >
+    <app-toolbar
+      style="
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 15px;
+      "
+    ></app-toolbar>
+    <mat-progress-bar
+      *ngIf="this.downloadService.onDownloading"
+      mode="indeterminate"
+      style="position: absolute; width: 100%; bottom: 0"
+    ></mat-progress-bar>
+  </div>
+
+  <ng-container *ngIf="media.selectedMusic">
+    <div class="rotateIcon" (click)="selectMusic()">
+      <img
+        [src]="
+          media.selectedMusic.thumbnail != ''
+            ? media.selectedMusic.thumbnail
+            : '../../../../../assets/img/icons/music.png'
+        "
+        style="
+          width: 36px;
+          height: 36px;
+          border: 1px solid transparent;
+          border-radius: 100%;
+        "
+        alt=""
+      />
+      <p style="margin-left: 5px; margin-bottom: 0; font-weight: 500">
+        {{ media.selectedMusic.name }}
+      </p>
+    </div>
+  </ng-container>
+
+  <div class="optionMenu">
+    <div class="MenuTextList">
+      <div
+        [ngStyle]="{
+          display: authService?.user?.role == role.Admin ? 'block' : 'none'
+        }"
+      >
+        New Template
+      </div>
+      <div>New</div>
+      <div>Duplicate Page</div>
+      <div>Remove Page</div>
+      <div>Save</div>
+      <div>Download</div>
+    </div>
+    <div class="MenuIconList">
+      <button
+        (mouseenter)="showTooltip(0)"
+        (mouseleave)="hideTooltip(0)"
+        *ngIf="authService?.user?.role == role.Admin"
+        class="fixedButton"
+        type="button"
+        (click)="newTemplate()"
+      >
+        <img
+          src="../../../../assets/img/items/template.png"
+          style="width: 20px"
+          alt=""
+        />
+      </button>
+      <button
+        (mouseenter)="showTooltip(1)"
+        (mouseleave)="hideTooltip(1)"
+        class="tooltip-animation"
+        class="fixedButton"
+        type="button"
+        (click)="addPage()"
+      >
+        <img
+          src="../../../../assets/img/items/new.png"
+          alt=""
+          style="width: 28px"
+        />
+      </button>
+      <button
+        class="fixedButton"
+        type="button"
+        (click)="duplicateePage()"
+        (mouseenter)="showTooltip(2)"
+        (mouseleave)="hideTooltip(2)"
+      >
+        <img
+          src="../../../../assets/img/items/duplicate.png"
+          alt=""
+          style="width: 28px"
+        />
+      </button>
+      <button
+        class="fixedButton"
+        type="button"
+        (click)="removePage()"
+        (mouseenter)="showTooltip(3)"
+        (mouseleave)="hideTooltip(3)"
+      >
+        <img
+          src="../../../../assets/img/items/remove.png"
+          alt=""
+          style="width: 22px"
+        />
+      </button>
+
+      <button
+        (mouseenter)="showTooltip(4)"
+        (mouseleave)="hideTooltip(4)"
+        class="fixedButton"
+        type="button"
+        (click)="
+          authService?.user?.role == role.Admin
+            ? uploadAdminTemplate()
+            : UploadTemplate()
+        "
+      >
+        <img
+          src="../../../../assets/img/items/save.png"
+          style="width: 22px"
+          alt=""
+        />
+      </button>
+      <div class="position-relative">
+        <button
+          (mouseenter)="showTooltip(5)"
+          (mouseleave)="hideTooltip(5)"
+          class="fixedButton"
+          type="button"
+          (click)="showDownloadContent()"
+        >
+          <img
+            src="../../../../assets/img/items/download.png"
+            alt=""
+            style="width: 28px"
+          />
+        </button>
+        <div
+          id="downloadContent"
+          [ngStyle]="{
+            display: this.moveableService.isShowDownload ? 'block' : 'none'
+          }"
+        >
+          <div style="display: flex; flex-direction: column">
+            <label style="font-size: 12px; font-weight: 500">File type</label>
+            <ng-select
+              style="width: 280px; margin-bottom: 15px"
+              appearance="outline"
+              [searchable]="false"
+              [clearable]="false"
+              [items]="fileTypeItems"
+              [(ngModel)]="selectedFileType"
+              (change)="changeFileType($event)"
+            >
+            </ng-select>
+            <button
+              class="btn btn-secondary"
+              style="
+                width: 100%;
+                border-radius: 4px;
+                font-weight: 500;
+                margin-top: 15px;
+                font-size: 14px;
+                border: none;
+                background-color: #3834fb;
+              "
+              (click)="download()"
+            >
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="selecto-container" id="selecto-container">
+    <div class="selecto-area" id="selecto-area">
+      <perfect-scrollbar class="w-100 h-100">
+        <div
+          [ngStyle]="{
+            width:
+              (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 100 + 'px'
+          }"
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto;
+          "
+        >
+          <div
+            *ngFor="let page of ds.theDesign?.pages; let i = index"
+            style="margin: 50px 0px"
+          >
+            <app-page [page]="page" [pageId]="i"></app-page>
+          </div>
+
+          <!-- <button
+            *ngIf="authService.user?.role != role.Admin"
+            class="btn btn-primary"
+            [ngStyle]="{
+              width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px'
+            }"
+            style="margin-bottom: 50px"
+            (click)="addPage()"
+          >
+            Add Page
+          </button> -->
+          <div
+            *ngIf="false"
+            style="position: relative"
+            [ngStyle]="{
+              width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px'
+            }"
+          >
+            <button
+              class="btn btn-primary"
+              style="margin-bottom: 50px; position: relative; width: 100%"
+              [ngStyle]="{ position: ds.isUploading ? 'absolute' : 'relative' }"
+              (click)="uploadPage()"
+              [attr.disabled]="
+                ds.theDesign.pages[0].items.length == 0 ? true : null
+              "
+            >
+              Upload Page
+            </button>
+            <div
+              [ngStyle]="{ display: ds.isUploading ? 'block' : 'none' }"
+              style="position: relative"
+            >
+              <mat-progress-bar
+                mode="indeterminate"
+                style="height: 37px; border-radius: 19px; width: 100%"
+              ></mat-progress-bar>
+              <span
+                style="
+                  font-size: 0.8rem;
+                  position: absolute;
+                  transform: translate(-50%, -50%);
+                  top: 50%;
+                  left: 50%;
+                  color: white;
+                "
+                >Upload Page</span
+              >
+            </div>
+          </div>
+        </div>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

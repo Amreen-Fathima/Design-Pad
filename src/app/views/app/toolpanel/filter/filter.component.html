@@ -1,0 +1,161 @@
+<perfect-scrollbar>
+  <div
+    style="
+      padding: 20px 10px;
+      display: grid;
+      grid-template-columns: 70px 1fr 50px;
+      grid-template-rows: repeat(50px);
+      grid-row-gap: 20px;
+      grid-column-gap: 5px;
+      align-items: center;
+    "
+    *ngIf="ds.filterObj"
+  >
+    <label>Brightness</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.brightness[0]"
+      [max]="ds.filterObj.params.brightness[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.brightness"
+      (input)="onChangeObj()"
+      [formControl]="brightness"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.brightness"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Contrast</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.contrast[0]"
+      [max]="ds.filterObj.params.contrast[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.contrast"
+      (input)="onChangeObj()"
+      [formControl]="contrast"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.contrast"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Saturate</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.saturate[0]"
+      [max]="ds.filterObj.params.saturate[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.saturate"
+      (input)="onChangeObj()"
+      [formControl]="saturate"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.saturate"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Sepia</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.sepia[0]"
+      [max]="ds.filterObj.params.sepia[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.sepia"
+      (input)="onChangeObj()"
+      [formControl]="sepia"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.sepia"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Grayscale</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.grayscale[0]"
+      [max]="ds.filterObj.params.grayscale[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.grayscale"
+      (input)="onChangeObj()"
+      [formControl]="grayscale"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.grayscale"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Blur</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.blur[0]"
+      [max]="ds.filterObj.params.blur[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.blur"
+      (input)="onChangeObj()"
+      [formControl]="blur"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.blur"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+
+    <label>Invert</label>
+
+    <input
+      class="slider"
+      type="range"
+      [min]="ds.filterObj.params.invert[0]"
+      [max]="ds.filterObj.params.invert[1]"
+      [step]="1"
+      [(ngModel)]="ds.filterObj.invert"
+      (input)="onChangeObj()"
+      [formControl]="invert"
+    />
+
+    <input
+      class="form-control"
+      [(ngModel)]="ds.filterObj.invert"
+      (change)="onChangeObj()"
+      (focus)="this.ds.isOnInput = true"
+      (focusout)="this.ds.isOnInput = false"
+    />
+  </div>
+</perfect-scrollbar>

@@ -1,0 +1,6 @@
+<img
+  [id]="'imageElement-' + this.item.pageId + '-' + this.item.itemId"
+  [ngStyle]="styleItem(item)"
+  [lazyLoad]="item.url"
+  [defaultImage]="item.thumbnail"
+/>

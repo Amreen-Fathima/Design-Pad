@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-sm-3">
+    <div style="display: flex">
+      <button
+        class="btn btn-outline-primary"
+        style="margin: 1rem; flex: 1; height: 300px"
+        (click)="fileInput.click()"
+        dropzone
+        (dropped)="onDrop($event)"
+      >
+        Upload from device <br />
+        Drag & Drop multiple files
+      </button>
+      <input #fileInput style="display: none" type="file" accept="video/mp4,video/x-m4v,video/*" multiple (change)="onDrop($event.target.files)" />
+    </div>
+
+    <perfect-scrollbar [config]="{ suppressScrollX: true }" style="height: calc(100vh - 500px)">
+      <div *ngFor="let file of files">
+        <upload-task [file]="file" taskType="admin_uploads"></upload-task>
+      </div>
+    </perfect-scrollbar>
+  </div>
+  <div class="col-sm-9">
+    <div class="card">
+      <div>
+        <button *ngIf="isLoading" class="show-spinner btn btn-multiple-state">
+          <div class="spinner d-inline-block">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        </button>
+
+        <input type="text" class="form-control search-box d-inline-block" placeholder="search by tag" (keyup)="onSearchKeyUp($event)" />
+
+        <button class="btn btn-outline-danger" (click)="removeSelected()">Remove Selected</button>
+      </div>
+
+      <perfect-scrollbar [config]="{ suppressScrollX: true }" style="height: calc(100vh - 300px)">
+        <table class="table table-bordered table-responsive-md table-striped">
+          <tr>
+            <th>
+              <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [checked]="selectAllState === 'checked'"
+                  [indeterminate]="selectAllState === 'indeterminate'"
+                  (change)="selectAllChange($event)"
+                />
+                <span class="custom-control-label">&nbsp;</span>
+              </label>
+            </th>
+            <th class="text-center">Image</th>
+            <th class="text-center" width="700">Tag</th>
+            <th class="text-center">Timestamp</th>
+          </tr>
+
+          <tr *ngFor="let assetVideo of assetVideos; let i = index">
+            <td>
+              <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [id]="'customCheck' + i"
+                  [checked]="isSelected(assetVideo)"
+                  (change)="onSelect(assetVideo)"
+                />
+                <label class="custom-control-label" [for]="'customCheck' + i"></label>
+              </label>
+            </td>
+            <td class="text-center">
+              <img
+                [src]="assetVideo.thumbnail != '' ? assetVideo.thumbnail : '../../../../assets/img/icons/music.png'"
+                style="margin: 5px; cursor: pointer; width: 140px"
+              />
+              <input #musicThumbnailInput style="display: none" type="file" multiple />
+            </td>
+
+            <td>
+              <div style="max-width: 650px; overflow-y: visible">
+                <ng-select
+                  [items]="[]"
+                  [addTag]="addTagFn"
+                  (add)="onAddRemoveTag(assetVideo)"
+                  (remove)="onAddRemoveTag(assetVideo)"
+                  [hideSelected]="true"
+                  multiple="true"
+                  bindLabel="name"
+                  [(ngModel)]="assetVideo.tags"
+                >
+                </ng-select>
+              </div>
+            </td>
+
+            <td class="text-center">
+              <span>{{ assetVideo.timestamp | date: 'yyyy/MM/dd HH:mm:ss' }}</span>
+            </td>
+          </tr>
+        </table>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>

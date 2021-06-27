@@ -1,0 +1,28 @@
+<perfect-scrollbar
+  class="h-100"
+  style="padding: 0px 20px"
+  [config]="{ suppressScrollX: true, wheelPropagation: false }"
+>
+  <div
+    style="
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 100px;
+      gap: 2%;
+      box-sizing: border-box;
+      font-size: 14px;
+    "
+  >
+    <ng-container *ngFor="let item of ds.userTemplates; let i = index">
+      <div
+        *ngIf="true"
+        class="w-100 h-100"
+        class="template-item"
+        [id]="'userTemplate-' + i"
+        (click)="putPage(i)"
+      >
+        <img [lazyLoad]="item.design.pages[0].thumbnail" />
+      </div>
+    </ng-container>
+  </div>
+</perfect-scrollbar>

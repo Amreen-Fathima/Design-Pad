@@ -1,0 +1,291 @@
+<div id="home">
+  <app-topnav></app-topnav>
+  <div id="home-container">
+    <div class="image-container">
+      <div class="text-container">
+        <p class="header-title">Design Anything</p>
+        <p class="sub-title">
+          Create beautiful designs for school, work or play
+        </p>
+        <div class="description">
+          Use custom sizes, upload images and a select from a wide range of
+          elements and fonts. Apply effects, edit positions, change color and
+          much more...
+        </div>
+        <!-- <button
+          mat-button
+          class="button-style start-button"
+          (click)="navigateToPad()"
+          [routerLink]="'/app'"
+        >
+          START NOW
+        </button> -->
+        <button
+          mat-button
+          class="button-style"
+          style="font-size: 16px; padding: 4px 26px; border-radius: 6px"
+          (click)="navigateToPad()"
+          [routerLink]="'/app'"
+        >
+          START NOW
+        </button>
+      </div>
+    </div>
+    <div class="select-categories container-style">
+      <div class="container-title">Templates</div>
+      <div class="grid-container">
+        <ng-container
+          *ngFor="let template of ds.latestTemplates; let i = index"
+        >
+          <div class="grid-item" *ngIf="i < 7" (click)="navigateToCategory(i)">
+            <div
+              class="d-flex justify-content-center align-items-center"
+              style="height: 30%"
+            >
+              {{ template.design.category.categoryType.title }}
+            </div>
+            <div
+              class="position-relative"
+              style="height: 70%; overflow: hidden"
+            >
+              <img
+                class="position-absolute w-100"
+                style="top: 50%; transform: translate(0, -50%)"
+                [lazyLoad]="template.design.pages[0].thumbnail"
+              />
+            </div>
+          </div>
+        </ng-container>
+        <div class="grid-item" *ngIf="ds.latestTemplates?.length > 7">
+          <div
+            class="
+              w-100
+              h-100
+              d-flex
+              flex-column
+              justify-content-center
+              align-items-center
+            "
+            style="background-color: #f7f7f7"
+            (click)="this.router.navigate(['/browse-template'])"
+          >
+            <p>Click Here</p>
+            <p>to See More</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="price-container container-style">
+      <div class="container-title">Price Comparison</div>
+      <div class="price">
+        <div class="price-type" style="margin-right: -10px">
+          <div
+            class="text-center font-weight-bold"
+            style="margin-bottom: 3em; font-size: 24px"
+          >
+            Free
+          </div>
+          <div
+            class="text-center font-weight-bold"
+            style="font-size: 46px; line-height: 1em"
+          >
+            $0
+          </div>
+          <div class="price-user">User/Month</div>
+          <div
+            class="d-flex flex-column align-items-center"
+            style="margin-top: 0.8em; font-size: 14px"
+          >
+            <div class="price-description">Upto 50 elements</div>
+            <div class="price-description">Unlimited designs</div>
+            <div class="price-description">Private Workspace</div>
+            <div class="price-description">Free for life</div>
+          </div>
+          <button
+            mat-button
+            class="button-style"
+            style="font-size: 16px; padding: 4px 26px; border-radius: 6px"
+          >
+            PURCHASE
+          </button>
+        </div>
+        <div class="price-type main-price">
+          <div
+            class="text-center font-weight-bold"
+            style="margin-bottom: 3em; font-size: 24px"
+          >
+            Pro
+          </div>
+          <div
+            class="text-center font-weight-bold"
+            style="font-size: 46px; line-height: 1em"
+          >
+            $5
+          </div>
+          <div class="price-user">User/Month</div>
+          <div
+            class="d-flex flex-column align-items-center"
+            style="margin-top: 0.8em"
+          >
+            <div class="price-description">All features in Free</div>
+            <div class="price-description">Unlimited elements</div>
+            <div class="price-description">Unlimited storage</div>
+            <div class="price-description">24x5 support</div>
+          </div>
+          <button
+            mat-button
+            class="button-style"
+            style="font-size: 16px; padding: 4px 26px; border-radius: 6px"
+          >
+            PURCHASE
+          </button>
+        </div>
+        <div class="price-type" style="margin-left: -10px">
+          <div class="text-center font-weight-bold" style="margin-bottom: 3em">
+            Enterprises
+          </div>
+          <div
+            class="text-center font-weight-bold"
+            style="font-size: 46px; line-height: 1em"
+          >
+            $10
+          </div>
+          <div class="price-user">User/Month</div>
+          <div
+            class="d-flex flex-column align-items-center"
+            style="margin-top: 0.8em"
+          >
+            <div class="price-description">All features in Pro</div>
+            <div class="price-description">Collaboration tools</div>
+            <div class="price-description">Send Emails</div>
+            <div class="price-description">Dedicated support</div>
+          </div>
+          <button
+            mat-button
+            class="button-style"
+            style="font-size: 16px; padding: 4px 26px; border-radius: 6px"
+          >
+            PURCHASE
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="feature-comparison container-style">
+      <div class="container-title">Feature Comparison</div>
+      <div style="padding: 0 5%; font-size: 1.1em">
+        <div class="feature-comparison-item" style="padding: 1em 0">
+          <div style="padding-left: 1.5em">Feature</div>
+          <div class="text-center">Free</div>
+          <div class="text-center">Pro</div>
+          <div class="text-center">Enterprises</div>
+        </div>
+        <div class="feature-comparison-item feature-item">
+          <div style="padding-left: 1.5em; margin: auto 0">
+            Two factor authentication
+          </div>
+          <div class="text-center" style="color: #5becff; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <div class="text-center" style="color: #ff6672; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <div class="text-center" style="color: #fec35d; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+        <div
+          class="feature-comparison-item feature-item"
+          style="margin-top: 1em"
+        >
+          <div style="padding-left: 1.5em; margin: auto 0">
+            Team permissions
+          </div>
+          <div
+            class="text-center"
+            style="color: #5becff; font-size: 1.9em"
+          ></div>
+          <div class="text-center" style="color: #ff6672; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <div class="text-center" style="color: #fec35d; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+        <div
+          class="feature-comparison-item feature-item"
+          style="margin-top: 1em"
+        >
+          <div style="padding-left: 1.5em; margin: auto 0">24/5 Support</div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+          <div class="text-center" style="color: #ff6672; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+        </div>
+        <div
+          class="feature-comparison-item feature-item"
+          style="margin-top: 1em"
+        >
+          <div style="padding-left: 1.5em; margin: auto 0">24/7 Support</div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+          <div class="text-center" style="color: #fec35d; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+        <div
+          class="feature-comparison-item feature-item"
+          style="margin-top: 1em"
+        >
+          <div style="padding-left: 1.5em; margin: auto 0">
+            User actions audit log
+          </div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+          <div class="text-center" style="color: red; font-size: 1.9em"></div>
+          <div class="text-center" style="color: #fec35d; font-size: 1.9em">
+            <i class="bi bi-check-circle-fill"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer" class="d-flex justify-content-between align-items-center">
+    <div class="logo-icon">
+      <img src="../../../assets/img/items/Designpad logo.svg" alt="" />
+    </div>
+    <div
+      style="
+        display: flex;
+        width: 50%;
+        justify-content: space-between;
+        font-size: 14px;
+      "
+    >
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/about-us'"
+      >
+        Contact Us
+      </div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/contact-us'"
+      >
+        About Us
+      </div>
+      <div>© 2021 TheDesignPad</div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/privacy-policy'"
+      >
+        Privacy Policy
+      </div>
+      <div
+        style="font-size: 16px; cursor: pointer"
+        [routerLink]="'/info/terms-conditions'"
+      >
+        Terms and Condition
+      </div>
+    </div>
+  </div>
+</div>

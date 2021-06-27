@@ -1,0 +1,23 @@
+.ng-arrow-wrapper {
+  display: none;
+}
+
+.fontItem {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  height: 36px;
+  font-size: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.fontItem:hover {
+  background-color: #ddd;
+}
+
+.search-results {
+  overflow: auto;
+}

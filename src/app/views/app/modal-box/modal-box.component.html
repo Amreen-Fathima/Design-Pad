@@ -1,0 +1,180 @@
+<div class="position-absolute model-container">
+  <div
+    class="admin-upload-template model-box"
+    *ngIf="ds.isUploadTemplate && authService?.user"
+  >
+    <div
+      *ngIf="
+        ds.selectedCategoryIndex == null || ds.selectedTemplateIndex == null;
+        else editTemplate
+      "
+      class="w-100"
+      style="
+        background-color: cornflowerblue;
+        text-align: center;
+        font-size: 24px;
+        padding: 20px 0;
+        font-weight: 500;
+        color: white;
+      "
+    >
+      Save Template
+    </div>
+    <ng-template #editTemplate>
+      <div
+        class="w-100"
+        style="
+          background-color: cornflowerblue;
+          text-align: center;
+          font-size: 24px;
+          padding: 20px 0;
+          font-weight: 500;
+          color: white;
+        "
+      >
+        Update Template
+      </div>
+    </ng-template>
+    <div
+      class="
+        d-flex
+        justify-content-center
+        item-contents-center
+        position-relative
+      "
+    >
+      <div [ngStyle]="{ opacity: ds.isUploading ? 0 : 1 }">
+        <div class="d-flex flex-column name-input" style="padding: 20px">
+          <div
+            style="color: red; font-size: 14px; opacity: 0"
+            class="alert-msg"
+          >
+            Please fill out all fields!
+          </div>
+          <input
+            type="text"
+            class="category-value category-name"
+            placeholder="Category Name"
+            style="margin-bottom: 20px"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+            [formControl]="control"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let category of filteredCategorys | async"
+              [value]="category"
+            >
+              {{ category }}
+            </mat-option>
+          </mat-autocomplete>
+          <input
+            style="margin-bottom: 20px"
+            type="text"
+            class="template-value template-name"
+            placeholder="Template Name"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          />
+          <ng-select
+            class="teamplate-tag"
+            [addTag]="true"
+            [multiple]="true"
+            [selectOnTab]="true"
+            [isOpen]="false"
+            [(ngModel)]="ds.selectedTemplateTagItems"
+            placeholder="Tags"
+            (change)="onTemplateTagChange($event)"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          >
+            >
+          </ng-select>
+        </div>
+        <div class="model-button-container">
+          <button
+            *ngIf="
+              ds.selectedCategoryIndex == null ||
+                ds.selectedTemplateIndex == null;
+              else updateTemplateButton
+            "
+            mat-button
+            class="button-style"
+            (click)="uploadTemplate()"
+          >
+            Save
+          </button>
+          <ng-template #updateTemplateButton>
+            <button mat-button class="button-style" (click)="uploadTemplate()">
+              Update
+            </button>
+          </ng-template>
+          <button mat-button class="button-style" (click)="closeTheModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div
+        [ngStyle]="{ opacity: ds.isUploading ? 1 : 0 }"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        "
+      >
+        <mat-spinner [strokeWidth]="2" [diameter]="50"></mat-spinner>
+      </div>
+    </div>
+  </div>
+  <div class="model-box" *ngIf="!authService?.user">
+    <div
+      class="w-100"
+      style="font-size: 20px; padding: 20px; font-weight: bold"
+    >
+      Require login
+    </div>
+    <div style="padding: 20px">
+      Click the below button to redirect the Sign-in page.
+    </div>
+    <div class="model-button-container">
+      <button
+        mat-button
+        class="button-style"
+        (click)="this.router.navigate(['/user/login'])"
+      >
+        Redirect
+      </button>
+      <button mat-button class="button-style" (click)="closeTheModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+  <div *ngIf="ds.isRemoveTemplate">
+    <div class="model-box">
+      <div
+        class="w-100"
+        style="font-size: 20px; padding: 20px; font-weight: bold"
+      >
+        Remove
+      </div>
+      <div style="padding: 20px">
+        This template will be remove from
+        <strong>{{
+          this.ds.selectedTemplate.design.category.categoryType.title
+        }}</strong>
+        category.
+      </div>
+      <div class="model-button-container">
+        <button mat-button class="button-style" (click)="removeTemplate()">
+          Ok
+        </button>
+        <button mat-button class="button-style" (click)="closeTheModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

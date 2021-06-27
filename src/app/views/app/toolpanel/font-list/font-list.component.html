@@ -1,0 +1,47 @@
+<ng-select
+  id="searchFontInput"
+  style="margin: 10px 5px"
+  bindLabel="name"
+  [placeholder]="'Search'"
+  [isOpen]="false"
+  (clear)="onClear()"
+  (search)="onSearch($event)"
+  (focus)="this.ds.isOnInput = true"
+  (blur)="this.ds.isOnInput = false"
+>
+</ng-select>
+
+<div class="scrollPanel" style="height: 93%">
+  <div
+    #perfectScroll
+    class="search-results"
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    [scrollWindow]="false"
+    (scrolled)="onScrollDown($event)"
+    (scrolledUp)="onUp($event)"
+    *ngIf="array"
+    style="height: 100%"
+  >
+    <div #scrollTop></div>
+    <ng-container *ngFor="let font of array; let i = index">
+      <div class="fontItem" [ngStyle]="{ fontFamily: font.family }" (click)="checkList(i, font.family)">
+        <span>{{ font.family }}</span>
+        <!-- <mat-icon id="icon-{{ i }}" style="display: none">done</mat-icon> -->
+        <svg
+          id="icon-{{ i }}"
+          [ngStyle]="{ display: font.family == ds.previousSelectedFontItemFamily ? 'block' : 'none' }"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" />
+        </svg>
+      </div>
+    </ng-container>
+  </div>
+</div>

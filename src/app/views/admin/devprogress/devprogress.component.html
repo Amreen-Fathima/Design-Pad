@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      <h1>Milestones</h1>
+
+      <mat-accordion>
+        <mat-expansion-panel
+          hideToggle
+          *ngFor="let milestone of milestones; let mId = index"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{ milestone.description }} </mat-panel-title>
+            <mat-panel-description
+              ><span
+                >Estimated hours: {{ milestone.totalHours }}hr</span
+              ></mat-panel-description
+            >
+          </mat-expansion-panel-header>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>status</th>
+                <th>No</th>
+                <th>Task Title</th>
+                <th>hrs</th>
+                <th>Note</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of milestone.items; let itemId = index">
+                <td><span *ngIf="item.isDone">✅</span></td>
+                <td>
+                  {{ itemId + 1 }}
+                </td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.hours }}</td>
+                <td>{{ item.note }}</td>
+                <td>{{ item.date | date: "short" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+
+    <div class="col-sm-6">
+      <h1>Bug Report</h1>
+
+      <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let report of reports">
+          <mat-expansion-panel-header>
+            <mat-panel-title> {{ report.description }} </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>status</th>
+                <th>No</th>
+                <th>Title</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bug of report.bugs; let i = index">
+                <td><span *ngIf="bug.isDone">✅</span></td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ bug.title }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>

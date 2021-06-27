@@ -1,0 +1,89 @@
+<div style="display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between">
+  <div class="button" (click)="togglePlayButton()">
+    <ng-container *ngIf="this.media.isPlayMusic">
+      <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.248 4.212l11.05 6.574c.694.412.91 1.29.483 1.961-.121.19-.287.35-.483.467l-11.05 6.574c-.694.413-1.602.204-2.03-.467A1.39 1.39 0 0 1 6 18.574V5.426C6 4.638 6.66 4 7.475 4c.273 0 .54.073.773.212z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </ng-container>
+    <ng-container *ngIf="!this.media.isPlayMusic">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <rect x="7" y="5" width="3" height="14" rx="1.5" fill="currentColor"></rect>
+        <rect x="14" y="5" width="3" height="14" rx="1.5" fill="currentColor"></rect>
+      </svg>
+    </ng-container>
+  </div>
+  <div id="progress_bar_box" style="width: 85%; height: 4px" (click)="setProgressPosition($event)">
+    <div id="progress_bar"></div>
+    <div id="musicProgress"></div>
+  </div>
+  <div style="cursor: default">{{ this.media.convertDuration(this.media.selectedMusic.duration) }}</div>
+
+  <div class="button" (click)="controlVolume()">
+    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M12.5 5.102L8.778 8.35a2.5 2.5 0 0 1-1.643.616H4.5v6.065h2.632a2.5 2.5 0 0 1 1.644.617l3.724 3.25V5.102zM14 19.998c0 .858-1.01 1.318-1.658.753L7.79 16.778a1 1 0 0 0-.658-.247H4a1 1 0 0 1-1-1V8.466a1 1 0 0 1 1-1h3.135a1 1 0 0 0 .657-.246l4.55-3.971C12.99 2.684 14 3.143 14 4.002v15.996zM15.25 7a.75.75 0 0 1 .75-.75 5.75 5.75 0 0 1 0 11.5.75.75 0 0 1 0-1.5 4.25 4.25 0 0 0 0-8.5.75.75 0 0 1-.75-.75zM16 9.25a.75.75 0 0 0 0 1.5 1.25 1.25 0 1 1 0 2.5.75.75 0 0 0 0 1.5 2.75 2.75 0 1 0 0-5.5z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  </div>
+  <div id="soundContent" [ngStyle]="{ display: this.media.isSoundContent ? 'block' : 'none' }">
+    <div Style="display: flex; align-items: center; justify-content: space-around; width: 350px;">
+      <div
+        class="button"
+        [ngStyle]="{ background: this.media.isMute ? 'rgba(57, 76, 96, 0.15)' : '' }"
+        (click)="this.media.isMute = !this.media.isMute"
+      >
+        <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <mask id="_560963979__a" fill="#fff">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M15.5 5.08l-3.742 3.171a2.5 2.5 0 0 1-.243.182L15.5 12.4V5.08zm1.5 8.814V4.002a1 1 0 0 0-1.646-.763l-4.566 3.868a1 1 0 0 1-.398.206L6.53 3.468a.75.75 0 1 0-1.06 1.063l14 13.94a.75.75 0 1 0 1.06-1.063L17 13.894zM6.293 7.637l1.208 1.207H7.5v5.8h2.642a2.5 2.5 0 0 1 1.616.593l3.742 3.17v-1.564l1.5 1.5v1.143a1 1 0 0 1-1.646.763l-4.566-3.868a1 1 0 0 0-.646-.237H7a1 1 0 0 1-1-1v-6.8c0-.276.112-.526.293-.707z"
+            ></path>
+          </mask>
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M15.5 5.08l-3.742 3.171a2.5 2.5 0 0 1-.243.182L15.5 12.4V5.08zm1.5 8.814V4.002a1 1 0 0 0-1.646-.763l-4.566 3.868a1 1 0 0 1-.398.206L6.53 3.468a.75.75 0 1 0-1.06 1.063l14 13.94a.75.75 0 1 0 1.06-1.063L17 13.894zM6.293 7.637l1.208 1.207H7.5v5.8h2.642a2.5 2.5 0 0 1 1.616.593l3.742 3.17v-1.564l1.5 1.5v1.143a1 1 0 0 1-1.646.763l-4.566-3.868a1 1 0 0 0-.646-.237H7a1 1 0 0 1-1-1v-6.8c0-.276.112-.526.293-.707z"
+            fill="currentColor"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            mask="url(#_560963979__a)"
+          ></path>
+        </svg>
+      </div>
+      <mat-slider
+        class="soundSlider"
+        style="min-width: 220px"
+        [max]="100"
+        [min]="0"
+        step="1"
+        [(ngModel)]="this.media.isMute ? 0 : this.media.volume"
+        (input)="changeSlide($event)"
+      ></mat-slider>
+      <input
+        type="number"
+        (click)="this.ds.isOnInput = true"
+        [(ngModel)]="this.media.isMute ? 0 : this.media.volume"
+        (change)="inputVolumeValue($event)"
+      />
+    </div>
+  </div>
+  <div class="button" (click)="deleteMusic()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <path
+        fill="currentColor"
+        d="M8 5a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3h4.25a.75.75 0 1 1 0 1.5H19V18a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6.5H3.75a.75.75 0 0 1 0-1.5H8zM6.5 6.5V18c0 .83.67 1.5 1.5 1.5h8c.83 0 1.5-.67 1.5-1.5V6.5h-11zm3-1.5h5c0-.83-.67-1.5-1.5-1.5h-2c-.83 0-1.5.67-1.5 1.5zm-.25 4h1.5v8h-1.5V9zm4 0h1.5v8h-1.5V9z"
+      ></path>
+    </svg>
+  </div>
+</div>

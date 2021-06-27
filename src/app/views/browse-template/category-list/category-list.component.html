@@ -1,0 +1,83 @@
+<div class="w-100">
+  <div class="header d-flex flex-column align-items-center">
+    <div class="position-relative" style="width: 40%; margin-bottom: 0.5rem">
+      <input
+        class="w-100 home-category-search"
+        type="text"
+        placeholder="Search"
+        [(ngModel)]="tags"
+        (keyup)="searchAdminTemplate($event)"
+      />
+      <i class="bi bi-search position-absolute" style="left: 1rem"></i>
+      <i
+        class="bi bi-x"
+        *ngIf="tags"
+        (click)="clearKeyword()"
+        style="right: 1rem; font-size: 1.4rem; cursor: pointer"
+      ></i>
+    </div>
+    <div style="font-size: 0.9rem; color: white">
+      Digital Tools Extraordinary Business Results
+    </div>
+  </div>
+  <div *ngIf="!keyword; else filter" class="w-100 category-list">
+    <button
+      class="button-style"
+      style="padding: 0.5rem 1.5rem; border-radius: 5rem"
+    >
+      Template
+    </button>
+    <div class="list-container w-100" style="padding: 1rem 0.5rem">
+      <ng-container
+        *ngFor="let category of ds.adminAllTemplates; let i = index"
+      >
+        <div class="category-title d-flex justify-content-between">
+          <div style="font-weight: bold; cursor: default">
+            {{ category.docId }}
+          </div>
+          <div style="font-size: 0.8rem; cursor: pointer" (click)="viewMore(i)">
+            View More
+          </div>
+        </div>
+        <div class="template-thumbnails w-100 position-relative">
+          <ng-container
+            *ngFor="let template of category['templates']; let j = index"
+          >
+            <div
+              class="template position-relative"
+              (click)="navigateToCategory(i, j)"
+              *ngIf="j < 5"
+            >
+              <img
+                class="position-absolute w-100"
+                style="top: 50%; transform: translate(0, -50%)"
+                [lazyLoad]="template.design.pages[0].thumbnail"
+              />
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <ng-template #filter>
+    <div style="padding: 2rem 10rem; font-size: 15px">
+      <div style="padding: 1rem 0; font-weight: bold; cursor: default">
+        {{ filteredTemplate[0].design.category.categoryType.title }}
+      </div>
+      <div class="selectedTemplate">
+        <ng-container *ngFor="let template of filteredTemplate">
+          <div
+            class="position-relative template"
+            (click)="setFilteredTemplate(template)"
+          >
+            <img
+              class="position-absolute w-100"
+              style="top: 50%; transform: translate(0, -50%)"
+              [lazyLoad]="template.design.pages[0].thumbnail"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+</div>

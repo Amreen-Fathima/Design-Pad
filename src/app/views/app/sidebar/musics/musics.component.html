@@ -1,0 +1,97 @@
+<div style="height: 100%">
+  <ng-select
+    id="searchFontInput"
+    style="margin: 10px 20px"
+    bindLabel="name"
+    [placeholder]="'Search'"
+    [isOpen]="false"
+    (focus)="this.ds.isOnInput = true"
+    (blur)="this.ds.isOnInput = false"
+  >
+  </ng-select>
+
+  <div
+    #perfectScroll
+    class="search-results"
+    infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"
+    [infiniteScrollUpDistance]="scrollUpDistance"
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown($event)"
+    [scrollWindow]="false"
+    *ngIf="array"
+    style="height: 92%; overflow: auto; padding: 0px 20px"
+  >
+    <div *ngIf="array != []">
+      <ng-container *ngFor="let music of array; let index = i">
+        <div
+          class="musicContent"
+          style="
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 72px;
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+          "
+          (click)="addMusic(music)"
+        >
+          <div style="position: relative; width: 56px; height: 56px">
+            <div
+              class="playIcon"
+              style="
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                display: none;
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="white"
+                width="24px"
+                height="24px"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+            <img
+              [src]="
+                music.thumbnail != ''
+                  ? music.thumbnail
+                  : '../../../../../assets/img/icons/music.png'
+              "
+              alt=""
+              style="width: 100%; height: 100%; border-radius: 5px"
+            />
+          </div>
+          <div style="width: 77%; height: 100%">
+            <p style="margin: 0; font-size: 15px">{{ music.name }}</p>
+            <div style="font-size: 12px; color: hsla(0, 0%, 0%, 0.65)">
+              <p
+                style="
+                  width: 100%;
+                  margin: 0;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
+                {{ getSubscript(music) }}
+              </p>
+              <p style="margin: 0">
+                {{ media.convertDuration(music.duration) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

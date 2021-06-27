@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" direction="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Design Pad</title>
+    <base href="/" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="assets/fonts/iconsmind-s/css/iconsminds.css" />
+    <link
+      rel="stylesheet"
+      href="assets/fonts/simple-line-icons/css/simple-line-icons.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Alata"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VFMRT7B5L0"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-VFMRT7B5L0");
+    </script>
+  </head>
+  <style>
+    /* @import url("https://fonts.googleapis.com/css?family=PT%20Serif&display=swap");
+
+    body {
+      font-family: "PT Serif", sans-serif;
+    } */
+
+    @media only screen and (max-width: 575px) {
+      body {
+        padding: 0 !important;
+      }
+    }
+
+    .loopVideo {
+      position: absolute;
+      box-sizing: border-box;
+      padding: 3px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    #dimension .ng-select-container {
+      min-height: 26px;
+    }
+
+    #dimension.ng-select-single .ng-select-container {
+      height: 30px;
+      border: 1px solid #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .mat-tab-label,
+    .mat-tab-link {
+      color: white !important;
+    }
+
+    #upload .mat-tab-label,
+    #upload .mat-tab-link {
+      color: white !important;
+      min-width: 110px !important;
+    }
+
+    .mat-progress-bar-fill::after {
+      background-color: #145388;
+    }
+
+    .mat-tab-label.mat-tab-disabled {
+      cursor: not-allowed !important;
+    }
+
+    .mat-tab-body-wrapper {
+      height: 100%;
+    }
+
+    .mat-tab-label-active {
+      opacity: 1;
+    }
+
+    #upload .mat-ink-bar {
+      width: 110px !important;
+    }
+
+    .button-style {
+      background-color: #3834fb !important;
+      color: white;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      border: none;
+    }
+
+    .select-search {
+      width: 100%;
+    }
+
+    .logo-icon {
+      cursor: pointer;
+      width: 120px;
+      height: 55px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon img {
+      height: 120px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .teamplate-tag.ng-select .ng-select-container {
+      border: 1px solid rgb(133, 133, 133);
+    }
+
+    .teamplate-tag.ng-select.ng-select-focused .ng-select-container {
+      border: 1px solid rgb(133, 133, 133) !important;
+    }
+    .ng-select.ng-select-multiple
+      .ng-select-container
+      .ng-value-container
+      .ng-placeholder {
+      top: 50%;
+      transform: translate(0%, -50%);
+      padding: 0;
+    }
+
+    .ps__thumb-x,
+    .ps__thumb-y {
+      background-color: #aaaaaa !important;
+    }
+
+    #dimension
+      .ng-dropdown-panel
+      .ng-dropdown-panel-items
+      .ng-option.ng-option-marked {
+      background-color: #3834fb;
+    }
+
+    #dimension .ng-select.ng-select-opened .ng-select-container {
+      border-color: #3834fb !important;
+    }
+
+    #dimension
+      .ng-dropdown-panel
+      .ng-dropdown-panel-items
+      .ng-option.ng-option-selected,
+    .ng-dropdown-panel
+      .ng-dropdown-panel-items
+      .ng-option.ng-option-selected.ng-option-marked {
+      background-color: #3834fb;
+      color: #fff;
+    }
+
+    #dimension .ng-dropdown-panel.ng-select-bottom {
+      border-color: #3834fb;
+      border-top-color: white;
+    }
+
+    #dimension .ng-select.ng-select-opened .ng-select-container {
+      border-color: #3834fb !important;
+    }
+
+    #dimension.ng-select-opened .ng-appearance-outline {
+      border-color: #3834fb !important;
+    }
+  </style>
+  <body class="rounded mat-typography">
+    <app-root></app-root>
+  </body>
+</html>

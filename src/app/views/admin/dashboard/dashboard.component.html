@@ -1,0 +1,33 @@
+<div class="card" style="padding: 20px; display: flex">
+  <div style="display: flex; justify-content: space-between">
+    <h1>Design Pad Admin</h1>
+    <button class="btn btn-secondary" style="margin: 10px" (click)="goHome()">GO BACK HOME</button>
+  </div>
+
+  <ul class="nav nav-pills">
+    <li class="nav-item" *ngFor="let tab of tabs; let i = index">
+      <a class="nav-link c-pointer" [ngClass]="{ active: theTabId == i, disabled: tab.disabled }" (click)="theTabId = i">{{ tab.title }}</a>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="theTabId == 0">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-photos></app-photos>
+  </div>
+</div>
+<div *ngIf="theTabId == 1">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-elements></app-elements>
+  </div>
+</div>
+<div *ngIf="theTabId == 2">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-musics></app-musics>
+  </div>
+</div>
+<div *ngIf="theTabId == 3">
+  <div class="container-fluid" style="margin-top: 20px; height: calc(100vh - 200px)">
+    <app-videos></app-videos>
+  </div>
+</div>

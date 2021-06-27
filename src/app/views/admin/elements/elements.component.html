@@ -1,0 +1,247 @@
+<div class="row">
+  <div class="col-sm-3">
+    <div style="display: flex">
+      <button
+        class="btn btn-outline-primary"
+        style="margin: 1rem; flex: 1; height: 300px"
+        (click)="fileInput.click()"
+        dropzone
+        (dropped)="onDrop($event)"
+      >
+        Upload from device <br />
+        Drag & Drop multiple files
+      </button>
+      <input
+        #fileInput
+        style="display: none"
+        type="file"
+        accept="image/*"
+        multiple
+        (change)="onDrop($event.target.files)"
+      />
+    </div>
+
+    <perfect-scrollbar
+      [config]="{ suppressScrollX: true }"
+      style="height: calc(100vh - 500px)"
+    >
+      <div *ngFor="let file of files">
+        <upload-task
+          [categoryName]="categoryName"
+          [tags]="tags"
+          [file]="file"
+          taskType="admin_uploads"
+        ></upload-task>
+      </div>
+    </perfect-scrollbar>
+  </div>
+  <div class="col-sm-9">
+    <div class="card">
+      <div>
+        <button *ngIf="isLoading" class="show-spinner btn btn-multiple-state">
+          <div class="spinner d-inline-block">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        </button>
+
+        <input
+          type="text"
+          class="form-control search-box d-inline-block"
+          placeholder="search by tag"
+          (keyup)="onSearchKeyUp($event)"
+        />
+
+        <button class="btn btn-outline-danger" (click)="removeSelected()">
+          Remove Selected
+        </button>
+      </div>
+
+      <perfect-scrollbar
+        [config]="{ suppressScrollX: true }"
+        style="height: calc(100vh - 300px)"
+      >
+        <table class="table table-bordered table-responsive-md table-striped">
+          <tr>
+            <th>
+              <label class="custom-control custom-checkbox mb-0 d-inline-block">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [checked]="selectAllState === 'checked'"
+                  [indeterminate]="selectAllState === 'indeterminate'"
+                  (change)="selectAllChange($event)"
+                />
+                <span class="custom-control-label">&nbsp;</span>
+              </label>
+            </th>
+            <th class="text-center">Image</th>
+            <th class="text-center" width="700">Category & Tags</th>
+            <th class="text-center">Timestamp</th>
+          </tr>
+          <tr
+            *ngFor="
+              let assetElement of assetService.assetElements;
+              let i = index
+            "
+          >
+            <td>
+              <label
+                class="
+                  custom-control custom-checkbox
+                  mb-1
+                  align-self-center
+                  pr-4
+                "
+              >
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  [id]="'customCheck-' + i + '-' + j"
+                  [checked]="isSelected(assetElement)"
+                  (change)="onSelect(assetElement, i, j)"
+                />
+                <label
+                  class="custom-control-label"
+                  [for]="'customCheck-' + i + '-' + j"
+                ></label>
+              </label>
+            </td>
+            <td class="text-center">
+              <img
+                [src]="assetElement.thumbnail"
+                style="margin: 5px; cursor: pointer"
+              />
+              <input
+                #musicThumbnailInput
+                style="display: none"
+                type="file"
+                multiple
+              />
+            </td>
+
+            <td class="position-relative">
+              <div class="input-group">
+                <ng-select
+                  [items]="[]"
+                  [isOpen]="false"
+                  [addTag]="addTagFn"
+                  (add)="onAddRemoveTag(assetElement)"
+                  (remove)="onAddRemoveTag(assetElement)"
+                  [hideSelected]="true"
+                  placeholder="Category"
+                  multiple="true"
+                  bindLabel="name"
+                  [(ngModel)]="assetElement.category"
+                >
+                </ng-select>
+                <ng-select
+                  [items]="[]"
+                  [isOpen]="false"
+                  [addTag]="addTagFn"
+                  (add)="onAddRemoveTag(assetElement)"
+                  (remove)="onAddRemoveTag(assetElement)"
+                  [hideSelected]="true"
+                  placeholder="Tags"
+                  multiple="true"
+                  bindLabel="name"
+                  [(ngModel)]="assetElement.tags"
+                >
+                </ng-select>
+              </div>
+            </td>
+
+            <td class="text-center">
+              <span>{{
+                assetElement.timestamp | date: "yyyy/MM/dd HH:mm:ss"
+              }}</span>
+            </td>
+          </tr>
+        </table>
+      </perfect-scrollbar>
+    </div>
+  </div>
+</div>
+<div class="position-absolute element-model-container">
+  <div class="admin-upload-template model-box">
+    <div
+      class="w-100"
+      style="
+        background-color: cornflowerblue;
+        text-align: center;
+        font-size: 24px;
+        padding: 20px 0;
+        font-weight: 500;
+        color: white;
+      "
+    >
+      Upload Element
+    </div>
+    <div
+      class="
+        d-flex
+        justify-content-center
+        item-contents-center
+        position-relative
+      "
+    >
+      <div>
+        <div class="d-flex flex-column name-input" style="padding: 20px">
+          <div
+            style="color: red; font-size: 14px; opacity: 0"
+            class="alert-element-msg"
+          >
+            Please fill out the category name!
+          </div>
+          <ng-select
+            class="teamplate-tag"
+            style="margin-bottom: 20px"
+            [addTag]="true"
+            [multiple]="true"
+            [selectOnTab]="true"
+            [isOpen]="false"
+            [(ngModel)]="categoryName"
+            placeholder="Category"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          >
+          </ng-select>
+          <ng-select
+            class="teamplate-tag"
+            [addTag]="true"
+            [multiple]="true"
+            [selectOnTab]="true"
+            [isOpen]="false"
+            [(ngModel)]="tags"
+            placeholder="Tags"
+            (focus)="this.ds.isOnInput = true"
+            (focusout)="this.ds.isOnInput = false"
+          >
+          </ng-select>
+        </div>
+        <div class="model-button-container">
+          <button mat-button class="button-style" (click)="uploadElement()">
+            Upload
+          </button>
+
+          <button mat-button class="button-style" (click)="closeTheModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div
+        [ngStyle]="{ opacity: ds.isUploading ? 1 : 0 }"
+        style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        "
+      >
+        <mat-spinner [strokeWidth]="2" [diameter]="50"></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>

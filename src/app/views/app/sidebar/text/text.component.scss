@@ -1,0 +1,18 @@
+.search-box {
+  border-radius: 30px;
+  margin: 5px 10px;
+  width: calc(100% - 20px);
+}
+
+.textStyle {
+  width: 100%;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.07);
+  margin: 8px 0px;
+  padding: 18px 15px;
+  border-radius: 4px;
+}
+
+.textStyle:hover {
+  background: rgba(0, 0, 0, 0.15);
+}

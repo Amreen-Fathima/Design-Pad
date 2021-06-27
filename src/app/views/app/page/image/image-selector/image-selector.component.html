@@ -1,0 +1,11 @@
+<div
+  #imgSelector
+  [id]="'ImgSelector-' + item.pageId + '-' + item.itemId"
+  class="target"
+  [ngStyle]="styleItemPosition(item)"
+  [attr.pageId]="item.pageId"
+  [attr.itemId]="item.itemId"
+  [attr.itemType]="item.type"
+  (dblclick)="ds.startImageCrop()"
+></div>
+<!-- (mousemove)="onMouseMoveItem($event, item)" -->

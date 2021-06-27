@@ -1,0 +1,76 @@
+#dimensionContent {
+  position: fixed;
+  top: 120px;
+  right: 34px;
+  padding: 15px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 1000;
+  background-color: white;
+
+  box-shadow: 0 0 0 1px rgb(64 87 109 / 7%), 0 2px 12px rgb(53 71 90 / 20%);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.hover:hover {
+  background-color: rgba(64, 87, 109, 0.07);
+}
+
+.center {
+  display: flex;
+  align-items: center;
+}
+
+.placeholder {
+  position: relative;
+}
+
+.placeholder input {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 7px 23px 7px 7px;
+  font-weight: 500;
+  border: none;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+.placeholder::after {
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translate(0, -50%);
+  content: attr(data-placeholder);
+  pointer-events: none;
+  opacity: 0.6;
+  font-size: 12px;
+}
+
+#zoomButton {
+  padding: 6px 40px 6px 10px;
+  font-weight: 500;
+  border: none;
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+#zoomButton i {
+  color: #d7d7d7;
+  right: 10px;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 12px;
+  height: 18px;
+}
+
+.dropDown ul {
+}

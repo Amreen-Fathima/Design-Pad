@@ -1,0 +1,419 @@
+<div>
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-none" class="effectSelector d-flex flex-column" (click)="setTextEffect('none')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/none.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">None</span>
+    </div>
+    <div id="selector-shadow" class="effectSelector d-flex flex-column" (click)="setTextEffect('shadow')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/shadow.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Shadow</span>
+    </div>
+    <div id="selector-lift" class="effectSelector d-flex flex-column" (click)="setTextEffect('lift')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/lift.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Lift</span>
+    </div>
+  </div>
+
+  <!-- Shadow -->
+  <div id="shadow" class="effectContent" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="offset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="offset"
+        (input)="onInputOffsetChange($event)"
+        [formControl]="shadowOffsetControl"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [max]="180"
+        [min]="-180"
+        [step]="step"
+        [(ngModel)]="angle"
+        (input)="onInputDirectionChange($event)"
+        [formControl]="shadowDirectionControl"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Blur</span>
+        <input type="number" [(ngModel)]="blur" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [min]="0"
+        [max]="100"
+        [step]="step"
+        [(ngModel)]="blur"
+        (input)="onInputBlurChange($event)"
+        [formControl]="shadowBlurControl"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Transparency</span>
+        <input type="number" [(ngModel)]="opacity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="opacity"
+        (input)="onInputOpacityChange($event)"
+        [formControl]="shadowTransparencyControl"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputShadowColorChange()"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Lift -->
+  <div class="effectContent" id="lift" style="display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
+        <input type="number" [(ngModel)]="intensity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="liftIntensityControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="intensity"
+        (input)="onInputLiftChange($event)"
+      >
+      </mat-slider>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-hallow" class="effectSelector d-flex flex-column" (click)="setTextEffect('hallow')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/hollow.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Hollow</span>
+    </div>
+    <div id="selector-splice" class="effectSelector d-flex flex-column" (click)="setTextEffect('splice')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/splice.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Splice</span>
+    </div>
+    <div id="selector-echo" class="effectSelector d-flex flex-column" (click)="setTextEffect('echo')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/echo.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Echo</span>
+    </div>
+  </div>
+
+  <!-- Hollow -->
+  <div class="effectContent" id="hallow" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
+        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="hollowThicknessControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="thickness"
+        (input)="onInputThicknessChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="outlineColor"
+          (change)="saveTheData()"
+          (input)="onInputHollowColorChange()"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Splice -->
+  <div class="effectContent" id="splice" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="spliceOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="spliceOffsetControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="spliceOffset"
+        (input)="onSpliceOffsetChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="spliceDirectionControl"
+        [max]="180"
+        [min]="-180"
+        [step]="step"
+        [(ngModel)]="angle"
+        (input)="onInputDirectionChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
+        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="spliceThicknessControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="thickness"
+        (input)="onInputThicknessChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputShadowColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="outlineColor"
+          (change)="saveTheData()"
+          (input)="onInputHollowColorChange()"
+          [value]="outlineColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- echo -->
+  <div class="effectContent" id="echo" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="echoOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="echoOffsetControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="echoOffset"
+        (input)="onInputMultiOffsetChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="echoDirectionControl"
+        [max]="180"
+        [min]="-180"
+        [step]="step"
+        [(ngModel)]="angle"
+        (input)="onInputMultiDirectionChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputMultiShadowColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-around mt-1">
+    <div id="selector-glitch" class="effectSelector d-flex flex-column" (click)="setTextEffect('glitch')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/glitch.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Glitch</span>
+    </div>
+    <div id="selector-neon" class="effectSelector d-flex flex-column" (click)="setTextEffect('neon')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/neon.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Neon</span>
+    </div>
+    <div id="selector-curve" class="effectSelector d-flex flex-column" (click)="setTextEffect('curve')">
+      <img class="text-effect-items" src="../../../../../assets/img/text-effects/curve.jpg" draggable="false" />
+      <span class="mt-1" style="text-align: center">Curve</span>
+    </div>
+  </div>
+
+  <!-- glitch; -->
+  <div class="effectContent" id="glitch" style="padding: 10px; display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
+        <input type="number" [(ngModel)]="glitchOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="glitchOffsetControl"
+        [max]="100"
+        [min]="0"
+        [step]="step"
+        [(ngModel)]="glitchOffset"
+        (input)="onInputGlitchOffsetChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
+        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="glitchDirectionControl"
+        [max]="180"
+        [min]="-180"
+        [step]="step"
+        [(ngModel)]="angle"
+        (input)="onInputGlitchDirectionChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <div style="display: flex">
+        <div
+          style="width: 30px; height: 30px; border-radius: 4px; display: flex; margin-right: 10px; cursor: pointer"
+          (click)="onInputGlitchChange_A()"
+        >
+          <div style="border-radius: 4px 0px 0px 4px; width: 15px; height: 30px; background-color: rgb(0, 255, 255)"></div>
+          <div style="border-radius: 0px 4px 4px 0px; width: 15px; height: 30px; background-color: rgb(255, 0, 255)"></div>
+        </div>
+        <div style="width: 30px; height: 30px; border-radius: 4px; display: flex; cursor: pointer">
+          <div
+            style="border-radius: 4px 0px 0px 4px; width: 15px; height: 30px; background-color: rgb(0, 255, 255)"
+            (click)="onInputGlitchChange_B()"
+          ></div>
+          <div style="border-radius: 0px 4px 4px 0px; width: 15px; height: 30px; background-color: rgb(255, 0, 0)"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Neon -->
+  <div class="effectContent" id="neon" style="display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
+        <input type="number" [(ngModel)]="neonValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="neonIntensityControl"
+        [max]="100"
+        [min]="1"
+        [step]="step"
+        [(ngModel)]="neonValue"
+        (input)="onInputNeonChange($event)"
+      >
+      </mat-slider>
+    </div>
+    <div class="d-flex justify-content-between" style="padding: 8px">
+      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <div id="colorPicker" style="margin-left: auto">
+        <input
+          type="color"
+          [(ngModel)]="shadowColor"
+          (change)="saveTheData()"
+          (input)="onInputNeonColorChange()"
+          [value]="shadowColor"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Curve -->
+  <div class="effectContent" id="curve" style="display: none">
+    <div>
+      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
+        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
+        <input type="number" [(ngModel)]="curveValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      </div>
+      <mat-slider
+        class="shadowSlider"
+        [formControl]="curveIntensityControl"
+        [max]="100"
+        [min]="-100"
+        [step]="step"
+        [(ngModel)]="curveValue"
+        (input)="onInputCurveChange($event)"
+      >
+      </mat-slider>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<div *ngIf="file.type != 'image/svg+xml' && file.type.slice(0, 5) == 'image'">
+  <div *ngIf="!upload.downloadURL" style="margin: 1rem">
+    <p>{{ file.name }}</p>
+    <img [src]="upload.thumbnail" height="100" />
+
+    <div *ngIf="upload.percentage | async as pct">
+      <progress class="progress is-info" [value]="pct" max="100"></progress>
+
+      {{ pct | number }}%
+    </div>
+
+    <div *ngIf="upload.snapshot | async as snap">
+      <button (click)="upload.task.pause()" class="btn btn-warning btn-xs" [disabled]="!isActive(snap)">Pause</button>
+      <button (click)="upload.task.cancel()" class="btn btn-danger btn-xs" [disabled]="!isActive(snap)">Cancel</button>
+      <button (click)="upload.task.resume()" class="btn btn-secondary btn-xs" [disabled]="!(snap?.state === 'paused')">Resume</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="file.type == 'audio/mpeg'">
+  <div *ngIf="!musicUpload.downloadURL" style="margin: 1rem">
+    <p>{{ file.name }}</p>
+    <img [src]="'../../../../../../assets/img/icons/music.png'" height="100" />
+
+    <div *ngIf="musicUpload.percentage | async as pct">
+      <progress class="progress is-info" [value]="pct" max="100"></progress>
+
+      {{ pct | number }}%
+    </div>
+
+    <div *ngIf="musicUpload.snapshot | async as snap">
+      <button (click)="musicUpload.task.pause()" class="btn btn-warning btn-xs" [disabled]="!isActive(snap)">Pause</button>
+      <button (click)="musicUpload.task.cancel()" class="btn btn-danger btn-xs" [disabled]="!isActive(snap)">Cancel</button>
+      <button (click)="musicUpload.task.resume()" class="btn btn-secondary btn-xs" [disabled]="!(snap?.state === 'paused')">Resume</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="file.type == 'image/svg+xml'">
+  <div *ngIf="!elementUpload.downloadURL" style="margin: 1rem">
+    <p>{{ file.name }}</p>
+    <img [src]="elementUpload.thumbnail" height="100" />
+
+    <div *ngIf="elementUpload.percentage | async as pct">
+      <progress class="progress is-info" [value]="pct" max="100"></progress>
+
+      {{ pct | number }}%
+    </div>
+
+    <div *ngIf="elementUpload.snapshot | async as snap">
+      <button (click)="elementUpload.task.pause()" class="btn btn-warning btn-xs" [disabled]="!isActive(snap)">Pause</button>
+      <button (click)="elementUpload.task.cancel()" class="btn btn-danger btn-xs" [disabled]="!isActive(snap)">Cancel</button>
+      <button (click)="elementUpload.task.resume()" class="btn btn-secondary btn-xs" [disabled]="!(snap?.state === 'paused')">Resume</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="file.type.slice(0, 6) == 'video/'">
+  <div *ngIf="!videoUpload.downloadURL" style="margin: 1rem">
+    <p>{{ file.name }}</p>
+    <img [src]="videoUpload.thumbnail" height="100" />
+
+    <div *ngIf="videoUpload.percentage | async as pct">
+      <progress class="progress is-info" [value]="pct" max="100"></progress>
+
+      {{ pct | number }}%
+    </div>
+
+    <div *ngIf="videoUpload.snapshot | async as snap">
+      <button (click)="videoUpload.task.pause()" class="btn btn-warning btn-xs" [disabled]="!isActive(snap)">Pause</button>
+      <button (click)="videoUpload.task.cancel()" class="btn btn-danger btn-xs" [disabled]="!isActive(snap)">Cancel</button>
+      <button (click)="videoUpload.task.resume()" class="btn btn-secondary btn-xs" [disabled]="!(snap?.state === 'paused')">Resume</button>
+    </div>
+  </div>
+</div>

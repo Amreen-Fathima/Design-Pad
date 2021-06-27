@@ -1,0 +1,73 @@
+<div
+    *ngIf="
+        ds.isStatus(ItemStatus.image_selected) ||
+        ds.isStatus(ItemStatus.image_preset) ||
+        ds.isStatus(ItemStatus.image_filter)
+    "
+>
+    <button
+        mat-button
+        [style.backgroundColor]="ds.isStatus(ItemStatus.image_preset) ? activeColor : ''"
+        (click)="ds.setStatus(ItemStatus.image_preset)"
+    >
+        Presets
+    </button>
+    <button
+        mat-button
+        [style.backgroundColor]="ds.isStatus(ItemStatus.image_filter) ? activeColor : ''"
+        (click)="ds.setStatus(ItemStatus.image_filter)"
+    >
+        Filter
+    </button>
+
+    <button
+        mat-button
+        [style.backgroundColor]="ds.isStatus(ItemStatus.image_crop) ? activeColor : ''"
+        (click)="ds.startImageCrop()"
+    >
+        Crop
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="menuFlip">Flip</button>
+    <mat-menu #menuFlip="matMenu">
+        <button mat-menu-item (click)="ds.flipX()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                    fill="currentColor"
+                    d="M15.97 15.25h-2.72c-5.3 0-9.5-2.15-9.5-4.5s4.2-4.5 9.5-4.5c3.03 0 5.82.7 7.62 1.86a.75.75 0 1 0 .81-1.26c-2.06-1.33-5.13-2.1-8.43-2.1-6.02 0-11 2.55-11 6s4.98 6 11 6h2.8l-2.3 2.3a.75.75 0 1 0 1.07 1.05l2.83-2.82c.68-.69.68-1.8 0-2.48l-2.83-2.83a.75.75 0 0 0-1.06 1.06l2.21 2.22z"
+                ></path>
+            </svg>
+            Flip horizontal
+        </button>
+        <button mat-menu-item (click)="ds.flipY()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                    fill="currentColor"
+                    d="M15.25 8.35v2.4c0 5.3-2.15 9.5-4.5 9.5s-4.5-4.2-4.5-9.5c0-3.03.7-5.82 1.86-7.62a.75.75 0 1 0-1.26-.81c-1.33 2.06-2.1 5.13-2.1 8.43 0 6.02 2.55 11 6 11s6-4.98 6-11V8.27l2.3 2.3A.75.75 0 1 0 20.1 9.5l-2.82-2.83a1.75 1.75 0 0 0-2.48 0L11.97 9.5a.75.75 0 1 0 1.06 1.06l2.22-2.22z"
+                ></path>
+            </svg>
+            Flip vertical
+        </button>
+    </mat-menu>
+</div>
+
+<div *ngIf="ds.isStatus(ItemStatus.image_crop)">
+    <button mat-button (click)="ds.endImageCrop(true)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+                fill="currentColor"
+                d="M4.53 11.9L9 16.38 19.44 5.97a.75.75 0 0 1 1.06 1.06L9.53 17.97c-.3.29-.77.29-1.06 0l-5-5c-.7-.71.35-1.77 1.06-1.07z"
+            ></path>
+        </svg>
+        Done
+    </button>
+    <button mat-button (click)="ds.endImageCrop(false)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+                fill="currentColor"
+                d="M13.06 12.15l5.02-5.03a.75.75 0 1 0-1.06-1.06L12 11.1 6.62 5.7a.75.75 0 1 0-1.06 1.06l5.38 5.38-5.23 5.23a.75.75 0 1 0 1.06 1.06L12 13.2l4.88 4.87a.75.75 0 1 0 1.06-1.06l-4.88-4.87z"
+            ></path>
+        </svg>
+        Cancel
+    </button>
+</div>

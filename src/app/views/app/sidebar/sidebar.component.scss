@@ -1,0 +1,91 @@
+.menu {
+  display: flex;
+  height: 100%;
+  position: relative;
+  padding: 0;
+}
+
+.main-menu {
+  position: relative;
+  height: 100%;
+  background-color: #0e1317;
+  color: white;
+  width: 85px;
+  li {
+    a {
+      display: flex;
+      justify-content: start;
+      color: white;
+      height: auto !important;
+      border-bottom: none;
+      background-color: #0e1317;
+      padding: 6px 0;
+      i {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 7px;
+      }
+    }
+
+    &.active a {
+      color: #0e1317;
+      background-color: #f7f7f7;
+    }
+
+    &.active:after {
+      display: none;
+    }
+  }
+}
+
+.sub-menu {
+  background-color: #f7f7f7;
+  border-left: none;
+  left: 0;
+  border-radius: 0 !important;
+  position: relative;
+  height: 100%;
+}
+
+.sidebar-btn {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  z-index: -1;
+}
+
+.sidebar-btn-container {
+  width: 100%;
+  height: 100%;
+}
+
+.close-btn {
+  width: 30px;
+  height: 120px;
+  clip-path: polygon(0 0, 100% 30%, 100% 70%, 0% 100%);
+  margin-right: -27px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.close-btn-boxShows {
+  position: relative;
+  width: 3px;
+  height: 70px;
+  background: none;
+  box-shadow: 3px 3px 18px rgb(0 0 0 / 80%);
+  display: flex;
+  align-items: center;
+}
+
+.close-btn-boxShows svg {
+  position: absolute;
+  cursor: pointer;
+}

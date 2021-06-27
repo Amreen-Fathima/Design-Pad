@@ -1,0 +1,72 @@
+<div
+  style="z-index: 1000"
+  [ngStyle]="{
+    width: (ds.theDesign.category.size.x * ds.zoomValue) / 100 + 'px'
+  }"
+>
+  Page {{ pageId + 1 }}: {{ page.title }}
+</div>
+<div class="card" [ngStyle]="styleCard()" [tabindex]="0">
+  <div
+    [ngStyle]="styleCardInside()"
+    (mousedown)="onClickPage()"
+    (dragover)="onDragOver($event)"
+    (drop)="onDrop($event)"
+  >
+    <div [ngStyle]="styleLayer()" style="overflow: hidden">
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <ng-container *ngIf="item.type == ItemType.image">
+          <app-image-element [item]="item"></app-image-element>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.text">
+          <app-edit-item
+            [item]="item"
+            [itemId]="itemId"
+            [pageId]="pageId"
+          ></app-edit-item>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.element">
+          <app-svgelement [item]="item"></app-svgelement>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.video">
+          <app-video-element [item]="item"></app-video-element>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div
+      [id]="'page-' + pageId"
+      [ngStyle]="styleLayer()"
+      style="overflow: disable; pointer-events: all"
+    >
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <ng-container *ngIf="item.type == ItemType.image">
+          <app-image-selector [item]="item"></app-image-selector>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.text">
+          <app-text-item
+            [item]="item"
+            [itemId]="itemId"
+            [pageId]="pageId"
+          ></app-text-item>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.element">
+          <app-svgselector [item]="item"></app-svgselector>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.video">
+          <app-video-selector [item]="item"></app-video-selector>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <!-- <div [ngStyle]="styleLayer()" style="overflow: visible; pointer-events: none">
+      <ng-container *ngFor="let item of page.items; let itemId = index">
+        <div *ngIf="item.hovered" [ngStyle]="styleItemPosition(item)" style="border: 1px solid aqua"></div>
+      </ng-container>
+    </div> -->
+  </div>
+  <svg
+    [id]="'baseline-' + pageId"
+    style="width: 100%; height: 100%; z-index: 10000; pointer-events: none"
+  ></svg>
+</div>

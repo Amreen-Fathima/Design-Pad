@@ -1,0 +1,311 @@
+<div class="menu" (click)="menuClicked($event)">
+  <div class="main-menu">
+    <perfect-scrollbar
+      class="scroll"
+      [config]="{ suppressScrollX: true, wheelPropagation: false }"
+    >
+      <ul class="list-unstyled">
+        <li
+          *ngFor="let item of menuItems; let i = index"
+          [ngClass]="{ active: !ds.isToolpanel() && i == theId }"
+        >
+          <a
+            href="javascript:;"
+            (click)="menuItemClicked($event, item, i)"
+            style="font-size: smaller"
+          >
+            <i *ngIf="item.label == 'Templates'">
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="28px"
+                height="28px"
+                viewBox="0 0 144 144"
+                enable-background="new 0 0 144 144"
+                xml:space="preserve"
+                fill="currentColor"
+              >
+                <g>
+                  <g>
+                    <path
+                      d="M109.611,56.188H34.389c-5.927,0-10.746-4.819-10.746-10.746V34.696c0-5.928,4.819-10.746,10.746-10.746
+			h75.222c5.926,0,10.746,4.818,10.746,10.746v10.746C120.357,51.369,115.537,56.188,109.611,56.188z M34.389,34.696v10.746h75.23
+			l-0.008-10.746H34.389z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      d="M66.626,120.665H34.389c-5.927,0-10.746-4.82-10.746-10.746V77.681c0-5.927,4.819-10.746,10.746-10.746
+			h32.237c5.926,0,10.747,4.818,10.747,10.746v32.238C77.373,115.845,72.553,120.665,66.626,120.665z M34.389,77.681v32.238h32.246
+			l-0.009-32.238H34.389z"
+                    />
+                  </g>
+                  <g>
+                    <path
+                      d="M109.611,120.665H98.865c-5.928,0-10.746-4.82-10.746-10.746V77.681c0-5.927,4.818-10.746,10.746-10.746
+			h10.746c5.926,0,10.746,4.818,10.746,10.746v32.238C120.357,115.845,115.537,120.665,109.611,120.665z M98.865,77.681v32.238
+			h10.754l-0.008-32.238H98.865z"
+                    />
+                  </g>
+                </g>
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'My Templates'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-heart"
+                viewBox="0 0 16 16"
+                style="margin: 4px 0px"
+              >
+                <path
+                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+                />
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Uploads'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                style="margin: 4px 0px"
+              >
+                <path
+                  fill="currentColor"
+                  d="M12.75 13.81v7.44a.75.75 0 1 1-1.5 0v-7.4L9.49 15.6a.75.75 0 1 1-1.06-1.06l2.35-2.36c.68-.68 1.8-.68 2.48 0l2.35 2.36a.75.75 0 1 1-1.06 1.06l-1.8-1.8zM9 18v1.5H6.75v-.01A5.63 5.63 0 0 1 5.01 8.66a6 6 0 0 1 11.94-.4 5.63 5.63 0 0 1 .3 11.23v.01H15V18h1.88a4.12 4.12 0 1 0-1.5-7.97A4.51 4.51 0 0 0 11 4.5a4.5 4.5 0 0 0-4.43 5.29 4.13 4.13 0 0 0 .68 8.2V18H9z"
+                ></path>
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Photos'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="21"
+                height="21"
+                fill="currentColor"
+                class="bi bi-images"
+                viewBox="0 0 16 16"
+                style="margin: 4px 0px"
+              >
+                <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                <path
+                  d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"
+                />
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Elements'">
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                width="28px"
+                height="28px"
+                viewBox="0 0 144 144"
+                enable-background="new 0 0 144 144"
+                xml:space="preserve"
+                fill="currentColor"
+              >
+                <g id="Layer_1_1_">
+                  <path
+                    d="M72.615,119.914l47.726-18.18l-26.31-10.023l26.31-10.023l-26.31-10.02l26.31-10.022l-26.31-10.021
+		l26.31-10.021L72.615,23.419L24.889,41.602l26.31,10.021l-26.31,10.021l26.31,10.022l-26.31,10.02l26.31,10.023l-26.31,10.023
+		L72.615,119.914z M36.15,41.6l36.465-13.893L109.08,41.6l-20.679,7.877l0,0l-15.786,6.014l-15.786-6.014l0,0L36.15,41.6z
+		 M36.15,61.645l20.679-7.879l15.786,6.014l15.786-6.014l20.679,7.879l-20.679,7.877l0,0l-15.786,6.015l-15.786-6.015l0,0
+		L36.15,61.645z M36.15,81.688l20.679-7.877l15.786,6.016l15.786-6.016l20.679,7.877l-20.679,7.881l0,0l-15.786,6.014l-15.786-6.014
+		l0,0L36.15,81.688z M88.401,93.855l20.679,7.879l-36.465,13.893L36.15,101.734l20.679-7.879l15.786,6.016L88.401,93.855z"
+                  />
+                </g>
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Text'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                style="margin: 3px 0px"
+              >
+                <path
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                  d="M18 5.5h-5.25V18c0 .28.22.5.5.5h2a.75.75 0 1 1 0 1.5h-6.5a.75.75 0 1 1 0-1.5h2a.5.5 0 0 0 .5-.5V5.5H6a.5.5 0 0 0-.5.5v1.25a.75.75 0 0 1-1.5 0V5.5C4 4.67 4.67 4 5.5 4h13c.83 0 1.5.67 1.5 1.5v1.75a.75.75 0 1 1-1.5 0V6a.5.5 0 0 0-.5-.5z"
+                ></path>
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Music'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-music-note-beamed"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"
+                />
+                <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z" />
+                <path
+                  d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"
+                />
+              </svg>
+            </i>
+            <i *ngIf="item.label == 'Videos'">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-play-btn"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"
+                />
+                <path
+                  d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+                />
+              </svg>
+            </i>
+
+            <!-- <i
+              *ngIf="item.label != 'Text' && item.label != 'My Templates'"
+              [ngClass]="item.icon"
+              style="font-size: x-large"
+            ></i> -->
+            {{ item.label }}
+          </a>
+        </li>
+      </ul>
+    </perfect-scrollbar>
+  </div>
+  <div id="sub-menu" class="sub-menu">
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Uploads' ? 'block' : 'none'
+      }"
+    >
+      <user-uploads></user-uploads>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Photos' ? 'block' : 'none'
+      }"
+    >
+      <app-sidebar-photos></app-sidebar-photos>
+    </div>
+
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: !ds.isToolpanel() && theItem.label == 'Text' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-text></sidebar-text>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Music' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-music></sidebar-music>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Elements' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-elements></sidebar-elements>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Videos' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-videos></sidebar-videos>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'Templates' ? 'block' : 'none'
+      }"
+    >
+      <sidebar-templates></sidebar-templates>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display:
+          !ds.isToolpanel() && theItem.label == 'My Templates'
+            ? 'block'
+            : 'none'
+      }"
+    >
+      <sidebar-my-templates></sidebar-my-templates>
+    </div>
+    <div
+      [ngStyle]="{
+        height: '100%',
+        display: ds.isToolpanel() ? 'block' : 'none'
+      }"
+    >
+      <app-toolpanel></app-toolpanel>
+    </div>
+    <div class="sidebar-btn">
+      <div class="sidebar-btn-container"></div>
+      <div class="close-btn">
+        <div class="close-btn-boxShows">
+          <svg
+            width="15"
+            height="96"
+            viewBox="0 0 15 96"
+            fill="#f7f7f7"
+            xmlns="http://www.w3.org/2000/svg"
+            class="SUDcEg"
+            (click)="closeSidebar()"
+          >
+            <path
+              d="M0 0H3V1.00588C3.0011 4.42584 3.9102 9.97716 7.27295 13.2873C7.45088 13.4625 7.62629 13.6347 7.79957 13.8048L7.85959 13.8637C9.89318 15.8599 11.6678 17.602 12.9234 19.7206C14.0939 21.6956 14.792 23.9527 14.9602 27H15V68C15 71.7381 14.3125 74.3685 13.0144 76.6235C11.7533 78.8142 9.94312 80.5911 7.86152 82.6344L7.79905 82.6957C7.62594 82.8656 7.4507 83.0377 7.27295 83.2127C3.9102 86.5228 3.0011 92.0739 3 95.4938V96H0V0Z"
+              class="vu-d0A"
+            ></path>
+            <path
+              d="M3 0H2V1.00619C2.0011 4.50696 2.9164 10.4021 6.57143 14C6.74993 14.1757 6.92582 14.3484 7.09903 14.5184C11.2616 18.6046 13.8752 21.1704 13.9957 28H14V68C14 75.2071 11.3611 77.7976 7.09857 81.9821L7.07621 82.004C6.91037 82.1668 6.7421 82.332 6.57143 82.5C2.9164 86.0979 2.0011 91.993 2 95.4938V96H3V95.4938C3.0011 92.0739 3.9102 86.5228 7.27295 83.2127C7.4507 83.0377 7.62594 82.8656 7.79905 82.6957L7.86152 82.6344C9.94312 80.5911 11.7533 78.8142 13.0144 76.6235C14.3125 74.3685 15 71.7381 15 68V27H14.9602C14.792 23.9527 14.0939 21.6956 12.9234 19.7206C11.6678 17.602 9.89318 15.8599 7.85959 13.8637L7.79957 13.8048C7.62629 13.6347 7.45088 13.4625 7.27295 13.2873C3.9102 9.97716 3.0011 4.42584 3 1.00588V0Z"
+              class="mcI_jw"
+            ></path>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 0 24 24"
+            width="24px"
+            fill="#000000"
+            style="cursor: default; pointer-events: none; left: -5px"
+          >
+            <path d="M0 0h24v24H0V0z" fill="none" />
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

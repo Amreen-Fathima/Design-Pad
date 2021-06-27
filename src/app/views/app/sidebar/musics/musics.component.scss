@@ -1,0 +1,24 @@
+div::-webkit-scrollbar {
+  width: 11px;
+}
+div {
+  scrollbar-width: thin;
+  scrollbar-color: #aaa #f7f7f7;
+}
+div::-webkit-scrollbar-track {
+  background: #f7f7f7;
+}
+div::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 6px;
+  border: 3px solid #f7f7f7;
+}
+.musicContent:hover {
+  background: rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: 0.3s;
+
+  .playIcon {
+    display: block !important;
+  }
+}

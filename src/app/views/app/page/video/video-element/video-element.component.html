@@ -1,0 +1,33 @@
+<video
+  #videoElement
+  [id]="'VideoElement' + this.item.pageId + '-' + this.item.itemId"
+  [ngStyle]="styleItem(item)"
+  [src]="item.url"
+  [attr.pageId]="item.pageId"
+  [attr.itemId]="item.itemId"
+></video>
+<!-- <div [ngStyle]="parentVideoElement(item)">
+  <div [ngStyle]="{ display: ds.isShowPlayButton ? 'block' : 'none' }">
+    <div [ngStyle]="playButtonStyle(item)">
+      <svg [ngStyle]="{ display: !ds.isPlayVideo ? 'block' : 'none' }" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.248 4.212l11.05 6.574c.694.412.91 1.29.483 1.961-.121.19-.287.35-.483.467l-11.05 6.574c-.694.413-1.602.204-2.03-.467A1.39 1.39 0 0 1 6 18.574V5.426C6 4.638 6.66 4 7.475 4c.273 0 .54.073.773.212z"
+          fill="white"
+        ></path>
+      </svg>
+      <svg
+        [ngStyle]="{ display: ds.isPlayVideo ? 'block' : 'none' }"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="white"
+        width="18px"
+        height="18px"
+      >
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      </svg>
+    </div>
+  </div>
+</div> -->

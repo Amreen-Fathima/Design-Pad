@@ -1,0 +1,11 @@
+#home {
+  background-color: white;
+}
+#footer {
+  height: 150px;
+  background-color: black;
+  color: white;
+  padding: 0 8%;
+  box-sizing: border-box;
+  font-size: 15px;
+}
