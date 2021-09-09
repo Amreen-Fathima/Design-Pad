@@ -11,10 +11,20 @@
         Upload from device <br />
         Drag & Drop multiple files
       </button>
-      <input #fileInput style="display: none" type="file" accept="image/png, image/jpeg" multiple (change)="onDrop($event.target.files)" />
+      <input
+        #fileInput
+        style="display: none"
+        type="file"
+        accept="image/png, image/jpeg"
+        multiple
+        (change)="onDrop($event.target.files)"
+      />
     </div>
 
-    <perfect-scrollbar [config]="{ suppressScrollX: true }" style="height: calc(100vh - 500px)">
+    <perfect-scrollbar
+      [config]="{ suppressScrollX: true }"
+      style="height: calc(100vh - 500px)"
+    >
       <div *ngFor="let file of files">
         <upload-task [file]="file" taskType="admin_uploads"></upload-task>
       </div>
@@ -31,12 +41,22 @@
           </div>
         </button>
 
-        <input type="text" class="form-control search-box d-inline-block" placeholder="search by tag" (keyup)="onSearchKeyUp($event)" />
+        <input
+          type="text"
+          class="form-control search-box d-inline-block"
+          placeholder="search by tag"
+          (keyup)="onSearchKeyUp($event)"
+        />
 
-        <button class="btn btn-outline-danger" (click)="removeSelected()">Remove Selected</button>
+        <button class="btn btn-outline-danger" (click)="removeSelected()">
+          Remove Selected
+        </button>
       </div>
 
-      <perfect-scrollbar [config]="{ suppressScrollX: true }" style="height: calc(100vh - 300px)">
+      <perfect-scrollbar
+        [config]="{ suppressScrollX: true }"
+        style="height: calc(100vh - 300px)"
+      >
         <table class="table table-bordered table-responsive-md table-striped">
           <tr>
             <th>
@@ -58,7 +78,14 @@
 
           <tr *ngFor="let assetImage of assetImages; let i = index">
             <td>
-              <label class="custom-control custom-checkbox mb-1 align-self-center pr-4">
+              <label
+                class="
+                  custom-control custom-checkbox
+                  mb-1
+                  align-self-center
+                  pr-4
+                "
+              >
                 <input
                   type="checkbox"
                   class="custom-control-input"
@@ -66,11 +93,19 @@
                   [checked]="isSelected(assetImage)"
                   (change)="onSelect(assetImage)"
                 />
-                <label class="custom-control-label" [for]="'customCheck' + i"></label>
+                <label
+                  class="custom-control-label"
+                  [for]="'customCheck' + i"
+                ></label>
               </label>
             </td>
             <td class="text-center">
-              <img [src]="assetImage.thumbnail" height="100px" width="auto" style="margin: 5px; cursor: pointer" />
+              <img
+                [src]="assetImage.thumbnail"
+                height="100px"
+                width="auto"
+                style="margin: 5px; cursor: pointer"
+              />
             </td>
 
             <td>
@@ -90,7 +125,9 @@
             </td>
 
             <td class="text-center">
-              <span>{{ assetImage.timestamp | date: 'yyyy/MM/dd HH:mm:ss' }}</span>
+              <span>{{
+                assetImage.timestamp | date: "yyyy/MM/dd HH:mm:ss"
+              }}</span>
             </td>
           </tr>
         </table>

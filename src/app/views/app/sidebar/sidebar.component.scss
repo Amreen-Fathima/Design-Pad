@@ -14,7 +14,7 @@
   li {
     a {
       display: flex;
-      justify-content: start;
+      justify-content: flex-start;
       color: white;
       height: auto !important;
       border-bottom: none;
@@ -30,8 +30,8 @@
     }
 
     &.active a {
-      color: #0e1317;
-      background-color: #f7f7f7;
+      color: #fff;
+      background-color: #293039;
     }
 
     &.active:after {
@@ -41,7 +41,7 @@
 }
 
 .sub-menu {
-  background-color: #f7f7f7;
+  background-color: #293039;
   border-left: none;
   left: 0;
   border-radius: 0 !important;

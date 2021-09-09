@@ -15,28 +15,40 @@ import { UndoRedoService } from 'src/app/services/undo-redo.service';
 export class SVGElementComponent implements OnInit {
   @Input('item') item;
 
-  constructor(public moveableService: MoveableService, public ds: DesignService, public ur: UndoRedoService) {}
+  constructor(
+    public moveableService: MoveableService,
+    public ds: DesignService,
+    public ur: UndoRedoService
+  ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (!this.ur.isUndoRedo) this.ds.setStatus(ItemStatus.element_selected);
     setTimeout(() => {
-      let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
+      let svgEle = document.querySelector(
+        '#SVGElement-' + this.item.pageId + '-' + this.item.itemId
+      );
       svgEle.innerHTML = this.item.SVGElement;
 
       let htmlCollect = svgEle.querySelectorAll('svg');
 
       if (htmlCollect[0].getAttribute('viewBox')) {
-        htmlCollect[0].setAttribute('viewBox', htmlCollect[0].getAttribute('viewBox'));
+        htmlCollect[0].setAttribute(
+          'viewBox',
+          htmlCollect[0].getAttribute('viewBox')
+        );
       } else {
         let width = htmlCollect[0].clientWidth;
         let height = htmlCollect[0].clientHeight;
-        htmlCollect[0].setAttribute('viewBox', '0, 0, ' + width + ', ' + height);
+        htmlCollect[0].setAttribute(
+          'viewBox',
+          '0, 0, ' + width + ', ' + height
+        );
       }
       htmlCollect[0].setAttribute('width', this.item.w);
       htmlCollect[0].setAttribute('height', this.item.h);
-
+      htmlCollect[0].style.transform = this.item.svgScale;
       this.moveableService.selectedItemId = this.item.itemId;
       this.moveableService.selectedPageId = this.item.pageId;
 
@@ -46,6 +58,9 @@ export class SVGElementComponent implements OnInit {
 
   styleItem(item: Item): CSS.Properties {
     return {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       position: 'absolute',
       top: 0,
       left: 0,
@@ -57,11 +72,14 @@ export class SVGElementComponent implements OnInit {
       WebkitFilter: item.filter,
       clipPath: item.clipStyle,
       zIndex: item.zIndex,
+      opacity: item.opacity,
     };
   }
 
   getSVGColorCollection() {
-    let svgEle = document.querySelector('#SVGElement-' + this.item.pageId + '-' + this.item.itemId);
+    let svgEle = document.querySelector(
+      '#SVGElement-' + this.item.pageId + '-' + this.item.itemId
+    );
     let tags = ['path', 'circle', 'rect', 'polygon', 'ellipse', 'text'];
 
     for (let i = 0; i < tags.length; i++) {

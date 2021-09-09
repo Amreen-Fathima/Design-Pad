@@ -1,3 +1,4 @@
+import { FirebaseService } from 'src/app/services/firebase.service';
 import { HttpClient, XhrFactory, HttpXhrBackend } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
@@ -13,7 +14,11 @@ export class DownloadService {
   ds = this.injector.get(DesignService);
   onDownloading: boolean;
 
-  constructor(private http: HttpClient, public injector: Injector) {}
+  constructor(
+    private http: HttpClient,
+    public injector: Injector,
+    public firebaseService: FirebaseService
+  ) {}
 
   download(selectedFileType) {
     if (selectedFileType == 'PDF') this.downloadAsPdf();
@@ -44,7 +49,7 @@ export class DownloadService {
         i++
       ) {
         if (i != 0) {
-          ele.parentElement.parentElement.children[i].remove();
+          // ele.parentElement.parentElement.children[i].remove();
         }
       }
 
@@ -90,8 +95,8 @@ export class DownloadService {
     htmlContent += '</body>';
 
     formData.append('text', htmlContent);
-    formData.append('page_width', width + 'px');
-    formData.append('page_height', height + 'px');
+    formData.append('page_width', Math.round(width) + 'px');
+    formData.append('page_height', Math.round(height) + 'px');
     formData.append('no_margins', 'True');
 
     xhr.responseType = 'blob';
@@ -112,6 +117,7 @@ export class DownloadService {
 
         this.onDownloading = false;
         this.deleteGeneratedElement();
+        this.calcDownloadCount();
       };
       fr.readAsText(blob);
     };
@@ -145,7 +151,7 @@ export class DownloadService {
         i++
       ) {
         if (i != 0) {
-          ele.parentElement.parentElement.children[i].remove();
+          // ele.parentElement.parentElement.children[i].remove();
         }
       }
 
@@ -184,18 +190,52 @@ export class DownloadService {
       htmlContent = htmlContent + htmlStr + '</body>';
 
       const blob = await this.downloadOnePageAsImg(htmlContent);
-
+      this.calcDownloadCount();
       if (document.querySelectorAll('.card').length > 1)
         zip.file(i + 1 + '.jpg', blob);
       else saveAs(blob, i + 1 + '.jpg');
     }
 
-    this.onDownloading = false;
+    // this.onDownloading = false;
     this.deleteGeneratedElement();
 
     if (document.querySelectorAll('.card').length > 1)
       zip.generateAsync({ type: 'blob' }).then(function (content) {
         saveAs(content, 'image.zip');
+      });
+  }
+
+  downloadCount = 0;
+  downloadTemplateCount = 0;
+  async calcDownloadCount() {
+    let user = await this.firebaseService.readUser(
+      JSON.parse(localStorage.getItem('user')).uid
+    );
+    if (user['downloadCount'] == undefined) {
+      this.downloadCount = 0;
+    } else {
+      this.downloadCount = user['downloadCount'];
+    }
+    this.downloadCount++;
+    this.firebaseService.updateUserDownloadCount(
+      this.downloadCount,
+      user['docId']
+    );
+
+    this.firebaseService
+      .readTemplateCount(this.ds.categoryName[this.ds.selectedCategoryIndex])
+      .subscribe((e) => {
+        let data = e.data();
+        if (data['downloadCount'] == undefined) {
+          this.downloadTemplateCount = 0;
+        } else {
+          this.downloadTemplateCount = data['downloadCount'];
+        }
+        this.downloadTemplateCount++;
+        this.firebaseService.updateDownloadTemplateCount(
+          this.downloadTemplateCount,
+          this.ds.categoryName[this.ds.selectedCategoryIndex]
+        );
       });
   }
 
@@ -208,16 +248,17 @@ export class DownloadService {
       formData.append('text', htmlContent);
       formData.append(
         'screenshot_width',
-        this.ds.theDesign.category.size.x.toString()
+        Math.round(this.ds.theDesign.category.size.x).toString()
       );
       formData.append(
         'screenshot_height',
-        this.ds.theDesign.category.size.y.toString()
+        Math.round(this.ds.theDesign.category.size.y).toString()
       );
       formData.append('output_format', 'jpg');
 
       xhr.onload = () => {
         if (xhr.status >= 200 && xhr.status < 300) {
+          this.onDownloading = false;
           resolve(xhr.response);
         } else {
           reject(xhr.statusText);
@@ -283,7 +324,7 @@ export class DownloadService {
           i++
         ) {
           if (i != 0) {
-            ele.parentElement.parentElement.children[i].remove();
+            // ele.parentElement.parentElement.children[i].remove();
           }
         }
 

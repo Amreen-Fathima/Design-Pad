@@ -79,7 +79,6 @@ export class TopnavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this.authService.user);
     switch (this.router.url.toString()) {
       case '/':
         this.siteStatus = 'Playground';

@@ -31,6 +31,66 @@
   </ng-container>
 
   <ng-container *ngIf="!ds.isStatus(ItemStatus.music_selected)">
+    <div
+      style="position: absolute; right: 160px"
+      mat-button
+      (click)="showTransparencyContent()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+      >
+        <g fill="currentColor" fill-rule="evenodd">
+          <path
+            d="M3 2h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+          ></path>
+          <path
+            d="M11 2h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+            opacity=".45"
+          ></path>
+          <path
+            d="M19 2h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+            opacity=".15"
+          ></path>
+          <path
+            d="M7 6h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+            opacity=".7"
+          ></path>
+          <path
+            d="M15 6h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm0 8h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z"
+            opacity=".3"
+          ></path>
+        </g>
+      </svg>
+    </div>
+    <button
+      *ngIf="!moveableService.isSelectGroup"
+      style="
+        position: absolute;
+        right: 80px;
+        align-items: center;
+        display: flex;
+      "
+      mat-button
+      (click)="createGroup()"
+    >
+      Group
+    </button>
+    <button
+      *ngIf="moveableService.isSelectGroup"
+      style="
+        position: absolute;
+        right: 80px;
+        align-items: center;
+        display: flex;
+      "
+      mat-button
+      (click)="createUngroup()"
+    >
+      Ungroup
+    </button>
     <button
       style="position: absolute; right: 0px"
       mat-button
@@ -38,6 +98,41 @@
     >
       Position
     </button>
+    <div
+      id="dimensionContent"
+      [ngStyle]="{
+        display: this.moveableService.isTransPosition ? 'block' : 'none'
+      }"
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <span>Transparency</span>
+        <mat-slider
+          #mySlider
+          style="min-width: 180px"
+          [max]="100"
+          [min]="0"
+          step="1"
+          [(ngModel)]="this.moveableService.transparency"
+          (input)="onTransparencyChange($event)"
+          (pointerup)="sliderOnChange(mySlider.value)"
+        >
+        </mat-slider>
+        <input
+          class="lineHeightInput"
+          type="number"
+          [(ngModel)]="this.moveableService.transparency"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+          (input)="inputTansparencyChange($event)"
+        />
+      </div>
+    </div>
     <div
       id="dimensionContent"
       [ngStyle]="{
@@ -142,6 +237,99 @@
           </div>
         </div>
       </div>
+      <div style="padding: 10px">
+        <span>Align to page</span>
+      </div>
+      <div style="display: flex; justify-content: left">
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(0)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M21 4c0 .41-.34.75-.75.75H3.75a.75.75 0 0 1 0-1.5h16.5c.41 0 .75.34.75.75zM11 9v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2zm7 0v4a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2V9c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2zM9.5 9a.5.5 0 0 0-.5-.5H8a.5.5 0 0 0-.5.5v9c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5V9zm7 0a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v4c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5V9z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Top</span>
+        </div>
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(1)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M4 3c.41 0 .75.34.75.75v16.5a.75.75 0 1 1-1.5 0V3.75c0-.41.34-.75.75-.75zm5 3h9a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2zm0 7h4a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-1c0-1.1.9-2 2-2zm0-5.5a.5.5 0 0 0-.5.5v1c0 .28.22.5.5.5h9a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5H9zm0 7a.5.5 0 0 0-.5.5v1c0 .28.22.5.5.5h4a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H9z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Left</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: left">
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(2)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M11 11.25h2V7c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2v4.25h2.25a.75.75 0 1 1 0 1.5H18V17a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-4.25h-2V14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1.25H3.75a.75.75 0 1 1 0-1.5H6V10c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2v1.25zM16.5 7a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v10c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5V7zm-7 3a.5.5 0 0 0-.5-.5H8a.5.5 0 0 0-.5.5v4c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5v-4z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Middle</span>
+        </div>
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(3)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M11.25 13v-2H7a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4.25V3.75a.75.75 0 1 1 1.5 0V6H17a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-4.25v2H14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1.25v2.25a.75.75 0 1 1-1.5 0V18H10a2 2 0 0 1-2-2v-1c0-1.1.9-2 2-2h1.25zM7 7.5a.5.5 0 0 0-.5.5v1c0 .28.22.5.5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 0-.5-.5H7zm3 7a.5.5 0 0 0-.5.5v1c0 .28.22.5.5.5h4a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-4z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Center</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: left">
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(4)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M21 20c0 .41-.34.75-.75.75H3.75a.75.75 0 1 1 0-1.5h16.5c.41 0 .75.34.75.75zM11 6v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2zm7 5v4a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-4c0-1.1.9-2 2-2h1a2 2 0 0 1 2 2zM9.5 6a.5.5 0 0 0-.5-.5H8a.5.5 0 0 0-.5.5v9c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5V6zm7 5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v4c0 .28.22.5.5.5h1a.5.5 0 0 0 .5-.5v-4z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Bottom</span>
+        </div>
+        <div style="width: 50%; padding: 10px" (click)="onClickDirection(5)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="currentColor"
+              d="M20 3a.75.75 0 0 0-.75.75v16.5a.75.75 0 1 0 1.5 0V3.75A.75.75 0 0 0 20 3zm-5 3H6a2 2 0 0 0-2 2v1c0 1.1.9 2 2 2h9a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm0 7h-4a2 2 0 0 0-2 2v1c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2zm0-5.5c.28 0 .5.22.5.5v1a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V8c0-.28.22-.5.5-.5h9zm0 7c.28 0 .5.22.5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1c0-.28.22-.5.5-.5h4z"
+            ></path>
+          </svg>
+          <span style="margin-left: 10px">Right</span>
+        </div>
+      </div>
     </div>
   </ng-container>
 </ng-container>
@@ -201,9 +389,23 @@
           </li>
         </ul>
       </div>
+
       <div style="display: flex; height: 30px">
-        <div class="placeholder" data-placeholder="W" style="width: 80px">
+        <button
+          style="align-items: center; display: flex"
+          mat-button
+          [disabled]="this.ds.thePageId == -1"
+          (click)="createGroup()"
+        >
+          Group
+        </button>
+        <div
+          class="placeholder"
+          data-placeholder="W"
+          style="width: 80px; margin-left: 10px"
+        >
           <input
+            id="padWidth"
             type="number"
             [(ngModel)]="roundedWidth"
             (keyup)="setDesign($event)"
@@ -217,6 +419,7 @@
           style="width: 80px; margin-left: 10px"
         >
           <input
+            id="padHeight"
             type="number"
             [(ngModel)]="roundedHeight"
             (keyup)="setDesign($event)"

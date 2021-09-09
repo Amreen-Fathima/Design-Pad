@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import menuItems, { IMenuItem } from 'src/app/constants/menu';
+import { AdminTemplates } from './../../../models/models';
+import { UploadUserTemplate, UserData } from 'src/app/models/models';
 import {
   SidebarService,
   ISidebar,
@@ -7,7 +9,10 @@ import {
 import { Subscription } from 'rxjs';
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
+import { AuthService } from 'src/app/shared/auth.service';
 import { style } from '@angular/animations';
+import { UserRole } from 'src/app/shared/auth.roles';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,10 +27,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
   sidebar: ISidebar;
   subscription: Subscription;
 
+  isLoad: boolean;
+
+  role = UserRole;
+
   constructor(
+    public firebaseSerivce: FirebaseService,
     private sidebarService: SidebarService,
     public ds: DesignService,
-    public moveableService: MoveableService
+    public moveableService: MoveableService,
+    public authService: AuthService
   ) {
     this.subscription = this.sidebarService.getSidebar().subscribe(
       (res) => {
@@ -38,9 +49,60 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.menuItems = menuItems;
     this.theId = 0;
     this.theItem = this.menuItems[0];
+    this.isLoad = false;
   }
 
-  async ngOnInit(): Promise<void> {}
+  async ngOnInit(): Promise<void> {
+    if (this.ds.latestTemplate) {
+      this.ds.theDesign = this.ds.latestTemplate.design;
+    }
+    this.readAdminTemplates();
+  }
+
+  readAdminTemplates() {
+    this.firebaseSerivce.readAdminTemplates().subscribe((e) => {
+      this.ds.adminTemplates = e.map((data) => {
+        return {
+          docId: data.payload.doc.id,
+          ...data.payload.doc.data(),
+        } as AdminTemplates;
+      });
+
+      this.ds.adminAllTemplates = this.ds.adminTemplates;
+      this.initScrollButton();
+      this.ds.textFilteredTemplate = [];
+      for (let i = 0; i < this.ds.adminTemplates.length; i++) {
+        if (this.ds.adminTemplates[i]['docId'] == 'Text') {
+          for (let j = 0; j < this.ds.adminTemplates[i].templates.length; j++) {
+            this.ds.textFilteredTemplate.push(
+              this.ds.adminTemplates[i].templates[j]
+            );
+          }
+        }
+      }
+      this.isLoad = true;
+    });
+  }
+
+  initScrollButton() {
+    setTimeout(() => {
+      if (!this.ds.filteredTemplate && !this.ds.selectedTemplate)
+        for (let i = 0; i < this.ds.adminTemplates.length; i++) {
+          if (
+            this.ds.adminTemplates[i].templates.length > 2 &&
+            this.ds.adminTemplates[i]['docId'] != 'Text'
+          ) {
+            (
+              document
+                .querySelector('#category-' + i)
+                ?.parentElement.parentElement.querySelectorAll(
+                  '.scroll-button'
+                )[1] as HTMLElement
+            ).style.display = 'block';
+          }
+        }
+    });
+  }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -49,6 +111,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   menuClicked(event) {
     event.stopPropagation();
     this.moveableService.isPosition = false;
+    this.moveableService.isTransPosition = false;
   }
 
   menuItemClicked(event, item, index) {

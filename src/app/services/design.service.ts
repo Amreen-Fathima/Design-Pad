@@ -42,16 +42,21 @@ export class DesignService {
   selectedTemplate: AdminTemplate;
   selectedCategory: AdminTemplates;
   filteredTemplate: AdminTemplate[];
+  textFilteredTemplate: AdminTemplate[];
   filteredElement: AssetElement[];
   selectedTemplateTagItems: any;
   selectedCategoryIndex: number;
   selectedTemplateIndex: number;
-  userTemplates: UploadUserTemplate[];
+  userTemplates: UploadUserTemplate[] = [];
   latestTemplates: AdminTemplate[] = [];
   isRemoveTemplate: boolean = false;
   isUploadTemplate: boolean = false;
   keyword: string = '';
   latestTemplate: AdminTemplate;
+  unsplashItems = [];
+  pexelItems = [];
+  unsplashHeights: number[] = [];
+  pexelHeights: number[] = [];
 
   init() {
     this.theDesign = {
@@ -160,6 +165,7 @@ export class DesignService {
     //unobserve to item clip
     const toolbarService = this.injector.get(ToolbarService);
     let ms = this.injector.get(MoveableService);
+    ms.transparency = 100;
     let currentSelectedItem = ms.getItem(
       document.querySelector(
         '#textEditor-' + ms.selectedPageId + '-' + ms.selectedItemId
@@ -186,11 +192,28 @@ export class DesignService {
       media.stopVideo();
     }
 
-    if (!this.isCopiedItem) this.deleteSelectedItem();
+    if (!this.isCopiedItem && item.type != ItemType.group)
+      this.deleteSelectedItem();
 
     item.pageId = this.thePageId;
     item.itemId = this.theDesign.pages[this.thePageId].items.length;
-    item.zIndex = 100 + item.itemId;
+    let newItem;
+    if (item.type == ItemType.group) {
+      for (
+        let i = 0;
+        i < this.theDesign.pages[this.thePageId].items.length;
+        i++
+      ) {
+        newItem = this.theDesign.pages[this.thePageId].items[i];
+        if (newItem.selected) {
+          item.zIndex = newItem.zIndex;
+          continue;
+        }
+        newItem.zIndex = newItem.zIndex + 1;
+      }
+    } else {
+      item.zIndex = 100 + item.itemId;
+    }
 
     for (let i = 0; i < this.theDesign.pages.length; i++)
       for (let j = 0; j < this.theDesign.pages[i].items.length; j++) {
@@ -240,6 +263,66 @@ export class DesignService {
       scaleX: 1,
       scaleY: 1,
       zIndex: 0,
+      opacity: '1',
+    });
+  }
+
+  /*********************************************
+   * Add Group Item
+   **********************************************/
+
+  addGroupItem() {
+    let { x: W, y: H } = this.theDesign?.category.size;
+    this.isAddItem = true;
+
+    if (!H) return;
+
+    let w, h, x, y;
+    let item;
+    let arX = [],
+      arY = [],
+      arRX = [],
+      arBY = [];
+    let tags = [];
+
+    for (
+      let i = 0;
+      i < this.theDesign.pages[this.thePageId].items.length;
+      i++
+    ) {
+      item = this.theDesign.pages[this.thePageId].items[i];
+      if (item.selected) {
+        arX.push(item.x);
+        arY.push(item.y);
+        arRX.push(item.x + item.w);
+        arBY.push(item.y + item.h);
+
+        tags.push(this.getType(item.type) + item.pageId + '-' + item.itemId);
+      }
+    }
+    x = Math.min(...arX);
+    y = Math.min(...arY);
+
+    w = Math.max(...arRX) - Math.min(...arX);
+    h = Math.max(...arBY) - Math.min(...arY);
+
+    this.addItemToCurrentPage({
+      type: ItemType.group,
+      pageId: this.thePageId,
+      itemId: 0,
+      selected: true,
+      url: '',
+      thumbnail: '',
+      x,
+      y,
+      w,
+      h,
+      rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
+      zIndex: 0,
+      tags: tags,
+      opacity: '1',
     });
   }
 
@@ -291,6 +374,7 @@ export class DesignService {
       zIndex: 0,
       angle: 50,
       isOnResize: false,
+      opacity: '1',
     });
   }
 
@@ -319,38 +403,26 @@ export class DesignService {
     x = (W - w) / 2;
     y = (H - h) / 2;
 
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = (event) => {
-      var blob = xhr.response;
-
-      var fr = new FileReader();
-      fr.onload = (result) => {
-        let str = result.target['result'].toString();
-
-        this.addItemToCurrentPage({
-          type: ItemType.element,
-          pageId: this.thePageId,
-          itemId: 0,
-          selected: true,
-          x,
-          y,
-          w,
-          h,
-          rotate: 0,
-          scaleX: 1,
-          scaleY: 1,
-          url: item.downloadURL,
-          SVGElement: str,
-          color: [],
-          colorAndIndex: {},
-          zIndex: 0,
-        });
-      };
-      fr.readAsText(blob);
-    };
-    xhr.open('GET', item.downloadURL);
-    xhr.send();
+    this.addItemToCurrentPage({
+      type: ItemType.element,
+      pageId: this.thePageId,
+      itemId: 0,
+      selected: true,
+      x,
+      y,
+      w,
+      h,
+      rotate: 0,
+      scaleX: 1,
+      scaleY: 1,
+      url: item.downloadURL,
+      SVGElement: item.svg,
+      color: [],
+      colorAndIndex: {},
+      zIndex: 0,
+      svgScale: 'scale(1, 1)',
+      opacity: '1',
+    });
   }
   /*********************************************
    * Video sidebar
@@ -493,6 +565,11 @@ export class DesignService {
         // this.copiedTheData = moveableService.copiedTheData;
         this.copiedTheData = [];
         for (let i = 0; i < moveableService.copiedTheData.length; i++) {
+          console.log(
+            this.theDesign.pages[moveableService.copiedTheData[i].pageId].items[
+              moveableService.copiedTheData[i].itemId
+            ]
+          );
           this.copiedTheData.push(
             JSON.parse(
               JSON.stringify(
@@ -577,7 +654,6 @@ export class DesignService {
 
   deleteSelectedItems = () => {
     let items = this.theDesign.pages[this.thePageId].items;
-
     items = items.filter((item) => !item.selected);
     items.forEach((item, i) => {
       item.itemId = i;
@@ -589,6 +665,22 @@ export class DesignService {
 
     this.theItem = null;
     this.setStatus(ItemStatus.none);
+  };
+
+  deleteSelectedGroupItem = () => {
+    let items = this.theDesign.pages[this.thePageId].items;
+    items = items.filter((item) => item.type != ItemType.group);
+    items.forEach((item, i) => {
+      item.itemId = i;
+    });
+    this.theDesign.pages[this.thePageId].items = items;
+
+    const ms = this.injector.get(MoveableService);
+    ms.clearMoveable();
+
+    this.theItem = null;
+    this.setStatus(ItemStatus.none);
+    this.ur.saveTheData(this.theDesign);
   };
 
   /*********************************************
@@ -631,17 +723,7 @@ export class DesignService {
   }
 
   onSelectTextItem(reselected: boolean) {
-    if (reselected) {
-      setTimeout(() => {
-        if (
-          this.status != ItemStatus.text_font_list &&
-          this.status != ItemStatus.text_effect
-        ) {
-          this.status = ItemStatus.text_selected;
-          // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
-        }
-      });
-    } else {
+    setTimeout(() => {
       if (
         this.status != ItemStatus.text_font_list &&
         this.status != ItemStatus.text_effect
@@ -649,7 +731,7 @@ export class DesignService {
         this.status = ItemStatus.text_selected;
         // document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor = '#293039';
       }
-    }
+    });
   }
 
   onSelectElementItem(pageId: number, item: Item) {

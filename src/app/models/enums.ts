@@ -4,6 +4,7 @@ export enum ItemType {
   text,
   element,
   video,
+  group
 }
 
 export enum ItemStatus {

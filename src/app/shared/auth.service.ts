@@ -44,12 +44,7 @@ export class AuthService {
   }
 
   async setAuthData(authUser: User) {
-    console.log(authUser);
     if (authUser) {
-      console.log('----------- Here --------------');
-      console.log(
-        (await this.firebaseService.readUser(authUser.uid)) as UserData
-      );
       if ((await this.firebaseService.readUser(authUser.uid)) as UserData) {
         let role = (
           (await this.firebaseService.readUser(authUser.uid)) as UserData
@@ -64,7 +59,6 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(this.user));
         this.user = JSON.parse(localStorage.getItem('user'));
         this.subjectAuth.next(true);
-        console.log('----------saved------------');
       }
     } else this.signOut();
   }

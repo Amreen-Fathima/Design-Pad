@@ -10,7 +10,9 @@ import { ItemStatus, ItemType } from 'src/app/models/enums';
 import { DesignService } from 'src/app/services/design.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { DownloadService } from 'src/app/services/download.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { BsDropdownConfig } from 'ngx-bootstrap/dropdown';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-toolbar',
@@ -27,7 +29,9 @@ export class ToolbarComponent implements OnInit {
   constructor(
     public ds: DesignService,
     public moveableService: MoveableService,
-    public downloadService: DownloadService
+    public downloadService: DownloadService,
+    public urService: UndoRedoService,
+    private notifications: NotificationsService
   ) {}
 
   theDesignWidth;
@@ -114,6 +118,48 @@ export class ToolbarComponent implements OnInit {
   showPositionContent() {
     this.detectOverlaps();
     this.moveableService.isPosition = !this.moveableService.isPosition;
+    this.moveableService.isTransPosition = false;
+  }
+
+  showTransparencyContent() {
+    this.moveableService.isTransPosition =
+      !this.moveableService.isTransPosition;
+    this.moveableService.isPosition = false;
+  }
+
+  createGroup() {
+    let item;
+    let items = [];
+    for (
+      let i = 0;
+      i < this.ds.theDesign.pages[this.ds.thePageId].items.length;
+      i++
+    ) {
+      item = this.ds.theDesign.pages[this.ds.thePageId].items[i];
+      if (item.selected) {
+        items.push(item);
+      }
+    }
+    if (items.length > 0) {
+      this.moveableService.isSelectGroup = true;
+      this.ds.addGroupItem();
+    } else {
+      alert('There is no select item!');
+      this.notifications.create(
+        'Error',
+        'There is no select item!',
+        NotificationType.Bare,
+        {
+          theClass: 'outline primary',
+          timeOut: 6000,
+          showProgressBar: false,
+        }
+      );
+    }
+  }
+
+  createUngroup() {
+    this.ds.deleteSelectedGroupItem();
   }
 
   changeFileType(event) {
@@ -357,5 +403,64 @@ export class ToolbarComponent implements OnInit {
 
       this.ds.zoomFillInside(width, height);
     }
+  }
+
+  inputTansparencyChange(event) {
+    this.moveableService.transparency = event.target.value;
+    this.setItemOpacity();
+  }
+
+  onTransparencyChange(event) {
+    this.moveableService.transparency = event.value;
+    this.setItemOpacity();
+  }
+
+  sliderOnChange(value: number) {
+    this.urService.saveTheData(this.ds.theDesign);
+  }
+
+  setItemOpacity() {
+    let items = this.ds.theDesign.pages[this.ds.thePageId].items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].selected) {
+        console.log(items[i]);
+        items[i].opacity = (this.moveableService.transparency / 100).toString();
+      }
+    }
+  }
+
+  onClickDirection(type: number) {
+    let ele = [];
+    let { x: W, y: H } = this.ds.theDesign.category.size;
+    let items = this.ds.theDesign.pages[this.ds.thePageId].items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].selected) {
+        if (type == 0) {
+          items[i].y = 0;
+        } else if (type == 1) {
+          items[i].x = 0;
+        } else if (type == 2) {
+          items[i].y = (H - items[i].h) / 2;
+        } else if (type == 3) {
+          items[i].x = (W - items[i].w) / 2;
+        } else if (type == 4) {
+          items[i].y = H - items[i].h;
+        } else if (type == 5) {
+          items[i].x = W - items[i].w;
+        }
+
+        ele.push(
+          document.querySelector<HTMLElement>(
+            this.ds.getType(items[i].type) +
+              this.ds.thePageId +
+              '-' +
+              items[i].itemId
+          )
+        );
+      }
+    }
+    setTimeout(() => {
+      this.moveableService.onSelectTargets(ele);
+    });
   }
 }

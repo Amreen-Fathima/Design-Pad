@@ -130,17 +130,31 @@ export class ElementUpload {
           this.assetService.categoryName
         );
 
-        this.db.collection<AssetElement>(collectionName).add({
-          downloadURL: this.downloadURL,
-          path,
-          thumbnail: this.thumbnail,
-          width: this.width,
-          height: this.height,
-          timestamp: Date.now(),
-          userId,
-          tags: [file.name],
-          category: category,
-        });
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+          var blob = xhr.response;
+
+          var fr = new FileReader();
+          fr.onload = (result) => {
+            let str = result.target['result'].toString();
+            this.db.collection<AssetElement>(collectionName).add({
+              downloadURL: this.downloadURL,
+              path,
+              thumbnail: this.thumbnail,
+              width: this.width,
+              height: this.height,
+              timestamp: Date.now(),
+              userId,
+              tags: [file.name],
+              category: category,
+              svg: str,
+            });
+          };
+          fr.readAsText(blob);
+        };
+        xhr.open('GET', this.downloadURL);
+        xhr.send();
       })
     );
   }

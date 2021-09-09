@@ -39,6 +39,8 @@ export class ElementsComponent implements OnInit {
   count: number = 0;
   role = UserRole;
   keyword: string;
+  simpleElementSVG = [];
+  svgIndex = 0;
 
   constructor(
     public assetService: AssetService,
@@ -56,6 +58,7 @@ export class ElementsComponent implements OnInit {
     await this.assetService.readElementByTag('').subscribe((data) => {
       let elements = data.map((e) => {
         return {
+          id: e.payload.doc.id,
           ...e.payload.doc.data(),
         } as AssetElement;
       });
@@ -81,10 +84,6 @@ export class ElementsComponent implements OnInit {
       for (let i = 0; i < temp.length; i++) {
         this.assetService.categoryName.splice(temp[i], 1);
       }
-      console.log(
-        this.assetService.assetElements,
-        this.assetService.categoryName
-      );
       this.isLoading = false;
     });
   }
@@ -254,13 +253,26 @@ export class ElementsComponent implements OnInit {
     for (let i = 0; i < this.assetService.assetElements[index].length; i++) {
       this.ds.filteredElement.push(this.assetService.assetElements[index][i]);
     }
-
+    console.log(this.ds.filteredElement);
     this.keyword = this.assetService.categoryName[index];
   }
 
-  AddSVG(event, item) {
+  clickCount = 0;
+  AddSVG(event, item, index) {
     if (event.type == 'click') {
       this.ds.sidebar_element_add(item);
+
+      // Increase click count...
+      this.assetService.readElementCount(item['id']).subscribe((e) => {
+        let data = e.data();
+        if (data['clickCount'] == undefined) {
+          this.clickCount = 0;
+        } else {
+          this.clickCount = data['clickCount'];
+        }
+        this.clickCount++;
+        this.assetService.updateElementCount(this.clickCount, item['id']);
+      });
     }
   }
 

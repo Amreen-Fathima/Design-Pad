@@ -30,6 +30,7 @@ export class ImageElementComponent implements OnInit {
       WebkitFilter: item.filter,
       clipPath: item.clipStyle,
       zIndex: item.zIndex,
+      opacity: item.opacity,
     };
   }
 }

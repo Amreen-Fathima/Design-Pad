@@ -38,16 +38,16 @@
       *ngIf="!ds.filteredTemplate; else showTemplateList"
     >
       <ng-container *ngFor="let template of ds.adminTemplates; let i = index">
-        <div class="w-100">
+        <div class="w-100" *ngIf="template.docId!='Text'">
           <div
             class="d-flex justify-content-between"
             style="padding: 15px 10px 10px 10px"
           >
-            <div style="font-size: 16px; font-weight: bold">
+            <div style="font-size: 16px; font-weight: bold; color: #fff;">
               {{ template.docId }}
             </div>
             <div
-              style="cursor: pointer; font-size: 14px"
+              style="cursor: pointer; font-size: 14px; color: #fff;"
               (click)="putCategory(i)"
             >
               See all

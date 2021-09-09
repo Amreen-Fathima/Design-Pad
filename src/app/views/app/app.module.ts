@@ -39,6 +39,7 @@ import { FontItemComponent } from './toolpanel/font-list/font-item/font-item.com
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { TextEffectsComponent } from './toolpanel/text-effects/text-effects.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { MusicsComponent } from './sidebar/musics/musics.component';
 import { ElementsComponent } from './sidebar/elements/elements.component';
@@ -119,6 +120,7 @@ import { MyTemplatesComponent } from './sidebar/my-templates/my-templates.compon
     SelectDropDownModule,
     InfiniteScrollModule,
     MatSliderModule,
+    MatTabsModule,
     ColorPickerModule,
     HttpClientModule,
     MatButtonModule,

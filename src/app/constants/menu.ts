@@ -22,13 +22,13 @@ const data: IMenuItem[] = [
     // roles: [UserRole.Admin, UserRole.Editor],
   },
   {
-    icon: 'simple-icon-cloud-upload',
-    label: 'Uploads',
+    icon: 'iconsminds-photo',
+    label: 'Photos',
     // roles: [UserRole.Editor],
   },
   {
-    icon: 'iconsminds-photo',
-    label: 'Photos',
+    icon: 'simple-icon-cloud-upload',
+    label: 'Uploads',
     // roles: [UserRole.Editor],
   },
   {

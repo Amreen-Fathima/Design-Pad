@@ -1,12 +1,20 @@
 <div
   #quillEditor
   [id]="'textEditor-' + pageId + '-' + itemId"
+  style="display: flex; justify-content: center"
   [ngStyle]="styleItem(item)"
   (click)="stopPropagation($event)"
   [attr.pageId]="pageId"
   [attr.itemId]="itemId"
   [attr.Curve]="item.isCurve"
 ></div>
-<div style="display: flex; justify-content: center; align-items: center" [ngStyle]="styleItemPosition(item)">
-  <div #curveText [id]="'curveText-' + pageId + '-' + itemId" [ngStyle]="styleCurveItem(item)"></div>
+<div
+  style="display: flex; justify-content: center; align-items: center"
+  [ngStyle]="styleItemPosition(item)"
+>
+  <div
+    #curveText
+    [id]="'curveText-' + pageId + '-' + itemId"
+    [ngStyle]="styleCurveItem(item)"
+  ></div>
 </div>

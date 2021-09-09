@@ -59,12 +59,12 @@ export class FontListComponent implements OnInit {
       .querySelector('#searchFontInput')
       .querySelector<HTMLElement>('span').style.display = 'none';
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor =
-      '#f7f7f7';
+      '#293039';
   }
 
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor =
-      '#f7f7f7';
+      '#293039';
   }
 
   checkList(index: number, fontFamily: string) {

@@ -43,6 +43,9 @@ export interface Item {
   onPlayButton?: boolean;
   onPlayVideo?: boolean;
   isOnResize?: boolean;
+  tags?: string[];
+  svgScale?: string;
+  opacity?: string;
 }
 
 export interface Page {
@@ -100,6 +103,8 @@ export interface AssetElement {
   userId: string;
   category: string[];
   tags: string[];
+  svg?: string;
+  clickCount?: number;
 }
 
 export interface AssetMusic {
@@ -133,6 +138,8 @@ export interface UserData {
   displayName: string;
   role: UserRole;
   template: UploadUserTemplate[];
+  email: string;
+  timestamp: number;
 }
 
 export interface AdminTemplate {
@@ -145,6 +152,8 @@ export interface AdminTemplate {
 
 export interface AdminTemplates {
   templates: AdminTemplate[];
+  clickCount: number;
+  downloadCount: number;
 }
 
 export interface UploadUserTemplate {

@@ -6,6 +6,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { UserRole } from 'src/app/shared/auth.roles';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { UndoRedoService } from 'src/app/services/undo-redo.service';
 import { Subject, Subscription } from 'rxjs';
 import * as CSS from 'csstype';
 
@@ -36,10 +37,13 @@ export class TemplatesComponent implements OnInit {
   tags = ['tennis', 'flower', 'football'];
   thumbnailTimer: any;
   thumbnailIndex: number;
+  theDesignWidth;
+  theDesignHeight;
 
   constructor(
-    public firebaseSerivce: FirebaseService,
+    public firebaseService: FirebaseService,
     public ds: DesignService,
+    public ur: UndoRedoService,
     public moveableService: MoveableService,
     public authService: AuthService
   ) {}
@@ -48,10 +52,10 @@ export class TemplatesComponent implements OnInit {
     if (this.ds.latestTemplate) {
       this.ds.theDesign = this.ds.latestTemplate.design;
     }
+    // this.initScrollButton();
   }
 
   ngAfterViewInit(): void {
-    this.readAdminTemplates();
     this.readUserTemplates();
     this.item$ = this.selectedItemObserve.subscribe((items: []) => {
       this.count = items.length;
@@ -103,24 +107,9 @@ export class TemplatesComponent implements OnInit {
     this.theTab = event;
   }
 
-  readAdminTemplates() {
-    this.firebaseSerivce.readAdminTemplates().subscribe((e) => {
-      this.ds.adminTemplates = e.map((data) => {
-        return {
-          docId: data.payload.doc.id,
-          ...data.payload.doc.data(),
-        } as AdminTemplates;
-      });
-
-      this.ds.adminAllTemplates = this.ds.adminTemplates;
-
-      this.initScrollButton();
-    });
-  }
-
   async readUserTemplates() {
     if (JSON.parse(localStorage.getItem('user'))?.uid) {
-      this.firebaseSerivce
+      this.firebaseService
         .readObservableUser(JSON.parse(localStorage.getItem('user')).uid)
         .subscribe((e) => {
           let users = e.map((data) => {
@@ -209,7 +198,6 @@ export class TemplatesComponent implements OnInit {
 
   addUserTemplatePage(i) {
     this.ds.isTemplate = true;
-    console.log(this.userTemplates[0].design.pages[0].items);
 
     for (let i = 0; i < this.userTemplates.length; i++)
       for (
@@ -465,7 +453,7 @@ export class TemplatesComponent implements OnInit {
     this.selectedUserItemObserve.next(this.selectedItemTemp);
 
     // this.firebaseSerivce.removeAdminTemplates(arr);
-    this.firebaseSerivce.updateUserTemplate(this.userTemplates, this.userDocId);
+    this.firebaseService.updateUserTemplate(this.userTemplates, this.userDocId);
   }
 
   closeUserTemplatePanel() {
@@ -496,9 +484,6 @@ export class TemplatesComponent implements OnInit {
     let offsetValue = parseFloat(category.style.left);
 
     if (!offsetValue) offsetValue = 0;
-    console.log(
-      itemCount - parseInt((((offsetValue * -1) / 100) * 2).toString()) - 2
-    );
 
     if (
       !(offsetValue > 0 && offsetValue < 1) &&
@@ -528,7 +513,6 @@ export class TemplatesComponent implements OnInit {
 
     if (!offsetValue) offsetValue = 0;
 
-    console.log(offsetValue);
     if (Math.abs(offsetValue) > 0) {
       if (Math.abs(offsetValue) / 100 > 0 && Math.abs(offsetValue) / 100 < 1)
         category.style.left = (offsetValue + percent / 2).toString() + '%';
@@ -601,7 +585,6 @@ export class TemplatesComponent implements OnInit {
   }
 
   putAllPages() {
-    console.log(this.ds.selectedTemplate);
     this.ds.isTemplate = true;
     this.ds.selectedCategoryIndex = this.ds.categoryName.indexOf(
       this.ds.selectedTemplate.design.category.categoryType.title
@@ -619,6 +602,12 @@ export class TemplatesComponent implements OnInit {
         this.ds.selectedTemplate.design.category.title
       ) {
         this.ds.selectedTemplateIndex = i;
+        this.setPadSize(
+          this.ds.adminAllTemplates[this.ds.selectedCategoryIndex].templates[i]
+            .design.category.size.x,
+          this.ds.adminAllTemplates[this.ds.selectedCategoryIndex].templates[i]
+            .design.category.size.y
+        );
         break;
       }
     }
@@ -629,10 +618,9 @@ export class TemplatesComponent implements OnInit {
     this.ds.theDesign = design;
     this.ds.thePageId = 0;
     this.moveableService.selectedPageId = '0';
-
-    console.log(this.ds.selectedCategoryIndex, this.ds.selectedTemplateIndex);
   }
 
+  clickCount = 0;
   clickCategory(template, j) {
     clearInterval(this.thumbnailTimer);
     this.ds.selectedTemplate = template;
@@ -644,6 +632,42 @@ export class TemplatesComponent implements OnInit {
       this.putAllPages();
       this.ds.selectedTemplate = null;
     }
+
+    // Increase click count...
+    this.firebaseService
+      .readTemplateCount(this.ds.categoryName[this.ds.selectedCategoryIndex])
+      .subscribe((e) => {
+        let data = e.data();
+        if (data['clickCount'] == undefined) {
+          this.clickCount = 0;
+        } else {
+          this.clickCount = data['clickCount'];
+        }
+        this.clickCount++;
+        this.firebaseService.updateTemplateCount(
+          this.clickCount,
+          this.ds.categoryName[this.ds.selectedCategoryIndex]
+        );
+      });
+    this.ur.saveTheData(this.ds.theDesign);
+  }
+
+  setPadSize(x, y) {
+    this.theDesignWidth = this.ds.toPx(this.ds.selectedDimensionType, x);
+    this.theDesignHeight = this.ds.toPx(this.ds.selectedDimensionType, y);
+
+    this.ds.theDesign.category.size.x = this.theDesignWidth;
+    this.ds.theDesign.category.size.y = this.theDesignHeight;
+    this.moveableService.isDimension = false;
+
+    let designPanel = document.querySelector<HTMLElement>('#designPanel');
+    let width = designPanel.clientWidth;
+    let height = designPanel.clientHeight;
+
+    this.ds.zoomFitInside(width, height);
+
+    (document.querySelector('#padWidth') as HTMLInputElement).value = x;
+    (document.querySelector('#padHeight') as HTMLInputElement).value = y;
   }
 
   backToCategory() {
@@ -700,7 +724,6 @@ export class TemplatesComponent implements OnInit {
       this.ds.filteredTemplate = [];
       let filter = keyword.split(' ');
 
-      console.log(this.ds.adminAllTemplates.length);
       for (let i = 0; i < this.ds.adminAllTemplates.length; i++) {
         for (let j = 0; j < this.ds.adminAllTemplates[i]?.templates.length; j++)
           for (let k = 0; k < filter.length; k++) {

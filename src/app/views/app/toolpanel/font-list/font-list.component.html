@@ -27,7 +27,7 @@
   >
     <div #scrollTop></div>
     <ng-container *ngFor="let font of array; let i = index">
-      <div class="fontItem" [ngStyle]="{ fontFamily: font.family }" (click)="checkList(i, font.family)">
+      <div class="fontItem" [ngStyle]="{ fontFamily: font.family, color: 'white' }" (click)="checkList(i, font.family)">
         <span>{{ font.family }}</span>
         <!-- <mat-icon id="icon-{{ i }}" style="display: none">done</mat-icon> -->
         <svg

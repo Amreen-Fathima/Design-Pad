@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
     { title: 'Video' },
     { title: 'Text', disabled: true },
     { title: 'Template', disabled: false },
+    { title: 'Analytics' },
   ];
   theTabId: number = 0;
 

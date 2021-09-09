@@ -20,7 +20,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -39,15 +39,15 @@ input:hover {
 }
 
 :host ::ng-deep .shadowSlider .mat-slider-thumb {
-  background-color: rgba(109, 47, 165);
+  background-color: rgba(255, 255, 255);
 }
 
 :host ::ng-deep .shadowSlider .mat-slider-thumb-label {
-  background-color: rgba(109, 47, 165);
+  background-color: rgba(255, 255, 255);
 }
 
 :host ::ng-deep .shadowSlider .mat-slider-track-fill {
-  background-color: rgba(109, 47, 165);
+  background-color: rgba(255, 255, 255);
 }
 
 #colorPicker {
@@ -57,7 +57,7 @@ input:hover {
   overflow: hidden;
 }
 
-[type='color'] {
+[type="color"] {
   border: 0;
   padding: 0;
   width: 200%;

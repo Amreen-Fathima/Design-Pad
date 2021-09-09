@@ -31,6 +31,14 @@
         <ng-container *ngIf="item.type == ItemType.video">
           <app-video-element [item]="item"></app-video-element>
         </ng-container>
+        <ng-container *ngIf="item.type == ItemType.group">
+          <div [id]="'groupElement-' + pageId + '-' + item.itemId"
+          [ngStyle]="styleItem(item)"
+          [lazyLoad]="item.url"
+          [attr.pageId]="item.pageId"
+          [attr.itemId]="item.itemId"
+          [defaultImage]="item.thumbnail"></div>
+        </ng-container>
       </ng-container>
     </div>
 
@@ -55,6 +63,14 @@
         </ng-container>
         <ng-container *ngIf="item.type == ItemType.video">
           <app-video-selector [item]="item"></app-video-selector>
+        </ng-container>
+        <ng-container *ngIf="item.type == ItemType.group">
+          <div [id]="'groupSelector-' + item.pageId + '-' + item.itemId"
+          class="target"
+          [ngStyle]="styleItemPosition(item)"
+          [attr.pageId]="item.pageId"
+          [attr.itemId]="item.itemId"
+          [attr.itemType]="item.type"></div>
         </ng-container>
       </ng-container>
     </div>

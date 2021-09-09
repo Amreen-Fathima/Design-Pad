@@ -14,6 +14,8 @@ import { Subject, Subscription } from 'rxjs';
 import * as CSS from 'csstype';
 import { AuthService } from 'src/app/shared/auth.service';
 import { UserRole } from 'src/app/shared/auth.roles';
+import { UnsplashService } from './../../../../services/unsplash.service';
+import { PexelService } from './../../../../services/pexel.service';
 
 @Component({
   selector: 'app-sidebar-photos',
@@ -28,41 +30,103 @@ export class PhotosComponent implements AfterViewInit {
   selectedItemObserve = new Subject();
   count: number = 0;
   role = UserRole;
+  unsplashItems = [];
+  pexelItems = [];
+  photoItems = [];
 
   constructor(
     public assetService: AssetService,
     public ds: DesignService,
-    public authService: AuthService
+    public authService: AuthService,
+    private unsplashService: UnsplashService,
+    private pexelService: PexelService
   ) {}
 
   ngAfterViewInit(): void {
-    this.readImagesByTag('');
+    this.readImagesByTag(10);
 
-    this.item$ = this.selectedItemObserve.subscribe((items: []) => {
-      this.count = items.length;
-      if (items.length != 0) {
-        (
-          document.querySelector('#deleteAdminImageStatus') as HTMLElement
-        ).style.opacity = '1';
-      } else {
-        (
-          document.querySelector('#deleteAdminImageStatus') as HTMLElement
-        ).style.opacity = '0';
-      }
-    });
+    // this.item$ = this.selectedItemObserve.subscribe((items: []) => {
+    //   this.count = items.length;
+    //   if (items.length != 0) {
+    //     (
+    //       document.querySelector('#deleteAdminImageStatus') as HTMLElement
+    //     ).style.opacity = '1';
+    //   } else {
+    //     (
+    //       document.querySelector('#deleteAdminImageStatus') as HTMLElement
+    //     ).style.opacity = '0';
+    //   }
+    // });
   }
 
-  onImgClick(assetImage: AssetImage) {
-    this.ds.addImageItem(assetImage);
+  onImgClick(assetImage) {
+    if (assetImage.urls !== undefined) {
+      this.ds.addImageItem({
+        uid: assetImage.id,
+        downloadURL: assetImage.links.download,
+        path: assetImage.links.download_location,
+        thumbnail: assetImage.urls.thumb,
+        width: assetImage.width,
+        height: assetImage.height,
+        timestamp: new Date().getTime(),
+        userId: 'admin',
+        tags: [''],
+      });
+    } else {
+      this.ds.addImageItem({
+        uid: assetImage.id,
+        downloadURL: assetImage.src.original,
+        path: assetImage.src.photographer_url,
+        thumbnail: assetImage.src.original,
+        width: assetImage.width,
+        height: assetImage.height,
+        timestamp: new Date().getTime(),
+        userId: 'admin',
+        tags: [''],
+      });
+    }
+    // else {
+    //   this.ds.addImageItem(assetImage);
+    // }
   }
 
-  onStartDrag(event: DragEvent, assetImage: AssetImage) {
-    event.dataTransfer.setData('jsonAssetImage', JSON.stringify(assetImage));
+  onStartDrag(event: DragEvent, assetImage) {
+    let asset: AssetImage;
+    if (assetImage.urls !== undefined) {
+      asset = {
+        uid: assetImage.id,
+        downloadURL: assetImage.links.download,
+        path: assetImage.links.download_location,
+        thumbnail: assetImage.urls.thumb,
+        width: assetImage.width,
+        height: assetImage.height,
+        timestamp: new Date().getTime(),
+        userId: 'admin',
+        tags: [''],
+      };
+      event.dataTransfer.setData('jsonAssetImage', JSON.stringify(asset));
+    } else {
+      asset = {
+        uid: assetImage.id,
+        downloadURL: assetImage.src.original,
+        path: assetImage.src.photographer_url,
+        thumbnail: assetImage.src.original,
+        width: assetImage.width,
+        height: assetImage.height,
+        timestamp: new Date().getTime(),
+        userId: 'admin',
+        tags: [''],
+      };
+      event.dataTransfer.setData('jsonAssetImage', JSON.stringify(asset));
+    }
+    // else {
+    //   event.dataTransfer.setData('jsonAssetImage', JSON.stringify(assetImage));
+    // }
   }
 
   onKeyUpSearch(event) {
     if (event.keyCode == 13) {
-      this.readImagesByTag(event.target.value);
+      this.readImagesByTag(10);
     }
     if (event.key == 'Delete') {
       console.log('Delete');
@@ -70,27 +134,150 @@ export class PhotosComponent implements AfterViewInit {
   }
 
   isLoading = false;
+  searchTag: string = '';
   assetImages: AssetImage[] = [];
   heights: number[] = [];
-  readImagesByTag(tag: string) {
+  unsplashHeights: number[] = [];
+  pexelHeights: number[] = [];
+  photoHeights: number[] = [];
+  pageIndex: number = 1;
+  readImagesByTag(per_page: number) {
+    let tag = this.searchTag;
+    this.pageIndex = 1;
     this.isLoading = true;
-    this.assetService.readImageByTag(tag).subscribe((data) => {
-      this.assetImages = data.map((e) => {
-        return {
-          uid: e.payload.doc.id,
-          ...e.payload.doc.data(),
-        } as AssetImage;
-      });
+    // this.assetService.readImageByTag(tag).subscribe((data) => {
+    //   this.assetImages = data.map((e) => {
+    //     return {
+    //       uid: e.payload.doc.id,
+    //       ...e.payload.doc.data(),
+    //     } as AssetImage;
+    //   });
 
-      this.heights = decideHeights(this.assetImages, 330, 150, 4);
-      this.isLoading = false;
-    });
+    //   this.heights = decideHeights(this.assetImages, 330, 150, 4);
+    //   this.isLoading = false;
+    // });
+    this.photoItems = [];
+    this.photoHeights = [];
+    if (tag == '') {
+      this.unsplashService.getImage(per_page, 1).subscribe((result: any) => {
+        this.unsplashItems = result;
+        for (let i = 0; i < this.unsplashItems.length; i++) {
+          this.photoItems.push(this.unsplashItems[i]);
+        }
+        this.unsplashHeights = decideHeights(this.unsplashItems, 330, 150, 4);
+        for (let j = 0; j < this.unsplashHeights.length; j++) {
+          this.photoHeights.push(this.unsplashHeights[j]);
+        }
+      });
+      this.pexelService.getImage(per_page, 1).subscribe((result: any) => {
+        this.pexelItems = result['photos'];
+        for (let i = 0; i < this.pexelItems.length; i++) {
+          this.photoItems.push(this.pexelItems[i]);
+        }
+        this.pexelHeights = decideHeights(this.pexelItems, 330, 150, 4);
+        for (let j = 0; j < this.pexelHeights.length; j++) {
+          this.photoHeights.push(this.pexelHeights[j]);
+        }
+      });
+    } else {
+      this.unsplashService
+        .searchImage(per_page, 1, tag)
+        .subscribe((result: any) => {
+          this.unsplashItems = result['results'];
+          for (let i = 0; i < this.unsplashItems.length; i++) {
+            this.photoItems.push(this.unsplashItems[i]);
+          }
+          this.unsplashHeights = decideHeights(this.unsplashItems, 330, 150, 4);
+          for (let j = 0; j < this.unsplashHeights.length; j++) {
+            this.photoHeights.push(this.unsplashHeights[j]);
+          }
+        });
+      this.pexelService
+        .searchImage(per_page, 1, tag)
+        .subscribe((result: any) => {
+          this.pexelItems = result['photos'];
+          for (let i = 0; i < this.pexelItems.length; i++) {
+            this.photoItems.push(this.pexelItems[i]);
+          }
+          this.pexelHeights = decideHeights(this.pexelItems, 330, 150, 4);
+          for (let j = 0; j < this.pexelHeights.length; j++) {
+            this.photoHeights.push(this.pexelHeights[j]);
+          }
+        });
+    }
+  }
+
+  onClickLoadMore() {
+    this.pageIndex++;
+    let tag = this.searchTag;
+    if (tag == '') {
+      this.unsplashService
+        .getImage(10, this.pageIndex)
+        .subscribe((result: any) => {
+          this.unsplashItems = result;
+          for (let i = 0; i < this.unsplashItems.length; i++) {
+            this.photoItems.push(this.unsplashItems[i]);
+          }
+          this.unsplashHeights = decideHeights(this.unsplashItems, 330, 150, 4);
+          for (let j = 0; j < this.unsplashHeights.length; j++) {
+            this.photoHeights.push(this.unsplashHeights[j]);
+          }
+        });
+      this.pexelService
+        .getImage(10, this.pageIndex)
+        .subscribe((result: any) => {
+          this.pexelItems = result['photos'];
+          for (let i = 0; i < this.pexelItems.length; i++) {
+            this.photoItems.push(this.pexelItems[i]);
+          }
+          this.pexelHeights = decideHeights(this.pexelItems, 330, 150, 4);
+          for (let j = 0; j < this.pexelHeights.length; j++) {
+            this.photoHeights.push(this.pexelHeights[j]);
+          }
+        });
+    } else {
+      this.unsplashService
+        .searchImage(10, this.pageIndex, tag)
+        .subscribe((result: any) => {
+          this.unsplashItems = result['results'];
+          for (let i = 0; i < this.unsplashItems.length; i++) {
+            this.photoItems.push(this.unsplashItems[i]);
+          }
+          this.unsplashHeights = decideHeights(this.unsplashItems, 330, 150, 4);
+          for (let j = 0; j < this.unsplashHeights.length; j++) {
+            this.photoHeights.push(this.unsplashHeights[j]);
+          }
+        });
+      this.pexelService
+        .searchImage(10, this.pageIndex, tag)
+        .subscribe((result: any) => {
+          this.pexelItems = result['photos'];
+          for (let i = 0; i < this.pexelItems.length; i++) {
+            this.photoItems.push(this.pexelItems[i]);
+          }
+          this.pexelHeights = decideHeights(this.pexelItems, 330, 150, 4);
+          for (let j = 0; j < this.pexelHeights.length; j++) {
+            this.photoHeights.push(this.pexelHeights[j]);
+          }
+        });
+    }
   }
 
   tags = ['tennis', 'flower', 'football'];
 
-  test(event) {
-    console.log(event);
+  lazyLoad(target) {
+    const obs = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          const src = img.getAttribute('data-src');
+          img.setAttribute('src', src);
+          img.classList.add('fadeIn');
+          observer.disconnect(); //entry.target
+        }
+      });
+    });
+    obs.observe(target);
   }
 
   overImageItem(i) {
@@ -103,7 +290,7 @@ export class PhotosComponent implements AfterViewInit {
           document
             .querySelector('#adminImageItem' + i)
             .querySelector('div') as HTMLElement
-        ).style.display = 'block';
+        ).style.display = 'none';
       (
         document.querySelector('#adminImageItem' + i).firstChild as HTMLElement
       ).style.borderColor = '#f16624';

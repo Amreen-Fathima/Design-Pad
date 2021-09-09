@@ -4,6 +4,12 @@
   [config]="{ suppressScrollX: true, wheelPropagation: false }"
 >
   <div
+    *ngIf="ds.userTemplates.length == 0"
+    style="color: white; font-size: 26px; margin-top: 20px"
+  >
+    No Templates to display
+  </div>
+  <div
     style="
       display: grid;
       grid-template-columns: 1fr 1fr;

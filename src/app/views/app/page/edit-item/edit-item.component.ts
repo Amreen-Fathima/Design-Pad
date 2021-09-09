@@ -59,7 +59,19 @@ export class EditItemComponent implements OnInit {
             '#textEditor-' + this.item.pageId + '-' + this.item.itemId
           )
         );
-      // this.toolbarService.setCurveEffect(this.item.pageId, this.item.itemId, this.item.angle, false);
+      setTimeout(() => {
+        this.toolbarService.createTextEditor(
+          this.item.pageId,
+          this.item.itemId,
+          false
+        );
+        this.toolbarService.setCurveEffect(
+          this.item.pageId,
+          this.item.itemId,
+          this.item.angle,
+          false
+        );
+      });
     }
   }
 
@@ -78,7 +90,6 @@ export class EditItemComponent implements OnInit {
     };
   }
   styleItem(item: Item): CSS.Properties {
-    console.log(item.textColor);
     return {
       position: 'absolute',
       top: 0,
@@ -92,7 +103,7 @@ export class EditItemComponent implements OnInit {
       fontWeight: item.fontWeight,
       textShadow: item.textShadow,
       WebkitTextStroke: item.textStroke,
-      opacity: item.textOpacity,
+      opacity: item.isCurve ? item.textOpacity : item.opacity,
       zIndex: item.zIndex,
       color: item.textColor,
     };
@@ -101,7 +112,7 @@ export class EditItemComponent implements OnInit {
     return {
       fontFamily: item.fontFamily,
       fontSize: item.fontSize,
-      opacity: item.curveOpacity,
+      opacity: item.isCurve ? item.opacity : item.curveOpacity,
     };
   }
   stopPropagation(event) {

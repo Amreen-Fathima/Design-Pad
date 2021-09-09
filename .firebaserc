@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "designpaddemo"
+    "default": "designpaddemo",
+    "hosting": "design-pad-a3fe7"
   }
 }

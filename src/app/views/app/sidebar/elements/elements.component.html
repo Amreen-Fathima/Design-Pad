@@ -45,11 +45,11 @@
             class="d-flex justify-content-between"
             style="padding: 15px 10px 10px 10px"
           >
-            <div style="font-size: 1.1rem; font-weight: bold">
+            <div style="font-size: 1.1rem; font-weight: bold; color: #fff">
               {{ assetService.categoryName[i] }}
             </div>
             <div
-              style="font-weight: 500; cursor: pointer"
+              style="font-weight: 500; cursor: pointer; color: #fff"
               (click)="selectElementCategory(i)"
             >
               See all
@@ -66,7 +66,7 @@
                   <div *ngIf="j < 17" class="category-element-item">
                     <img
                       [lazyLoad]="element.thumbnail"
-                      (click)="AddSVG($event, element)"
+                      (click)="AddSVG($event, element, i)"
                     />
                   </div>
                 </ng-container>
@@ -149,10 +149,14 @@
           <div
             class="d-flex justify-content-center align-items-center"
             style="cursor: pointer"
+            [ngStyle]="{
+              paddingTop: element.height < 20 ? '30px' : '0px',
+              paddingBottom: element.height < 20 ? '30px' : '0px'
+            }"
           >
             <img
               [lazyLoad]="element.thumbnail"
-              (click)="AddSVG($event, element)"
+              (click)="AddSVG($event, element, i)"
             />
           </div>
         </ng-container>

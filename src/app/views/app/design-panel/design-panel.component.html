@@ -63,7 +63,7 @@
       >
         New Template
       </div>
-      <div>New</div>
+      <div>New Blank Page</div>
       <div>Duplicate Page</div>
       <div>Remove Page</div>
       <div>Save</div>
@@ -186,6 +186,7 @@
                 background-color: #3834fb;
               "
               (click)="download()"
+              [disabled]="this.downloadService.onDownloading"
             >
               Download
             </button>

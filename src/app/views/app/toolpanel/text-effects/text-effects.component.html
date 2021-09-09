@@ -1,25 +1,59 @@
 <div>
   <div class="d-flex justify-content-around mt-1">
-    <div id="selector-none" class="effectSelector d-flex flex-column" (click)="setTextEffect('none')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/none.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">None</span>
+    <div
+      id="selector-none"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('none')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/none.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">None</span>
     </div>
-    <div id="selector-shadow" class="effectSelector d-flex flex-column" (click)="setTextEffect('shadow')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/shadow.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Shadow</span>
+    <div
+      id="selector-shadow"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('shadow')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/shadow.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Shadow</span>
     </div>
-    <div id="selector-lift" class="effectSelector d-flex flex-column" (click)="setTextEffect('lift')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/lift.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Lift</span>
+    <div
+      id="selector-lift"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('lift')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/lift.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Lift</span>
     </div>
   </div>
 
   <!-- Shadow -->
   <div id="shadow" class="effectContent" style="padding: 10px; display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="offset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Offset</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="offset"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -33,9 +67,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Direction</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="angle"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -49,9 +93,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Blur</span>
-        <input type="number" [(ngModel)]="blur" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Blur</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="blur"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -65,9 +119,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Transparency</span>
-        <input type="number" [(ngModel)]="opacity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Transparency</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="opacity"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -80,8 +144,13 @@
       >
       </mat-slider>
     </div>
-    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+    <div
+      class="d-flex justify-content-between"
+      style="padding-left: 8px; padding-right: 8px"
+    >
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -98,9 +167,19 @@
   <!-- Lift -->
   <div class="effectContent" id="lift" style="display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="intensity" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Intensity</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="intensity"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -116,26 +195,60 @@
   </div>
 
   <div class="d-flex justify-content-around mt-1">
-    <div id="selector-hallow" class="effectSelector d-flex flex-column" (click)="setTextEffect('hallow')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/hollow.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Hollow</span>
+    <div
+      id="selector-hallow"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('hallow')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/hollow.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Hollow</span>
     </div>
-    <div id="selector-splice" class="effectSelector d-flex flex-column" (click)="setTextEffect('splice')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/splice.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Splice</span>
+    <div
+      id="selector-splice"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('splice')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/splice.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Splice</span>
     </div>
-    <div id="selector-echo" class="effectSelector d-flex flex-column" (click)="setTextEffect('echo')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/echo.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Echo</span>
+    <div
+      id="selector-echo"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('echo')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/echo.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Echo</span>
     </div>
   </div>
 
   <!-- Hollow -->
   <div class="effectContent" id="hallow" style="padding: 10px; display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
-        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Thickness</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="thickness"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -148,8 +261,13 @@
       >
       </mat-slider>
     </div>
-    <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+    <div
+      class="d-flex justify-content-between"
+      style="padding-left: 8px; padding-right: 8px"
+    >
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -166,9 +284,19 @@
   <!-- Splice -->
   <div class="effectContent" id="splice" style="padding: 10px; display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="spliceOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Offset</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="spliceOffset"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -182,9 +310,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Direction</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="angle"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -198,9 +336,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Thickness</span>
-        <input type="number" [(ngModel)]="thickness" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Thickness</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="thickness"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -214,7 +362,9 @@
       </mat-slider>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Shadow Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -228,7 +378,9 @@
       </div>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Outline Color</span>
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Outline Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -246,9 +398,19 @@
   <!-- echo -->
   <div class="effectContent" id="echo" style="padding: 10px; display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="echoOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Offset</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="echoOffset"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -262,9 +424,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Direction</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="angle"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -278,7 +450,9 @@
       </mat-slider>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Shadow Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -294,26 +468,60 @@
   </div>
 
   <div class="d-flex justify-content-around mt-1">
-    <div id="selector-glitch" class="effectSelector d-flex flex-column" (click)="setTextEffect('glitch')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/glitch.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Glitch</span>
+    <div
+      id="selector-glitch"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('glitch')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/glitch.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Glitch</span>
     </div>
-    <div id="selector-neon" class="effectSelector d-flex flex-column" (click)="setTextEffect('neon')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/neon.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Neon</span>
+    <div
+      id="selector-neon"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('neon')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/neon.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Neon</span>
     </div>
-    <div id="selector-curve" class="effectSelector d-flex flex-column" (click)="setTextEffect('curve')">
-      <img class="text-effect-items" src="../../../../../assets/img/text-effects/curve.jpg" draggable="false" />
-      <span class="mt-1" style="text-align: center">Curve</span>
+    <div
+      id="selector-curve"
+      class="effectSelector d-flex flex-column"
+      (click)="setTextEffect('curve')"
+    >
+      <img
+        class="text-effect-items"
+        src="../../../../../assets/img/text-effects/curve.jpg"
+        draggable="false"
+      />
+      <span class="mt-1" style="text-align: center; color: white">Curve</span>
     </div>
   </div>
 
   <!-- glitch; -->
   <div class="effectContent" id="glitch" style="padding: 10px; display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Offset</span>
-        <input type="number" [(ngModel)]="glitchOffset" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Offset</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="glitchOffset"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -327,9 +535,19 @@
       </mat-slider>
     </div>
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Direction</span>
-        <input type="number" [(ngModel)]="angle" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Direction</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="angle"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -343,21 +561,95 @@
       </mat-slider>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Color</span>
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Color</span
+      >
       <div style="display: flex">
         <div
-          style="width: 30px; height: 30px; border-radius: 4px; display: flex; margin-right: 10px; cursor: pointer"
+          style="
+            width: 30px;
+            height: 30px;
+            display: flex;
+            margin-right: 10px;
+            cursor: pointer;
+          "
+          [ngStyle]="{
+            borderRadius: '4px',
+            borderColor: 'white',
+            borderWidth: isRed5Pink ? '0px' : '1.5px',
+            borderStyle: 'solid',
+            boxSizing: 'content-box'
+          }"
           (click)="onInputGlitchChange_A()"
         >
-          <div style="border-radius: 4px 0px 0px 4px; width: 15px; height: 30px; background-color: rgb(0, 255, 255)"></div>
-          <div style="border-radius: 0px 4px 4px 0px; width: 15px; height: 30px; background-color: rgb(255, 0, 255)"></div>
-        </div>
-        <div style="width: 30px; height: 30px; border-radius: 4px; display: flex; cursor: pointer">
           <div
-            style="border-radius: 4px 0px 0px 4px; width: 15px; height: 30px; background-color: rgb(0, 255, 255)"
-            (click)="onInputGlitchChange_B()"
-          ></div>
-          <div style="border-radius: 0px 4px 4px 0px; width: 15px; height: 30px; background-color: rgb(255, 0, 0)"></div>
+            id="colorPicker"
+            style="margin-left: auto; width: 15px; height: 30px"
+          >
+            <input
+              type="color"
+              [(ngModel)]="glitchColorA1"
+              (change)="saveTheData()"
+              (input)="onInputGlitchA1ColorChange()"
+              [value]="glitchColorA1"
+              (focus)="this.ds.isOnInput = true"
+              (focusout)="this.ds.isOnInput = false"
+            />
+          </div>
+          <div
+            id="colorPicker"
+            style="margin-left: auto; width: 15px; height: 30px"
+          >
+            <input
+              type="color"
+              [(ngModel)]="glitchColorA2"
+              (change)="saveTheData()"
+              (input)="onInputGlitchA2ColorChange()"
+              [value]="glitchColorA2"
+              (focus)="this.ds.isOnInput = true"
+              (focusout)="this.ds.isOnInput = false"
+            />
+          </div>
+        </div>
+        <div
+          style="width: 30px; height: 30px; display: flex; cursor: pointer"
+          [ngStyle]="{
+            borderRadius: '4px',
+            borderColor: 'white',
+            borderWidth: isRed5Pink ? '1.5px' : '0px',
+            borderStyle: 'solid',
+            boxSizing: 'content-box'
+          }"
+          (click)="onInputGlitchChange_B()"
+        >
+          <div
+            id="colorPicker"
+            style="margin-left: auto; width: 15px; height: 30px"
+          >
+            <input
+              type="color"
+              [(ngModel)]="glitchColorB1"
+              (change)="saveTheData()"
+              (input)="onInputGlitchB1ColorChange()"
+              [value]="glitchColorB1"
+              (focus)="this.ds.isOnInput = true"
+              (focusout)="this.ds.isOnInput = false"
+            />
+          </div>
+          <div
+            id="colorPicker"
+            style="margin-left: auto; width: 15px; height: 30px"
+          >
+            <input
+              type="color"
+              [(ngModel)]="glitchColorB2"
+              (change)="saveTheData()"
+              (input)="onInputGlitchB2ColorChange()"
+              [value]="glitchColorB2"
+              (focus)="this.ds.isOnInput = true"
+              (focusout)="this.ds.isOnInput = false"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -366,9 +658,19 @@
   <!-- Neon -->
   <div class="effectContent" id="neon" style="display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="neonValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Intensity</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="neonValue"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"
@@ -382,7 +684,9 @@
       </mat-slider>
     </div>
     <div class="d-flex justify-content-between" style="padding: 8px">
-      <span style="margin-top: auto; margin-bottom: auto">Shadow Color</span>
+      <span style="margin-top: auto; margin-bottom: auto; color: white"
+        >Shadow Color</span
+      >
       <div id="colorPicker" style="margin-left: auto">
         <input
           type="color"
@@ -400,9 +704,19 @@
   <!-- Curve -->
   <div class="effectContent" id="curve" style="display: none">
     <div>
-      <div class="d-flex justify-content-between" style="padding-left: 8px; padding-right: 8px">
-        <span style="margin-top: auto; margin-bottom: auto">Intensity</span>
-        <input type="number" [(ngModel)]="curveValue" (focus)="this.ds.isOnInput = true" (focusout)="this.ds.isOnInput = false" />
+      <div
+        class="d-flex justify-content-between"
+        style="padding-left: 8px; padding-right: 8px"
+      >
+        <span style="margin-top: auto; margin-bottom: auto; color: white"
+          >Intensity</span
+        >
+        <input
+          type="number"
+          [(ngModel)]="curveValue"
+          (focus)="this.ds.isOnInput = true"
+          (focusout)="this.ds.isOnInput = false"
+        />
       </div>
       <mat-slider
         class="shadowSlider"

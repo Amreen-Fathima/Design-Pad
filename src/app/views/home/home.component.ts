@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           ...data.payload.doc.data(),
         } as AdminTemplates;
       });
-      console.log(this.ds.adminAllTemplates);
 
       for (let i = 0; i < this.ds.adminAllTemplates.length; i++) {
         this.ds.latestTemplates.push(

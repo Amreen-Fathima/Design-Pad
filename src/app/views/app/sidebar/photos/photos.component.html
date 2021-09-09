@@ -1,14 +1,33 @@
-<ng-select
-  style="margin: 10px 20px"
-  [items]="tags"
-  bindLabel="name"
-  [placeholder]="'Search'"
-  (change)="readImagesByTag($event)"
-  (clear)="readImagesByTag('')"
-  (focus)="this.ds.isOnInput = true"
-  (blur)="this.ds.isOnInput = false"
->
-</ng-select>
+<div class="select-search">
+  <input
+    type="text"
+    id="searchPhoto"
+    placeholder="Search"
+    (focus)="this.ds.isOnInput = true"
+    (focusout)="this.ds.isOnInput = false"
+    (blur)="this.ds.isOnInput = false"
+    (keyup)="onKeyUpSearch($event)"
+    [(ngModel)]="searchTag"
+  />
+  <i class="bi bi-search"></i>
+  <div class="icon-group">
+    <i class="bi bi-x" *ngIf="ds.keyword" (click)="clearKeyword()"></i>
+    <div *ngIf="false" class="filter-icon">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+      >
+        <path
+          fill="currentColor"
+          fill-rule="evenodd"
+          d="M6.1 17.25a3 3 0 0 1 5.8 0h8.85a.75.75 0 1 1 0 1.5h-8.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 1 1 0-1.5h2.84zm6-6a3 3 0 0 1 5.8 0h2.85a.75.75 0 1 1 0 1.5h-2.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 1 1 0-1.5h8.84zm-6-6a3 3 0 0 1 5.8 0h8.85a.75.75 0 1 1 0 1.5h-8.84a3 3 0 0 1-5.82 0H3.25a.75.75 0 0 1 0-1.5h2.84zM9 7.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm6 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-6 6a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</div>
 
 <perfect-scrollbar
   style="height: calc(100% - 56px); padding: 0px 20px"
@@ -25,8 +44,11 @@
       (dragstart)="onStartDrag($event, assetImage)"
     />
   </div> -->
-  <div #gridContainer class="grid-container">
-    <ng-container *ngFor="let assetImage of assetImages; let i = index">
+  <!-- <span style="font-size: 14px; font-weight: 600; cursor: default; color: #fff;">
+    Unsplash
+  </span> -->
+  <div #gridContainer class="grid-container" style="margin-top: 8px">
+    <ng-container *ngFor="let assetImage of photoItems; let i = index">
       <div
         [id]="'adminImageItem' + i"
         style="position: relative"
@@ -37,8 +59,12 @@
       >
         <img
           class="grid-item"
-          [lazyLoad]="assetImage.thumbnail"
-          [height]="heights[i]"
+          [lazyLoad]="
+            assetImage.urls !== undefined
+              ? assetImage.urls.regular
+              : assetImage.src.original
+          "
+          [height]="photoHeights[i]"
           width="auto"
           (click)="onImgClick(assetImage)"
           (dragstart)="onStartDrag($event, assetImage)"
@@ -75,7 +101,66 @@
       </div>
     </ng-container>
   </div>
-  <div
+  <button
+    style="width: 100%; padding: 10px; margin-top: 8px"
+    (click)="onClickLoadMore()"
+  >
+    Load more
+  </button>
+  <!-- <span style="font-size: 14px; font-weight: 600; cursor: default; color: #fff;">
+    Free pic
+  </span>
+  <div #gridContainer class="grid-container" style="margin-top: 8px;">
+    <ng-container *ngFor="let assetImage of assetImages; let i = index">
+      <div
+        [id]="'adminImageItem' + (unsplashItems.length + pexelItems.length + i)"
+        style="position: relative"
+        [attr.selected]="false"
+        [attr.index]="i+unsplashItems.length+pexelItems.length"
+        (mouseenter)="overImageItem(i+unsplashItems.length+pexelItems.length)"
+        (mouseleave)="leaveImageItem(i+unsplashItems.length+pexelItems.length)"
+      >
+        <img
+          class="grid-item"
+          [lazyLoad]="assetImage.thumbnail"
+          [height]="heights[i]"
+          width="auto"
+          (click)="onImgClick(assetImage, 'free')"
+          (dragstart)="onStartDrag($event, assetImage, 'free')"
+          [ngStyle]="imageItemStyle(i+unsplashItems.length+pexelItems.length)"
+        />
+        <div
+          *ngIf="authService.user?.role == role.Admin"
+          style="
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 21px;
+            height: 21px;
+            border: 1px solid #f16624;
+            cursor: pointer;
+            border-radius: 3px;
+            display: none;
+          "
+          [ngStyle]="checkBoxStyle(i+unsplashItems.length+pexelItems.length)"
+          (click)="checkItem(i+unsplashItems.length+pexelItems.length)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="white"
+            width="21px"
+            height="21px"
+            style="position: absolute"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+          </svg>
+        </div>
+      </div>
+    </ng-container>
+  </div> -->
+  <!-- <div
     id="deleteAdminImageStatus"
     style="
       width: 100%;
@@ -131,5 +216,5 @@
         </svg>
       </button>
     </div>
-  </div>
+  </div> -->
 </perfect-scrollbar>

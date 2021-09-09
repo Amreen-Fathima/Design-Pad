@@ -16,9 +16,21 @@ import { MaterialModule } from 'src/app/material.module';
 import { MusicsComponent } from './musics/musics.component';
 import { ElementsComponent } from './elements/elements.component';
 import { VideosComponent } from './videos/videos.component';
+import { TemplateComponent } from './template/template.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 @NgModule({
-  declarations: [AdminAuthComponent, DashboardComponent, PhotosComponent, DevprogressComponent, MusicsComponent, ElementsComponent, VideosComponent],
+  declarations: [
+    AdminAuthComponent,
+    DashboardComponent,
+    PhotosComponent,
+    DevprogressComponent,
+    MusicsComponent,
+    ElementsComponent,
+    VideosComponent,
+    TemplateComponent,
+    AnalyticsComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -1,7 +1,14 @@
 import { MoveableService } from 'src/app/services/moveable.service';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { DesignService } from 'src/app/services/design.service';
-import { Page } from 'src/app/models/models';
+import { Item, Page } from 'src/app/models/models';
 import { Colors } from 'src/app/constants/colors.service';
 import { ItemType } from 'src/app/models/enums';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -24,13 +31,23 @@ export class PageComponent implements OnInit, AfterViewInit {
   modulesBubble = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
       ['link'],
       ['clean'],
     ],
   };
 
-  constructor(public ds: DesignService, public moveableService: MoveableService, public sanitizer: DomSanitizer, private http: HttpClient) {}
+  constructor(
+    public ds: DesignService,
+    public moveableService: MoveableService,
+    public sanitizer: DomSanitizer,
+    private http: HttpClient
+  ) {}
 
   colors = Colors;
 
@@ -44,7 +61,6 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   setActivePage() {
     if (this.ds.thePageId == this.pageId) return;
-    console.log('active page:' + this.pageId);
     this.ds.thePageId = this.pageId;
   }
 
@@ -103,5 +119,34 @@ export class PageComponent implements OnInit, AfterViewInit {
 
   getSafeUrl(url) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  styleItemPosition(item: Item): CSS.Properties {
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: item.w + 'px',
+      height: item.h + 'px',
+      transform: this.moveableService.strTransform(item),
+      zIndex: item.zIndex,
+    };
+  }
+
+  styleItem(item: Item): CSS.Properties {
+    return {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: item.w + 'px',
+      height: item.h + 'px',
+      transform: this.moveableService.strTransform(item),
+      WebkitTransform: this.moveableService.strTransform(item),
+      border: 'none',
+      filter: item.filter,
+      WebkitFilter: item.filter,
+      clipPath: item.clipStyle,
+      zIndex: item.zIndex,
+    };
   }
 }

@@ -56,12 +56,16 @@ export class MoveableService {
   isMouseMove: boolean = false;
   isDrag: boolean = false;
   isScale: boolean = false;
+  isTBScale: boolean = false;
+  isLRScale: boolean = false;
 
   isOnResize: boolean = false;
 
   isShowDownload: boolean = false;
   isDimension: boolean = false;
   isPosition: boolean = false;
+  isTransPosition: boolean = false;
+  isSelectGroup: boolean = false;
 
   selectFisShowDownload: boolean;
 
@@ -78,6 +82,8 @@ export class MoveableService {
   itemY: number;
 
   onPageElements: Element[] = [];
+
+  transparency: number = 100;
 
   constructor(
     private ds: DesignService,
@@ -147,6 +153,41 @@ export class MoveableService {
         if (this.ur.isUndoRedo) {
           this.ur.isUndoRedo = false;
         }
+        let item = this.getItem(e.selected[0]);
+        if (e.selected.length > 0 && item.type != ItemType.group) {
+          let selItem = this.getItem(e.selected[e.selected.length - 1]);
+          let selOpacity;
+          if (selItem.isCurve) {
+            selOpacity = document.querySelector<HTMLElement>(
+              '#curveText-' + this.ds.thePageId + '-' + selItem.itemId
+            ).style.opacity;
+          } else {
+            selOpacity = document.querySelector<HTMLElement>(
+              this.getType(selItem.type) +
+                this.ds.thePageId +
+                '-' +
+                selItem.itemId
+            ).style.opacity;
+          }
+          if (selOpacity == '') {
+            this.transparency = 100;
+          } else {
+            this.transparency = parseFloat(selOpacity) * 100;
+          }
+        }
+        if (e.selected.length == 1) {
+          let item = this.getItem(e.selected[0]);
+          let ele = [];
+          if (item.type == ItemType.group) {
+            this.isSelectGroup = true;
+            for (let i = 0; i < item.tags.length; i++) {
+              ele.push(document.querySelector(item.tags[i]));
+            }
+            ele.push(e.selected[0]);
+            this.onSelectTargets(ele);
+            item.selected = true;
+          }
+        }
         // e.added.forEach((el) => {
         //   let item = this.getItem(el);
 
@@ -163,6 +204,7 @@ export class MoveableService {
       })
       .on('selectEnd', (e: OnSelectEnd) => {
         targets = e.selected;
+        let item = this.getItem(targets[0]);
 
         if (!this.ds.isPressedShiftKey) {
           this.copiedTheData = [];
@@ -178,11 +220,11 @@ export class MoveableService {
         for (let i = 0; i < targets.length; i++) {
           this.targetGroup.push(targets[i]);
         }
-        if (this.ds.isPressedShiftKey) {
-          this.onSelectTargets(this.targetGroup);
-        } else this.onSelectTargets(targets);
 
-        let item = this.getItem(targets[0]);
+        if (!item || item?.type != ItemType.group)
+          if (this.ds.isPressedShiftKey) {
+            this.onSelectTargets(this.targetGroup);
+          } else this.onSelectTargets(targets);
 
         if (
           e.isDragStart &&
@@ -216,13 +258,13 @@ export class MoveableService {
 
       this.moveable = null;
       this.isSelectedTarget = false;
+      this.isSelectGroup = false;
     }
   }
 
   isResizeObserver: boolean = true;
   async onSelectTargets(targets: (HTMLElement | SVGElement)[]) {
     this.clearMoveable();
-
     if (!this.ds.isPressedShiftKey)
       for (
         let i = 0;
@@ -301,6 +343,9 @@ export class MoveableService {
         ) as HTMLVideoElement;
         this.moveable = this.makeMoveableVideo(thePageId, targets[0]);
         this.ds.onSelectVideoItem(thePageId, item);
+      } else if (item.type == ItemType.group) {
+        this.moveable = this.makeMoveableImage(thePageId, targets[0]);
+        this.ds.onSelectImageItem(thePageId, item);
       }
 
       this.previousTarget = targets[0];
@@ -317,7 +362,7 @@ export class MoveableService {
         if (item?.type == ItemType.text) {
           document.querySelector<HTMLElement>(
             '#sub-menu'
-          ).style.backgroundColor = '#f7f7f7';
+          ).style.backgroundColor = '#293039';
         }
       }
 
@@ -349,6 +394,7 @@ export class MoveableService {
       this.isShowDownload = false;
       this.isDimension = false;
       this.isPosition = false;
+      this.isTransPosition = false;
 
       this.selectableTextEditor();
 
@@ -390,7 +436,7 @@ export class MoveableService {
       );
       let item = this.getItem(editorEle);
       editorEle.style.opacity = '0';
-      curveEle.style.opacity = '1';
+      // curveEle.style.opacity = '1';
     }
   }
 
@@ -1203,8 +1249,33 @@ export class MoveableService {
     }
   }
 
+  getType(status) {
+    let type;
+
+    switch (status) {
+      case ItemType.image:
+        type = '#imageElement-';
+        break;
+      case ItemType.text:
+        type = '#textEditor-';
+        break;
+      case ItemType.element:
+        type = '#SVGElement-';
+        break;
+      case ItemType.video:
+        type = '#VideoElement';
+        break;
+    }
+
+    return type;
+  }
+
   strTransform(item: Item): string {
     return `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scaleX}, ${item.scaleY})`;
+  }
+
+  strTransformHV(item: Item): string {
+    return `scale(${item.w / this.originWidth}, ${item.h / this.originHeight})`;
   }
 
   isCreateTextItem: boolean = false;
@@ -1228,6 +1299,7 @@ export class MoveableService {
         }
         this.ds.isOnInput = false;
         this.isPosition = false;
+        this.isTransPosition = false;
         this.toolbarService.range = null;
       }
     }
@@ -1286,6 +1358,7 @@ export class MoveableService {
     s.removeAllRanges();
     s.addRange(r);
     this.isSelectedTarget = false;
+    this.isSelectGroup = false;
   }
 
   setSelectable(item, page, selector) {
@@ -1333,6 +1406,10 @@ export class MoveableService {
     this.toolbarService.resetting(item);
   }
 
+  originHeight: number = 150;
+  originWidth: number = 150;
+  currentScaleX: number = 1;
+  currentScaleY: number = 1;
   // moveable Element
   makeMoveableElement(pageId: number, target: HTMLElement | SVGElement) {
     let pageContainer: HTMLElement | SVGElement = document.querySelector(
@@ -1413,27 +1490,76 @@ export class MoveableService {
     moveable
       .on('resizeStart', (e: OnResizeStart) => {
         let item = this.getItem(e.target);
+        item.isOnResize = true;
+
         e.setOrigin(['%', '%']);
         e.dragStart && e.dragStart.set([item.x, item.y]);
+        if (e.direction[0] !== 0 && e.direction[1] !== 0) {
+          this.isScale = true;
+        } else {
+          if (e.direction[0] === 0) {
+            this.isTBScale = true;
+          } else if (e.direction[1] === 0) {
+            this.isLRScale = true;
+          }
+        }
       })
       .on('resize', (e: OnResize) => {
-        let item = this.getItem(e.target);
-        item.x = e.drag.beforeTranslate[0];
-        item.y = e.drag.beforeTranslate[1];
-        item.w = e.width;
-        item.h = e.height;
+        if (this.isScale) {
+          let item = this.getItem(e.target);
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          item.w = e.width;
+          item.h = e.height;
+          this.originWidth = item.w / this.currentScaleX;
+          this.originHeight = item.h / this.currentScaleY;
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${item.w}px`;
+          e.target.style.height = `${item.h}px`;
 
-        e.target.style.transform = this.strTransform(item);
-        e.target.style.width = `${e.width}px`;
-        e.target.style.height = `${e.height}px`;
-
-        let svgEle = document
-          .querySelector('#SVGElement-' + item.pageId + '-' + item.itemId)
-          .querySelector('svg');
-        svgEle.setAttribute('width', item.w.toString());
-        svgEle.setAttribute('height', item.h.toString());
+          let svgEle = document
+            .querySelector('#SVGElement-' + item.pageId + '-' + item.itemId)
+            .querySelector('svg');
+          svgEle.setAttribute('width', item.w.toString());
+          svgEle.setAttribute('height', item.h.toString());
+        } else {
+          let item = this.getItem(e.target);
+          item.x = e.drag.beforeTranslate[0];
+          item.y = e.drag.beforeTranslate[1];
+          let svgEle = document
+            .querySelector('#SVGElement-' + item.pageId + '-' + item.itemId)
+            .querySelector('svg');
+          if (this.isLRScale) {
+            item.w = e.width;
+          }
+          if (this.isTBScale) {
+            item.h = e.height;
+          }
+          e.target.style.transform = this.strTransform(item);
+          e.target.style.width = `${item.w}px`;
+          e.target.style.height = `${item.h}px`;
+          svgEle.style.transform = this.strTransformHV(item);
+          this.currentScaleX = item.w / this.originHeight;
+          this.currentScaleY = item.h / this.originHeight;
+          item.svgScale =
+            'scale(' +
+            item.w / this.originHeight +
+            ',' +
+            item.h / this.originHeight +
+            ')';
+        }
       })
       .on('resizeEnd', (e: OnResizeEnd) => {
+        let item = this.getItem(e.target);
+        item.isOnResize = false;
+        this.isScale = false;
+        this.isTBScale = false;
+        this.isLRScale = false;
+        this.setSelectable(
+          e.target.getAttribute('itemId'),
+          e.target.getAttribute('pageId'),
+          '#SVGSelector-'
+        );
         this.ur.saveTheData(this.ds.theDesign);
       });
 

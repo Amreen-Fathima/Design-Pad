@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ToolbarService } from 'src/app/services/toolbar.service';
 import { MoveableService } from 'src/app/services/moveable.service';
 import { DesignService } from 'src/app/services/design.service';
@@ -33,7 +39,11 @@ export class TextToolbarComponent implements OnInit {
   // textItems = [];
   // targets = [];
 
-  constructor(public moveableService: MoveableService, public toolbarService: ToolbarService, public ds: DesignService) {}
+  constructor(
+    public moveableService: MoveableService,
+    public toolbarService: ToolbarService,
+    public ds: DesignService
+  ) {}
 
   ngOnInit(): void {
     let offset = 2;
@@ -63,27 +73,47 @@ export class TextToolbarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    let thePageItem = this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
+    let thePageItem =
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items;
     this.toolbarService.textItems = [];
     this.toolbarService.targets = [];
 
     for (let i = 0; i < thePageItem.length; i++) {
       if (thePageItem[i].selected) {
         this.toolbarService.targets.push(
-          document.querySelector(this.ds.getType(thePageItem[i].type) + thePageItem[i].pageId + '-' + thePageItem[i].itemId)
+          document.querySelector(
+            this.ds.getType(thePageItem[i].type) +
+              thePageItem[i].pageId +
+              '-' +
+              thePageItem[i].itemId
+          )
         );
-        if (thePageItem[i].type == ItemType.text) this.toolbarService.textItems.push(thePageItem[i]);
+        if (thePageItem[i].type == ItemType.text)
+          this.toolbarService.textItems.push(thePageItem[i]);
       }
     }
 
     for (let i = 0; i < this.toolbarService.textItems.length; i++) {
       let selectorEle = document.querySelector<HTMLElement>(
-        '#textSelector-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId
+        '#textSelector-' +
+          this.toolbarService.textItems[i].pageId +
+          '-' +
+          this.toolbarService.textItems[i].itemId
       );
       let item = this.moveableService.getItem(selectorEle);
 
-      if (!i) this.toolbarService.createTextEditor(this.toolbarService.textItems[i].pageId, this.toolbarService.textItems[i].itemId, true);
-      else this.toolbarService.createTextEditor(this.toolbarService.textItems[i].pageId, this.toolbarService.textItems[i].itemId, false);
+      if (!i)
+        this.toolbarService.createTextEditor(
+          this.toolbarService.textItems[i].pageId,
+          this.toolbarService.textItems[i].itemId,
+          true
+        );
+      else
+        this.toolbarService.createTextEditor(
+          this.toolbarService.textItems[i].pageId,
+          this.toolbarService.textItems[i].itemId,
+          false
+        );
 
       // this.sizeEle = document.querySelector<HTMLInputElement>('#fontSizeInput');
       // this.fontEle = document.querySelector<HTMLInputElement>('#fontInput');
@@ -94,12 +124,19 @@ export class TextToolbarComponent implements OnInit {
       // });
 
       let qlEditor = document
-        .querySelector('#textEditor-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId)
+        .querySelector(
+          '#textEditor-' +
+            this.toolbarService.textItems[i].pageId +
+            '-' +
+            this.toolbarService.textItems[i].itemId
+        )
         .querySelector('.ql-editor') as HTMLElement;
       qlEditor.style.lineHeight = item.lineHeight + 'em';
-      qlEditor.style.letterSpacing = Number.parseFloat(item.letterSpacing) / 1000 + 'em';
+      qlEditor.style.letterSpacing =
+        Number.parseFloat(item.letterSpacing) / 1000 + 'em';
 
-      let fontFormEle = document.querySelector('#fontForm').firstChild.firstChild.firstChild as HTMLElement;
+      let fontFormEle = document.querySelector('#fontForm').firstChild
+        .firstChild.firstChild as HTMLElement;
       let fontSelector = document.querySelector('#fontSelector') as HTMLElement;
 
       fontSelector.style.width = fontFormEle.clientWidth + 'px';
@@ -112,18 +149,38 @@ export class TextToolbarComponent implements OnInit {
     let hasSameFontSize = true;
     let hasSameFontFamily = true;
     for (let i = 0; i < this.toolbarService.textItems.length - 1; i++) {
-      if (this.toolbarService.textItems[i].fontSize != this.toolbarService.textItems[i + 1].fontSize) hasSameFontSize = false;
-      if (this.toolbarService.textItems[i].fontFamily != this.toolbarService.textItems[i + 1].fontFamily) hasSameFontFamily = false;
+      if (
+        this.toolbarService.textItems[i].fontSize !=
+        this.toolbarService.textItems[i + 1].fontSize
+      )
+        hasSameFontSize = false;
+      if (
+        this.toolbarService.textItems[i].fontFamily !=
+        this.toolbarService.textItems[i + 1].fontFamily
+      )
+        hasSameFontFamily = false;
     }
 
+    let checkItem;
+    for (let i = 0; i < thePageItem.length; i++) {
+      if (thePageItem[i].selected) {
+        checkItem = thePageItem[i];
+      }
+    }
     setTimeout(() => {
-      if (hasSameFontSize)
+      if (hasSameFontSize && checkItem.type != ItemType.group)
         this.sizeEle.value = (
           Math.floor(
-            Number.parseFloat(this.toolbarService.textItems[0].fontSize.substr(0, this.toolbarService.textItems[0].fontSize.length - 2)) * 10
+            Number.parseFloat(
+              this.toolbarService.textItems[0].fontSize.substr(
+                0,
+                this.toolbarService.textItems[0].fontSize.length - 2
+              )
+            ) * 10
           ) / 10
         ).toString();
-      if (hasSameFontFamily) this.fontEle.value = this.toolbarService.textItems[0].fontFamily;
+      if (hasSameFontFamily && checkItem.type != ItemType.group)
+        this.fontEle.value = this.toolbarService.textItems[0].fontFamily;
       else this.fontEle.value = 'Multi Fonts...';
       this.fontControl.disable();
     });
@@ -134,9 +191,13 @@ export class TextToolbarComponent implements OnInit {
         let quill = this.toolbarService.quills[i];
         let length: number = quill.getLength();
 
-        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+        if (
+          this.toolbarService.quills.length > 1 ||
+          quill.getSelection()?.length == 0
+        ) {
           this.moveableService.enableTextEdit();
-          if (quill.getFormat(0, length - 1).bold) quill.formatText(0, length - 1, 'bold', false);
+          if (quill.getFormat(0, length - 1).bold)
+            quill.formatText(0, length - 1, 'bold', false);
           else quill.formatText(0, length - 1, 'bold', true);
         }
         quill.blur();
@@ -148,9 +209,13 @@ export class TextToolbarComponent implements OnInit {
         let quill = this.toolbarService.quills[i];
         let length: number = quill.getLength();
 
-        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+        if (
+          this.toolbarService.quills.length > 1 ||
+          quill.getSelection()?.length == 0
+        ) {
           this.moveableService.enableTextEdit();
-          if (quill.getFormat(0, length - 1).italic) quill.formatText(0, length - 1, 'italic', false);
+          if (quill.getFormat(0, length - 1).italic)
+            quill.formatText(0, length - 1, 'italic', false);
           else quill.formatText(0, length - 1, 'italic', true);
         }
         quill.blur();
@@ -162,9 +227,13 @@ export class TextToolbarComponent implements OnInit {
         let quill = this.toolbarService.quills[i];
         let length: number = quill.getLength();
 
-        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+        if (
+          this.toolbarService.quills.length > 1 ||
+          quill.getSelection()?.length == 0
+        ) {
           this.moveableService.enableTextEdit();
-          if (quill.getFormat(0, length - 1).underline) quill.formatText(0, length - 1, 'underline', false);
+          if (quill.getFormat(0, length - 1).underline)
+            quill.formatText(0, length - 1, 'underline', false);
           else quill.formatText(0, length - 1, 'underline', true);
         }
         quill.blur();
@@ -176,9 +245,13 @@ export class TextToolbarComponent implements OnInit {
         let quill = this.toolbarService.quills[i];
         let length: number = quill.getLength();
 
-        if (this.toolbarService.quills.length > 1 || quill.getSelection()?.length == 0) {
+        if (
+          this.toolbarService.quills.length > 1 ||
+          quill.getSelection()?.length == 0
+        ) {
           this.moveableService.enableTextEdit();
-          if (quill.getFormat(0, length - 1).strike) quill.formatText(0, length - 1, 'strike', false);
+          if (quill.getFormat(0, length - 1).strike)
+            quill.formatText(0, length - 1, 'strike', false);
           else quill.formatText(0, length - 1, 'strike', true);
         }
         quill.blur();
@@ -186,11 +259,15 @@ export class TextToolbarComponent implements OnInit {
     });
 
     document.querySelector('#color').addEventListener('click', () => {
-      (document.querySelector('#color').querySelector('input') as HTMLElement).click();
+      (
+        document.querySelector('#color').querySelector('input') as HTMLElement
+      ).click();
     });
 
     document.querySelector('#bgColor').addEventListener('click', () => {
-      (document.querySelector('#bgColor').querySelector('input') as HTMLElement).click();
+      (
+        document.querySelector('#bgColor').querySelector('input') as HTMLElement
+      ).click();
     });
   }
 
@@ -209,9 +286,17 @@ export class TextToolbarComponent implements OnInit {
         quill.formatText(0, length - 1, 'color', this.textColor);
         quill.blur();
       } else {
-        quill.formatText(this.toolbarService.range.index, this.toolbarService.range.length, 'color', this.textColor);
+        quill.formatText(
+          this.toolbarService.range.index,
+          this.toolbarService.range.length,
+          'color',
+          this.textColor
+        );
         setTimeout(() => {
-          this.toolbarService.quills[0].setSelection(this.toolbarService.range.index, this.toolbarService.range.length);
+          this.toolbarService.quills[0].setSelection(
+            this.toolbarService.range.index,
+            this.toolbarService.range.length
+          );
         });
       }
       if (this.toolbarService.quills.length != 1) quill.blur();
@@ -233,9 +318,17 @@ export class TextToolbarComponent implements OnInit {
         quill.formatText(0, length - 1, 'background', this.textBgColor);
         quill.blur();
       } else {
-        quill.formatText(this.toolbarService.range.index, this.toolbarService.range.length, 'background', this.textBgColor);
+        quill.formatText(
+          this.toolbarService.range.index,
+          this.toolbarService.range.length,
+          'background',
+          this.textBgColor
+        );
         setTimeout(() => {
-          this.toolbarService.quills[0].setSelection(this.toolbarService.range.index, this.toolbarService.range.length);
+          this.toolbarService.quills[0].setSelection(
+            this.toolbarService.range.index,
+            this.toolbarService.range.length
+          );
         });
       }
       if (this.toolbarService.quills.length != 1) quill.blur();
@@ -261,7 +354,10 @@ export class TextToolbarComponent implements OnInit {
   setFontSize(fontSize: string) {
     for (let i = 0; i < this.toolbarService.textItems.length; i++) {
       let ele = document.querySelector<HTMLElement>(
-        '#textEditor-' + this.toolbarService.textItems[i].pageId + '-' + this.toolbarService.textItems[i].itemId
+        '#textEditor-' +
+          this.toolbarService.textItems[i].pageId +
+          '-' +
+          this.toolbarService.textItems[i].itemId
       );
       let item = this.moveableService.getItem(ele);
       item.fontSize = fontSize + 'px';
@@ -279,7 +375,10 @@ export class TextToolbarComponent implements OnInit {
 
   // set Line Height and Letter space
   setLineHeight() {
-    let item = this.ds.theDesign.pages[this.moveableService.selectedPageId].items[this.moveableService.selectedItemId];
+    let item =
+      this.ds.theDesign.pages[this.moveableService.selectedPageId].items[
+        this.moveableService.selectedItemId
+      ];
 
     this.lineHeight = Number.parseFloat(item.lineHeight);
     this.letter = Number.parseFloat(item.letterSpacing);

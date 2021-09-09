@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <mat-tab-group>
+        <mat-tab>
+          <perfect-scrollbar
+            [config]="{ suppressScrollX: true }"
+            style="height: calc(100vh - 230px)"
+          >
+            <ng-template mat-tab-label>
+              <span style="color: rgba(0, 0, 0, 0.87)">Templates</span>
+            </ng-template>
+            <li
+              *ngFor="let name of categoryName; let i = index"
+              style="padding: 10px"
+            >
+              <span
+                >{{ name }} - ({{ categoryCount[i] }}/{{
+                  categoryDownloadCount[i]
+                }}) No of clicks/downloads</span
+              >
+            </li>
+          </perfect-scrollbar>
+        </mat-tab>
+        <mat-tab>
+          <perfect-scrollbar
+            [config]="{ suppressScrollX: true }"
+            style="height: calc(100vh - 230px)"
+          >
+            <ng-template mat-tab-label>
+              <span style="color: rgba(0, 0, 0, 0.87)">Elements</span>
+            </ng-template>
+            <li
+              *ngFor="let name of elementName; let i = index"
+              style="padding: 10px"
+            >
+              <span>
+                {{ name }} - {{ elementCount[i] }} No of times it has been
+                clicks and used in a design
+              </span>
+            </li>
+          </perfect-scrollbar>
+        </mat-tab>
+        <mat-tab>
+          <perfect-scrollbar
+            [config]="{ suppressScrollX: true }"
+            style="height: calc(100vh - 230px)"
+          >
+            <ng-template mat-tab-label>
+              <span style="color: rgba(0, 0, 0, 0.87)">Users</span>
+            </ng-template>
+            <li
+              *ngFor="let user of userData; let i = index"
+              style="padding: 10px"
+            >
+              <span>
+                {{ user["displayName"] }} / {{ user["email"] }} -
+                {{ user["date"] | date: "yyyy/MM/dd HH:mm:ss" }} |
+                {{ i + 1 }} of DesignPad | {{ user["downloadCount"] }} of
+                downloads
+              </span>
+            </li>
+          </perfect-scrollbar>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

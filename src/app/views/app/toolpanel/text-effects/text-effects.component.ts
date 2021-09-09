@@ -6,6 +6,7 @@ import { DesignService } from 'src/app/services/design.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, combineLatest } from 'rxjs/operators';
 import { ItemsList } from '@ng-select/ng-select/lib/items-list';
+import * as CSS from 'csstype';
 
 @Component({
   selector: 'toolpanel-text-effects',
@@ -50,6 +51,11 @@ export class TextEffectsComponent implements OnInit {
 
   glitchColorA = 'rgb(0, 255, 255)';
   glitchColorB = 'rgb(255, 0, 255)';
+
+  glitchColorA1 = '#00FFFF';
+  glitchColorA2 = '#FF00FF';
+  glitchColorB1 = '#00FFFF';
+  glitchColorB2 = '#FF0000';
 
   neonValue;
   curveValue;
@@ -204,11 +210,11 @@ export class TextEffectsComponent implements OnInit {
 
   ngAfterViewInit(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor =
-      '#f7f7f7';
+      '#293039';
   }
   ngOnDestroy(): void {
     document.querySelector<HTMLElement>('#sub-menu').style.backgroundColor =
-      '#f7f7f7';
+      '#293039';
   }
 
   saveTheData() {
@@ -379,7 +385,6 @@ export class TextEffectsComponent implements OnInit {
       this.curveValue = item.angle;
       this.toolbarService.direction = 1;
       this.setCurveEffect();
-
       document.querySelector<HTMLElement>('#curve').style.display = 'block';
       this.setEffectSelector('#selector-curve');
     }
@@ -789,17 +794,124 @@ export class TextEffectsComponent implements OnInit {
     this.setGlitchEffect();
   }
 
+  isRed5Pink = false;
   onInputGlitchChange_A() {
-    this.glitchColorA = 'rgb(0, 255, 255)';
-    this.glitchColorB = 'rgb(255, 0, 255)';
-
-    this.setGlitchEffect();
+    this.isRed5Pink = false;
   }
 
   onInputGlitchChange_B() {
-    this.glitchColorA = 'rgb(0, 255, 255)';
-    this.glitchColorB = 'rgb(255, 0, 0)';
+    this.isRed5Pink = true;
+  }
 
+  onInputGlitchA1ColorChange() {
+    let resultA1 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorA1
+    );
+    let resultA2 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorA2
+    );
+
+    this.glitchColorA1 = resultA1[0];
+    this.glitchColorA =
+      'rgb(' +
+      parseInt(resultA1[1], 16) +
+      ', ' +
+      parseInt(resultA1[2], 16) +
+      ', ' +
+      parseInt(resultA1[3], 16) +
+      ')';
+    this.glitchColorB =
+      'rgb(' +
+      parseInt(resultA2[1], 16) +
+      ', ' +
+      parseInt(resultA2[2], 16) +
+      ', ' +
+      parseInt(resultA2[3], 16) +
+      ')';
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchA2ColorChange() {
+    let resultA1 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorA1
+    );
+    let resultA2 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorA2
+    );
+
+    this.glitchColorA2 = resultA2[0];
+    this.glitchColorA =
+      'rgb(' +
+      parseInt(resultA1[1], 16) +
+      ', ' +
+      parseInt(resultA1[2], 16) +
+      ', ' +
+      parseInt(resultA1[3], 16) +
+      ')';
+    this.glitchColorB =
+      'rgb(' +
+      parseInt(resultA2[1], 16) +
+      ', ' +
+      parseInt(resultA2[2], 16) +
+      ', ' +
+      parseInt(resultA2[3], 16) +
+      ')';
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchB1ColorChange() {
+    let resultB1 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorB1
+    );
+    let resultB2 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorB2
+    );
+
+    this.glitchColorB1 = resultB1[0];
+    this.glitchColorA =
+      'rgb(' +
+      parseInt(resultB1[1], 16) +
+      ', ' +
+      parseInt(resultB1[2], 16) +
+      ', ' +
+      parseInt(resultB1[3], 16) +
+      ')';
+    this.glitchColorB =
+      'rgb(' +
+      parseInt(resultB2[1], 16) +
+      ', ' +
+      parseInt(resultB2[2], 16) +
+      ', ' +
+      parseInt(resultB2[3], 16) +
+      ')';
+    this.setGlitchEffect();
+  }
+
+  onInputGlitchB2ColorChange() {
+    let resultB1 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorB1
+    );
+    let resultB2 = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      this.glitchColorB2
+    );
+
+    this.glitchColorB2 = resultB2[0];
+    this.glitchColorA =
+      'rgb(' +
+      parseInt(resultB1[1], 16) +
+      ', ' +
+      parseInt(resultB1[2], 16) +
+      ', ' +
+      parseInt(resultB1[3], 16) +
+      ')';
+    this.glitchColorB =
+      'rgb(' +
+      parseInt(resultB2[1], 16) +
+      ', ' +
+      parseInt(resultB2[2], 16) +
+      ', ' +
+      parseInt(resultB2[3], 16) +
+      ')';
     this.setGlitchEffect();
   }
 

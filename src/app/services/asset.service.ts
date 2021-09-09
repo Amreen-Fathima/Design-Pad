@@ -79,6 +79,24 @@ export class AssetService {
         .snapshotChanges();
   }
 
+  readElementCount(docId) {
+    return this.db.collection<AssetElement>('Elements').doc(docId).get();
+  }
+
+  readElementByCategory(name: string) {
+    return this.db
+      .collection<AssetElement>('Elements', (ref) =>
+        ref.where('category', 'array-contains', name)
+      )
+      .snapshotChanges();
+  }
+
+  updateElementCount(count, docId) {
+    this.db.collection<AssetElement>('Elements').doc(docId).update({
+      clickCount: count,
+    });
+  }
+
   readVideoByTag(tag: string) {
     if (tag === '')
       return this.db.collection<AssetVideo>('Videos').snapshotChanges();
